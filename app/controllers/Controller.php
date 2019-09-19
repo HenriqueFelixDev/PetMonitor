@@ -27,6 +27,9 @@ abstract class Controller{
          *  require_once PATH."/app/views/pagina.php";
          *
         */
+
+        require_once PATH."/app/views/layouts/header.php";
+        require_once PATH."/app/views/layouts/footer.php";
     }
 
     public function getViewVar(){

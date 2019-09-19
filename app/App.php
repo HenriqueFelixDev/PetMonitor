@@ -17,7 +17,7 @@ class App{
        
         define("APP_HOST", $_SERVER["HTTP_HOST"]);
         define("PATH", realpath("../"));
-        define("TITLE", "PetMonitor");
+        define("TITLE", "PETMonitor");
         define("DB_DRIVER", "mysql");
         define("DB_HOST", "localhost");
         define("DB_NAME", "blogdb");
