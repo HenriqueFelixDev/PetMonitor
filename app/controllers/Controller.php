@@ -29,6 +29,8 @@ abstract class Controller{
         */
 
         require_once PATH."/app/views/layouts/header.php";
+        require_once PATH."/app/views/layouts/menu.php";
+        require_once PATH."/app/views/".$view.".php";
         require_once PATH."/app/views/layouts/footer.php";
     }
 
