@@ -2,35 +2,35 @@
     <section>
         <form action="" method="POST">
             <div>
-                <label for="">Nome</label>
-                <input type="text" />
+                <label for="nome">Nome</label>
+                <input type="text" name="nome" id="nome" maxlength="32" required />
             </div>
 
             <div>
-                <label for="">Sobrenome</label>
-                <input type="text" />
+                <label for="sobrenome">Sobrenome</label>
+                <input type="text" name="sobrenome" id="sobrenome" maxlength="32" required />
             </div>
 
             <div>
-                <label for="">Senha</label>
-                <input type="password" />
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" id="senha" maxlength="32" required />
             </div>
 
             <div>
-                <label for="">Mostrar Senha</label>
-                <input type="checkbox" />
+                <label for="mostrar-senha">Mostrar Senha</label>
+                <input type="checkbox" name="mostrar-senha" id="mostrar-senha" />
             </div>
 
             <div>
-                <label for="">Telefone Celular</label>
-                <input type="tel" />
+                <label for="cel">Telefone Celular</label>
+                <input type="tel" name="cel" id="cel" maxlength="11" required />
             </div>
 
             <div>
-                <label for="">E-mail</label>
-                <input type="email" />
+                <label for="email">E-mail</label>
+                <input type="email" name="email" id="email" maxlength="64" required />
             </div>
 
-            <button>Cadastrar</button>
+            <button type="submit">Cadastrar</button>
         </form>
     </section>
