@@ -9,4 +9,12 @@ class IndexController extends Controller{
     public function index(){
         $this->render("login");
     }
+
+    public function entrar() {
+
+    }
+
+    public function cadastrar() {
+        
+    }
 }
