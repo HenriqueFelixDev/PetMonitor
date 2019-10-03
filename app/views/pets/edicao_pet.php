@@ -1,33 +1,33 @@
-    <section>
+    <section class="container">
         <div>
-            <h2>PETs</h2>
+            <h2 class="title">Novo PET</h2>
         </div>
 
         <div>
             <form action="" method="POST" enctype="multipart/form-data">
 
-                <div>
+                <div class="form-group">
                     <label for="foto">Foto</label>
-                    <img src="" />
+                    <img src="" id="foto-pet" alt="Foto do Pet" />
                     <input type="file" name="foto" id="foto" value="Escolher Foto" />
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" name="nome" id="nome" maxlength="64" required autofocus />
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label for="especie">Espécie</label>
                     <input type="text" name="especie" id="especie" maxlength="32" required />
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label for="raca">Raça<small>(Opcional)</small></label>
                     <input type="text" name="raca" id="raca" maxlength="32" />
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label for="sexo">Sexo</label>
                     <select name="sexo" id="sexo" required>
                         <option>Selecione um sexo</option>
@@ -38,18 +38,18 @@
                     </select>
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label for="cor">Cor</label>
                     <input type="text" name="cor" id="cor" maxlength="32" required />
                 </div>
 
-                <div>
+                <div class="form-group">
                     <label for="data-nasc">Data de Nascimento</label>
                     <input type="date" name="data-nasc" id="data-nasc" />
                 </div>
 
-                <div>
-                    <button type="submit">Salvar</button>
+                <div class="form-group">
+                    <button type="submit" class="btn-primary">Salvar</button>
                 </div>
             </form>
         </div>

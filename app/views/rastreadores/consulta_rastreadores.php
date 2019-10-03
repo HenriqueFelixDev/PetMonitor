@@ -1,24 +1,29 @@
-    <section>
+    <section class="container">
         <div>
-            <h2>Rastreadores</h2>
+            <h2 class="title">Rastreadores</h2>
         </div>
-        <div>
+
+        <div class="mb-2">
+            <a href="/?url=rastreadores/ativacao" class="btn btn-primary">Ativar Rastreador</a>
+        </div>
+
+        <div class="mb-2">
             <form action="" method="GET">
 
-                <div>
+                <div class="form-group-inline">
                     <label for="codigo-rastreador">Código</label>
                     <input type="number" name="codigo-rastreador" id="codigo-rastreador" maxlength="16" autofocus />
                 </div>
 
-                <div>
+                <div class="form-group-inline">
+                    <button type="submit" class="btn-primary">Pesquisar</button>
+                </div>
+
+                <div class="form-group">
                     <label for="situacao">Situação</label>
                     <select name="situacao" id="situacao">
                         <option selected disabled value="-1">Selecione uma situação</option>
                     </select>
-                </div>
-
-                <div>
-                    <button type="submit">Pesquisar</button>
                 </div>
             </form>
         </div>
@@ -36,6 +41,32 @@
                 </thead>
 
                 <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button class="btn-primary">Editar</button>
+                            <button class="btn-cancel">Excluir</button>
+                            <button class="btn-info">Desvincular Pet</button>
+                            <button class="btn-info">Vincular Pet</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button>Editar</button>
+                            <button>Excluir</button>
+                            <button>Desvincular Pet</button>
+                            <button>Vincular Pet</button>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td></td>
                         <td></td>
