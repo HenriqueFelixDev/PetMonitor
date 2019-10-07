@@ -15,12 +15,12 @@ class App{
 
     public function __construct(){
        
-        define("APP_HOST", $_SERVER["HTTP_HOST"]);
+        define("APP_HOST", $_SERVER["HTTP_HOST"]."/projetos/PetMonitor/public");
         define("PATH", realpath("../"));
         define("TITLE", "PETMonitor");
         define("DB_DRIVER", "mysql");
         define("DB_HOST", "localhost");
-        define("DB_NAME", "blogdb");
+        define("DB_NAME", "petmonitor_db");
         define("DB_USER", "root");
         define("DB_PASS", "");
         
