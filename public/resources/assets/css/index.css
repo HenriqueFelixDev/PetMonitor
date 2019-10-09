@@ -312,6 +312,46 @@ body>footer #copyright {
     border: thin solid grey;
 }
 
+.alert-box {
+    margin: 1rem;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.alert-box-erro {
+    border: thin solid #7a1c15;
+    background-color: rgb(255, 103, 103);
+}
+
+.alert-erro {
+    color: #be2419;
+}
+
+.alert-box-sucesso {
+    background-color: rgb(163, 241, 170);
+}
+
+.alert-sucesso {
+    color: rgb(44, 139, 44);
+}
+
+.alert-box-aviso {
+    background-color: rgb(224, 241, 163);
+}
+
+.alert-aviso {
+    color: rgb(137, 139, 44);
+}
+
+.alert-box-info {
+    background-color: rgb(163, 232, 241);
+}
+
+.alert-info {
+    color: rgb(32, 56, 109);
+}
+
 
 /* MARGENS */
 

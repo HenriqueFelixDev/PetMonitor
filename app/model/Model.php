@@ -8,7 +8,7 @@ abstract class Model implements iValidacao
 {
     public function inserir()
     {
-        
+        return true;
     }
 
     public function atualizar()

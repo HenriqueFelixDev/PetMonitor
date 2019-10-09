@@ -4,7 +4,7 @@
         </div>
 
         <div>
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="http://<?= APP_HOST ?>/pets/salvar" method="POST" enctype="multipart/form-data">
 
                 <div class="form-group">
                     <label for="foto">Foto</label>

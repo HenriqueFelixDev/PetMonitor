@@ -6,24 +6,46 @@ use App\Util\DadosUtil;
 
 class Sessao
 {
-    public static function gravar($param, $valor)
+    public static function gravar($identificador, $param, $valor)
     {
         if (isset($param)) {
-            $_SESSION[$param] = $valor;
+            $_SESSION[$identificador][$param] = $valor;
         }
     }
 
-    public static function temParam($param) 
+    private static function temParam($identificador, $param) 
     {
-        return isset($_SESSION[$param]);
+        return isset($_SESSION[$identificador][$param]);
     }
 
-    public static function obter($param)
+    public static function obter($identificador, $param = null)
     {
-        if (isset($param) && temParam($param)) {
-            return $_SESSION[$param];
+        if (isset($identificador)) {
+
+            if (!isset($param)) {
+                return isset($_SESSION[$identificador]) ? $_SESSION[$identificador] : null;
+            }
+
+            if (self::temParam($identificador, $param)) {
+                return $_SESSION[$identificador][$param];
+            }
+           
         }
 
         return null;
+    }
+
+    public static function limpar($identificador, $param)
+    {
+        if (self::temParam($identificador, $param)) {
+            unset($_SESSION[$identificador][$param]);
+        }
+    }
+
+    public static function limparTudo($identificador)
+    {
+        if (isset($_SESSION[$identificador])) {
+            unset($_SESSION[$identificador]);
+        }
     }
 }

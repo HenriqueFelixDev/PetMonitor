@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\App;
+use App\Lib\Sessao;
+use App\Lib\Mensagem;
 
 abstract class Controller{
 
@@ -21,17 +23,22 @@ abstract class Controller{
     }
 
     protected function render($view){
+        
+        $this->setViewParam("msg", Mensagem::obterMensagens());
         $viewVar = $this->getViewVar();
+
+        $mensagem = Mensagem::class;
         /*
          * Requisição para as páginas do site
          *  require_once PATH."/app/views/pagina.php";
          *
         */
-
         require_once PATH."/app/views/layouts/header.php";
         require_once PATH."/app/views/layouts/menu.php";
         require_once PATH."/app/views/".$view.".php";
         require_once PATH."/app/views/layouts/footer.php";
+        Mensagem::limparMensagens();
+        Sessao::limparTudo("form");
     }
 
     public function getViewVar(){

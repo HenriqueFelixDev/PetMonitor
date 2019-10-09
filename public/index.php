@@ -1,6 +1,7 @@
 <?php
 
 use App\App;
+use App\Util\ValidacaoUtil;
 
 require_once "../vendor/autoload.php";
 

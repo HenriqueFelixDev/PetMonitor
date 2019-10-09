@@ -23,6 +23,5 @@ class PetsController extends Controller {
     }
 
     public function salvar() {
-        
     }
 }

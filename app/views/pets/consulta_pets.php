@@ -4,7 +4,7 @@
         </div>
 
         <div class="mb-2">
-            <a href="/?url=pets/novo" class="btn btn-primary">Novo Pet</a>
+            <a href="http://<?= APP_HOST ?>/pets/novo" class="btn btn-primary">Novo Pet</a>
         </div>
 
         <div>

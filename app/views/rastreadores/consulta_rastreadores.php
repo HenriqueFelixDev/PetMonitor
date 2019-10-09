@@ -4,7 +4,7 @@
         </div>
 
         <div class="mb-2">
-            <a href="/?url=rastreadores/ativacao" class="btn btn-primary">Ativar Rastreador</a>
+            <a href="http://<?= APP_HOST ?>/rastreadores/ativacao" class="btn btn-primary">Ativar Rastreador</a>
         </div>
 
         <div class="mb-2">
