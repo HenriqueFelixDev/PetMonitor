@@ -26,13 +26,19 @@ class IndexController extends Controller{
             $dados = $_POST;
             unset($dados["senha"]);
             Sessao::gravar("form", "dono", $dados);
+            
+            $nome = filter_input(INPUT_POST, "nome", FILTER_SANITIZE_SPECIAL_CHARS);
+            $sobrenome = filter_input(INPUT_POST, "sobrenome", FILTER_SANITIZE_SPECIAL_CHARS);
+            $senha = $_POST["senha"];
+            $celular = filter_input(INPUT_POST, "cel", FILTER_SANITIZE_SPECIAL_CHARS);
+            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_SPECIAL_CHARS);
 
             $dono = new Dono();
-            $dono->setNome($_POST["nome"]);
-            $dono->setSobrenome($_POST["sobrenome"]);
-            $dono->setSenha($_POST["senha"]);
-            $dono->setCelular($_POST["cel"]);
-            $dono->setEmail($_POST["email"]);
+            $dono->setNome($nome);
+            $dono->setSobrenome($sobrenome);
+            $dono->setSenha($senha);
+            $dono->setCelular($celular);
+            $dono->setEmail($email);
 
             $validade = $dono->validar();
 
@@ -48,6 +54,9 @@ class IndexController extends Controller{
             if ($result) {
                 Mensagem::gravarMensagem("geral", "Dono Cadastrado com sucesso!", TipoMensagem::SUCESSO);
                 Sessao::limpar("form", "dono");
+                $this->redirect("");
+            } else {
+                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao cadastrar o novo Dono!", TipoMensagem::ERRO);
                 $this->redirect("");
             }
         }

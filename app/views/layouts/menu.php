@@ -34,3 +34,9 @@
     </nav>
     
     <main>
+
+<?php if ($mensagem::temMensagem("geral")) : ?>
+    <div class="alert-box alert-box-<?= $mensagem::obterMensagem("geral")["tipo"] ?> alert-<?= $mensagem::obterMensagem("geral")["tipo"] ?>">
+        <?= $mensagem::obterMensagem("geral")["msg"] ?>
+    </div>
+<?php endif; ?>

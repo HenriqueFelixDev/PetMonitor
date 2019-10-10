@@ -1,10 +1,3 @@
-<?php if ($mensagem::temMensagem("geral")) : ?>
-
-    <div class="alert-box alert-box-<?= $mensagem::obterMensagem("geral")["tipo"] ?> alert-<?= $mensagem::obterMensagem("geral")["tipo"] ?>">
-        <?= $mensagem::obterMensagem("geral")["msg"] ?>
-    </div>
-<?php endif; ?>
-
     <section class="box right mr-5 mt-2" id="cadastro-form">
         <header>
             <h2>Crie uma nova conta gratuitamente!</h2>

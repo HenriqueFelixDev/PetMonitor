@@ -6,23 +6,26 @@ use App\App;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
 
-abstract class Controller{
-
+abstract class Controller
+{
     protected $app;
     private $viewVar;
 
-    public function __construct(App $app){
+    public function __construct(App $app)
+    {
         $this->setViewParam("controllerName", $app->getControllerName());
     }
 
     public abstract function index();
 
-    protected function redirect($view){
+    protected function redirect($view)
+    {
         header("Location: http://".APP_HOST."/".$view);
         exit;
     }
 
-    protected function render($view){
+    protected function render($view)
+    {
         
         $this->setViewParam("msg", Mensagem::obterMensagens());
         $viewVar = $this->getViewVar();
@@ -41,12 +44,14 @@ abstract class Controller{
         Sessao::limparTudo("form");
     }
 
-    public function getViewVar(){
+    public function getViewVar()
+    {
         return $this->viewVar;
     }
 
-    public function setViewParam($nome, $valor){
-        if(isset($nome) && isset($valor)){
+    public function setViewParam($nome, $valor)
+    {
+        if (isset($nome) && isset($valor)) {
             $this->viewVar[$nome] = $valor;
         }
     }

@@ -35,4 +35,23 @@ class ValidacaoUtil
     {
         return preg_match("/\(?(\d){2}\)?(\s)?9(\s)?(\d){4}[-]?(\d){4}/", $valor);
     }
+
+    public static function data($data)
+    {
+        if (!preg_match("/(\d){4}-(\d){2}-(\d){2}/", $data)) {
+            return false;
+        }
+
+        $data = explode("-", $data);
+
+        if (isset($data[2]) && intval($data[2]) > 31) {
+            return false;
+        }
+
+        if (isset($data[1]) && intval($data[1]) > 12) {
+            return false;
+        }
+
+        return true;
+    }
 }
