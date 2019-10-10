@@ -9,14 +9,14 @@
              à sua conta, assinatura e para fazer logout -->
             <li><a href="#">João</a> <ul>
                 <li><a href="http://<?= APP_HOST ?>/conta">Conta</a></li>
-                <li><a href="#">Sair</a></li>
+                <li><a href="http://<?= APP_HOST ?>/index/sair">Sair</a></li>
             </ul></li>
         </ul>
 
 <?php else: ?>
 
         <section id="login-form" class="right mr-2">
-            <form action="" method="POST">
+            <form action="http://<?= APP_HOST ?>/pets" method="POST">
                 <div class="form-group-inline">
                     <input type="text" placeholder="Usuário" name="usuario" id="usuario" maxlength="32" required autofocus/>
                 </div>

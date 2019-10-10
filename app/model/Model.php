@@ -13,7 +13,7 @@ abstract class Model implements iValidacao
 
     public function atualizar()
     {
-        
+        return true;
     }
 
     public function buscar()
@@ -21,7 +21,7 @@ abstract class Model implements iValidacao
         
     }
 
-    public function encontrar()
+    public function encontrarPorId()
     {
         
     }

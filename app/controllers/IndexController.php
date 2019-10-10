@@ -7,6 +7,7 @@ use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Lib\TipoMensagem;
 use App\Model\Dono;
+use App\Util\ValidacaoUtil;
 
 class IndexController extends Controller{
 
@@ -17,7 +18,7 @@ class IndexController extends Controller{
     }
 
     public function entrar() {
-
+        $this->redirect("pets");
     }
 
     public function cadastrar() {
@@ -42,6 +43,13 @@ class IndexController extends Controller{
 
             $validade = $dono->validar();
 
+            $senhaValida = ValidacaoUtil::tamanho($this->senha, 8, 32);
+            
+            if (!$senhaValida) {
+                $validade = false;
+                Mensagem::gravarMensagem("senha", "A senha deve ter entre 8 e 32 caracteres", TipoMensagem::ERRO);
+            }
+
             if (!$validade) {
                 $this->redirect("");
             }
@@ -60,5 +68,10 @@ class IndexController extends Controller{
                 $this->redirect("");
             }
         }
+    }
+
+    public function sair()
+    {
+        $this->redirect("");
     }
 }

@@ -4,10 +4,17 @@
         </div>
 
         <div>
-            <form action="" method="POST">
+            <form action="http://<?= APP_HOST ?>/rastreadores/ativar" method="POST">
                 <div class="form-group-inline">
                     <label for="codigo-rastreador">Código do Rastreador</label>
-                    <input type="number" name="codigo-rastreador" id="codigo-rastreador" maxlength="16" required autofocus />
+                    <input type="text" name="codigo-rastreador" id="codigo-rastreador" maxlength="16" required autofocus />
+
+<?php if ($mensagem::temMensagem("codigo-rastreador")) : ?>
+                    <div class="alert-<?= $mensagem::obterMensagem("codigo-rastreador")["tipo"] ?>">
+                        <small><?= $mensagem::obterMensagem("codigo-rastreador")["msg"] ?></small>
+                    </div>
+<?php endif; ?>
+
                 </div>
                 
                 <div class="form-group-inline">

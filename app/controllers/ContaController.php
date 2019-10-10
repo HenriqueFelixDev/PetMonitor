@@ -3,10 +3,17 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Lib\Sessao;
+use App\Lib\Mensagem;
+use App\Lib\TipoMensagem;
+use App\Util\ValidacaoUtil;
+use App\Model\Dono;
 
 class ContaController extends Controller {
 
     public function index() {
+        $form = Sessao::obter("form", "dono");
+        $this->setViewParam("form", $form);
         $this->render("conta/minha_conta");
     }
 
@@ -15,10 +22,83 @@ class ContaController extends Controller {
     }
 
     public function alterarSenha() {
+        if (isset($_POST["senha-anterior"]) && isset($_POST["nova-senha"]) && isset($_POST["rep-nova-senha"])) {
+            $senhaAnterior = $_POST["senha-anterior"];
+            $novaSenha = $_POST["nova-senha"];
+            $repNovaSenha = $_POST["rep-nova-senha"];
 
+            $temErro = false;
+
+            $dono = new Dono();
+            $dono->encontrarPorId(1);
+
+            if (!password_verify($senhaAnterior, $dono->getSenha())) {
+                $temErro = true;
+                Mensagem::gravarMensagem("senha-anterior", "A senha informada não é a mesma cadastrada no sistema!", TipoMensagem::ERRO);
+            }
+            
+            if ($novaSenha != $repNovaSenha) {
+                $temErro = true;
+                Mensagem::gravarMensagem("nova-senha", "A senha dos campos Nova senha e Repita a Nova Senha não são iguais!", TipoMensagem::ERRO);
+                Mensagem::gravarMensagem("rep-nova-senha", "A senha dos campos Nova senha e Repita a Nova Senha não são iguais!", TipoMensagem::ERRO);
+            } else {
+                if (!ValidacaoUtil::tamanho($novaSenha, 8, 32)) {
+                    Mensagem::gravarMensagem("nova-senha", "A senha deve ter entre 8 e 32 caracteres", TipoMensagem::ERRO);
+                    Mensagem::gravarMensagem("rep-nova-senha", "A senha deve ter entre 8 e 32 caracteres", TipoMensagem::ERRO);
+                }
+            }
+
+            if ($temErro) {
+                $this->redirect("conta/alteracao-senha");
+            }
+        
+            $result = $dono->alterarSenha(password_hash($novaSenha, PASSWORD_DEFAULT));
+
+            if ($result) {
+                Mensagem::gravarMensagem("geral", "Senha alterada com sucesso!", TipoMensagem::SUCESSO);
+            } else {
+                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao tentar alterar a senha. Tente novamente mais tarde!", TipoMensagem::ERRO);
+            }
+
+            $this->redirect("conta/alteracao-senha");
+            
+        }
     }
 
     public function salvar() {
-        
+        if (isset($_POST)) {
+
+            $dados = $_POST;
+            Sessao::gravar("form", "dono", $dados);
+            
+            $nome = filter_input(INPUT_POST, "nome", FILTER_SANITIZE_SPECIAL_CHARS);
+            $sobrenome = filter_input(INPUT_POST, "sobrenome", FILTER_SANITIZE_SPECIAL_CHARS);
+            $celular = filter_input(INPUT_POST, "cel", FILTER_SANITIZE_SPECIAL_CHARS);
+            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $dono = new Dono();
+            $dono->setCodigo(1);
+            $dono->setNome($nome);
+            $dono->setSobrenome($sobrenome);
+            $dono->setCelular($celular);
+            $dono->setEmail($email);
+
+            $validade = $dono->validar();
+
+            if (!$validade) {
+                $this->redirect("conta");
+            }
+
+            $result = $dono->atualizar();
+            
+            if ($result) {
+                Mensagem::gravarMensagem("geral", "Dados atualizados com sucesso!", TipoMensagem::SUCESSO);
+                Sessao::limpar("form", "dono");
+                $this->redirect("conta");
+            } else {
+                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao atualizar os dados. Tente novamente mais tarde!", TipoMensagem::ERRO);
+                $this->redirect("conta");
+            }
+        }
     }
 }

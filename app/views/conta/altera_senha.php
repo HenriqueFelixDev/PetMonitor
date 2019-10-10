@@ -3,7 +3,7 @@
             <h2 class="title">Alterar Senha</h2>
         </div>
         <div>
-            <form action="" method="POST">
+            <form action="http://<?= APP_HOST ?>/conta/alterar-senha" method="POST">
 
                 <div class="form-group">
                     <label for="senha-anterior">Senha Anterior</label>
@@ -13,6 +13,13 @@
                         <input type="checkbox" name="mostrar-senha-anterior" id="mostrar-senha-anterior" />
                         <label for="mostrar-senha-anterior">Mostrar</label>
                     </div>
+
+<?php if ($mensagem::temMensagem("senha-anterior")) : ?>
+                    <div class="alert-<?= $mensagem::obterMensagem("senha-anterior")["tipo"] ?>">
+                        <small><?= $mensagem::obterMensagem("senha-anterior")["msg"] ?></small>
+                    </div>
+<?php endif; ?>
+
                 </div>
 
                 <div class="form-group">
@@ -23,6 +30,13 @@
                         <input type="checkbox" name="mostrar-nova-senha" id="mostrar-nova-senha" />
                         <label for="mostrar-nova-senha">Mostrar</label>
                     </div>
+
+<?php if ($mensagem::temMensagem("nova-senha")) : ?>
+                    <div class="alert-<?= $mensagem::obterMensagem("nova-senha")["tipo"] ?>">
+                        <small><?= $mensagem::obterMensagem("nova-senha")["msg"] ?></small>
+                    </div>
+<?php endif; ?>
+
                 </div>
 
                 <div class="form-group">
@@ -33,6 +47,13 @@
                         <input type="checkbox" name="mostrar-rep-nova-senha" id="mostrar-rep-nova-senha" />
                         <label for="mostrar-rep-nova-senha">Mostrar</label>
                     </div>
+
+<?php if ($mensagem::temMensagem("rep-nova-senha")) : ?>
+                    <div class="alert-<?= $mensagem::obterMensagem("rep-nova-senha")["tipo"] ?>">
+                        <small><?= $mensagem::obterMensagem("rep-nova-senha")["msg"] ?></small>
+                    </div>
+<?php endif; ?>
+
                 </div>
 
                 

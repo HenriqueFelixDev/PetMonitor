@@ -40,14 +40,9 @@ class Dono extends Model
             Mensagem::gravarMensagem("sobrenome", "O sobrenome deve possuir apenas letras", TipoMensagem::ERRO);
         }
 
-        if (!ValidacaoUtil::tamanho($this->senha, 8, 32)) {
-            $temErro = true;
-            Mensagem::gravarMensagem("senha", "A senha deve ter entre 8 e 32 caracteres", TipoMensagem::ERRO);
-        }
-
         if (!ValidacaoUtil::celular($this->celular)) {
             $temErro = true;
-            Mensagem::gravarMensagem("celular", "O celular deve ter entre o formato (xx) 9xxxx-xxxx", TipoMensagem::ERRO);
+            Mensagem::gravarMensagem("celular", "O celular deve ter o formato (xx) 9xxxx-xxxx", TipoMensagem::ERRO);
         }
 
         if (!ValidacaoUtil::tamanho($this->email, 8, 64)) {
@@ -63,12 +58,17 @@ class Dono extends Model
         return !$temErro;
     }
 
-    public function getCodDono()
+    public function alterarSenha()
+    {
+        return true;
+    }
+
+    public function getCodigo()
     {
         return $this->cod_dono;
     }
 
-    public function setCodDono($cod_dono)
+    public function setCodigo($cod_dono)
     {
         $this->cod_dono = $cod_dono;
     }
