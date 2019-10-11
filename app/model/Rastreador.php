@@ -7,10 +7,10 @@ use App\Lib\Mensagem;
 
 class Rastreador extends Model
 {
-    private $cod_rastreador;
-    private $cod_dono;
-    private $cod_pet;
-    private $data_ativacao;
+    protected $cod_rastreador;
+    protected $cod_dono;
+    protected $cod_pet;
+    protected $data_ativacao;
      
     public function validar() : bool
     {
@@ -22,6 +22,13 @@ class Rastreador extends Model
         }
 
         return !$temErro;
+    }
+
+    public function inserir() 
+    {
+        $dataAtual = new \DateTime();
+        $this->data_ativacao = $dataAtual->format("Y-m-d");
+        return parent::inserir();
     }
     
     public function getCodigo()

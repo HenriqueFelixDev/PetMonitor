@@ -42,7 +42,7 @@ class IndexController extends Controller{
 
             $validade = $dono->validar();
 
-            $senhaValida = ValidacaoUtil::tamanho($this->senha, 8, 32);
+            $senhaValida = ValidacaoUtil::tamanho($dono->getSenha(), 8, 32);
             
             if (!$senhaValida) {
                 $validade = false;

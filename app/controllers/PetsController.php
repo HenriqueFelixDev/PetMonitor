@@ -72,7 +72,7 @@ class PetsController extends Controller
             } else {
                 $pet->setFoto($res);
             }
-
+            
             $result = $pet->inserir();
             
             if ($result) {

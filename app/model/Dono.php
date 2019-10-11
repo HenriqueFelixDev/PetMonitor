@@ -8,12 +8,12 @@ use App\Lib\Mensagem;
 
 class Dono extends Model
 {
-    private $cod_dono;
-    private $nome;
-    private $sobrenome;
-    private $senha;
-    private $celular;
-    private $email;
+    protected $cod_dono;
+    protected $nome;
+    protected $sobrenome;
+    protected $senha;
+    protected $celular;
+    protected $email;
 
     public function validar() : bool
     {

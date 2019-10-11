@@ -11,10 +11,10 @@ class ImagemUtil
         $novoCaminho = $novoDir.$novoNome.".".$extensao;
 
         if (@move_uploaded_file($imagem["tmp_name"], $novoCaminho)) {
-            return true;
+            return $novoNome.".".$extensao;
         }
 
-        return $novoNome.".".$extensao;
+        return false;
     }
 
     public static function validarFormato($nomeImagem, array $formatos)

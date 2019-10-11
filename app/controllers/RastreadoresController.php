@@ -32,7 +32,7 @@ class RastreadoresController extends Controller{
             }
 
             $result = $rastreador->inserir();
-
+            
             if ($result) {
                 Mensagem::gravarMensagem("geral", "Rastreador ativado com sucesso!", Mensagem::SUCESSO);
                 $this->redirect("rastreadores/ativacao");

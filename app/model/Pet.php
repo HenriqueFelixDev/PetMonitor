@@ -9,14 +9,14 @@ use App\Util\ValidacaoUtil;
 
 class Pet extends Model
 {
-    private $cod_pet;
-    private $nome;
-    private $especie;
-    private $raca;
-    private $sexo;
-    private $cor;
-    private $dt_nascimento;
-    private $foto;
+    protected $cod_pet;
+    protected $nome;
+    protected $especie;
+    protected $raca;
+    protected $sexo;
+    protected $cor;
+    protected $dt_nascimento;
+    protected $foto;
     
     public function validar() : bool
     {

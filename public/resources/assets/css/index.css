@@ -305,10 +305,16 @@ body>footer #copyright {
     text-align: center;
 }
 
-#foto-pet {
+#container-foto {
     width: 200px;
     height: 200px;
+    overflow: hidden;
     border: thin solid grey;
+    background-color: #fff;
+}
+
+#foto-pet {
+    width: 200px;
 }
 
 .alert-box {

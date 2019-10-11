@@ -8,7 +8,9 @@
 
                 <div class="form-group">
                     
-                    <img src="http://<?= APP_HOST."/resources/assets/fotos/default.png" ?>" id="foto-pet" alt="Foto do Pet"/>
+                    <div id="container-foto">
+                        <img src="http://<?= APP_HOST."/resources/assets/fotos/default.png" ?>" id="foto-pet" alt="Foto do Pet"/>
+                    </div>
                     <input type="file" name="foto" id="foto" style="display:none;" />
                     <label for="foto"><span class="btn"><i class="fas fa-camera"></i> Escolher Foto<span></label>
                     

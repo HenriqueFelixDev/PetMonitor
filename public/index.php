@@ -2,7 +2,7 @@
 
 use App\App;
 use App\Util\ValidacaoUtil;
-
+use App\Model\Dono;
 require_once "../vendor/autoload.php";
 
 session_start();
@@ -15,3 +15,8 @@ try{
 }catch(\Exception $e){
     echo $e->getMessage();
 }
+/*
+$dono = new Dono();
+$dono->setNOme("Henrique");
+$dono->setSobrenome("Félix");
+var_dump($dono->inserir());*/
