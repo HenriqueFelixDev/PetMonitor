@@ -3,11 +3,15 @@
 namespace App\Lib;
 
 use App\Lib\Sessao;
-use App\Lib\TipoMensagem;
 
 class Mensagem
 {
-    public static function gravarMensagem($identificador, $mensagem, $tipoMensagem = TipoMensagem::INFO)
+    public const ERRO = "erro",
+                 SUCESSO = "sucesso",
+                 AVISO = "aviso",
+                 INFO = "info";
+
+    public static function gravarMensagem($identificador, $mensagem, $tipoMensagem = Mensagem::INFO)
     {
         Sessao::gravar("msg", $identificador, array("msg" => $mensagem, "tipo" => $tipoMensagem));
     }

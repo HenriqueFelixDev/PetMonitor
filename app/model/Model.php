@@ -2,9 +2,9 @@
 
 namespace App\Model;
 
-use App\Lib\iValidacao;
+use App\Lib\IValidacao;
 
-abstract class Model implements iValidacao
+abstract class Model implements IValidacao
 {
     public function inserir()
     {

@@ -2,7 +2,7 @@
 
 namespace App\Lib;
 
-interface iValidacao
+interface IValidacao
 {
     public function validar() : bool;
 }

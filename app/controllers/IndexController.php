@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Controllers\Controller;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
-use App\Lib\TipoMensagem;
 use App\Model\Dono;
 use App\Util\ValidacaoUtil;
 
@@ -47,7 +46,7 @@ class IndexController extends Controller{
             
             if (!$senhaValida) {
                 $validade = false;
-                Mensagem::gravarMensagem("senha", "A senha deve ter entre 8 e 32 caracteres", TipoMensagem::ERRO);
+                Mensagem::gravarMensagem("senha", "A senha deve ter entre 8 e 32 caracteres", Mensagem::ERRO);
             }
 
             if (!$validade) {
@@ -60,11 +59,11 @@ class IndexController extends Controller{
             $result = $dono->inserir();
             
             if ($result) {
-                Mensagem::gravarMensagem("geral", "Dono Cadastrado com sucesso!", TipoMensagem::SUCESSO);
+                Mensagem::gravarMensagem("geral", "Dono Cadastrado com sucesso!", Mensagem::SUCESSO);
                 Sessao::limpar("form", "dono");
                 $this->redirect("");
             } else {
-                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao cadastrar o novo Dono!", TipoMensagem::ERRO);
+                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao cadastrar o novo Dono!", Mensagem::ERRO);
                 $this->redirect("");
             }
         }

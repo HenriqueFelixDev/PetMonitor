@@ -4,7 +4,6 @@ namespace  App\Controllers;
 
 use App\Controllers\Controller;
 use App\Lib\Mensagem;
-use App\Lib\TipoMensagem;
 use App\Model\Rastreador;
 
 class RastreadoresController extends Controller{
@@ -35,10 +34,10 @@ class RastreadoresController extends Controller{
             $result = $rastreador->inserir();
 
             if ($result) {
-                Mensagem::gravarMensagem("geral", "Rastreador ativado com sucesso!", TipoMensagem::SUCESSO);
+                Mensagem::gravarMensagem("geral", "Rastreador ativado com sucesso!", Mensagem::SUCESSO);
                 $this->redirect("rastreadores/ativacao");
             } else {
-                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao ativar o rastreador. Tente novamente mais tarde!", TipoMensagem::ERRO);
+                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao ativar o rastreador. Tente novamente mais tarde!", Mensagem::ERRO);
                 $this->redirect("rastreadores/ativacao");
             }
         }

@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Controllers\Controller;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
-use App\Lib\TipoMensagem;
 use App\Util\ValidacaoUtil;
 use App\Model\Dono;
 
@@ -34,17 +33,17 @@ class ContaController extends Controller {
 
             if (!password_verify($senhaAnterior, $dono->getSenha())) {
                 $temErro = true;
-                Mensagem::gravarMensagem("senha-anterior", "A senha informada não é a mesma cadastrada no sistema!", TipoMensagem::ERRO);
+                Mensagem::gravarMensagem("senha-anterior", "A senha informada não é a mesma cadastrada no sistema!", Mensagem::ERRO);
             }
             
             if ($novaSenha != $repNovaSenha) {
                 $temErro = true;
-                Mensagem::gravarMensagem("nova-senha", "A senha dos campos Nova senha e Repita a Nova Senha não são iguais!", TipoMensagem::ERRO);
-                Mensagem::gravarMensagem("rep-nova-senha", "A senha dos campos Nova senha e Repita a Nova Senha não são iguais!", TipoMensagem::ERRO);
+                Mensagem::gravarMensagem("nova-senha", "A senha dos campos Nova senha e Repita a Nova Senha não são iguais!", Mensagem::ERRO);
+                Mensagem::gravarMensagem("rep-nova-senha", "A senha dos campos Nova senha e Repita a Nova Senha não são iguais!", Mensagem::ERRO);
             } else {
                 if (!ValidacaoUtil::tamanho($novaSenha, 8, 32)) {
-                    Mensagem::gravarMensagem("nova-senha", "A senha deve ter entre 8 e 32 caracteres", TipoMensagem::ERRO);
-                    Mensagem::gravarMensagem("rep-nova-senha", "A senha deve ter entre 8 e 32 caracteres", TipoMensagem::ERRO);
+                    Mensagem::gravarMensagem("nova-senha", "A senha deve ter entre 8 e 32 caracteres", Mensagem::ERRO);
+                    Mensagem::gravarMensagem("rep-nova-senha", "A senha deve ter entre 8 e 32 caracteres", Mensagem::ERRO);
                 }
             }
 
@@ -55,9 +54,9 @@ class ContaController extends Controller {
             $result = $dono->alterarSenha(password_hash($novaSenha, PASSWORD_DEFAULT));
 
             if ($result) {
-                Mensagem::gravarMensagem("geral", "Senha alterada com sucesso!", TipoMensagem::SUCESSO);
+                Mensagem::gravarMensagem("geral", "Senha alterada com sucesso!", Mensagem::SUCESSO);
             } else {
-                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao tentar alterar a senha. Tente novamente mais tarde!", TipoMensagem::ERRO);
+                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao tentar alterar a senha. Tente novamente mais tarde!", Mensagem::ERRO);
             }
 
             $this->redirect("conta/alteracao-senha");
@@ -92,11 +91,11 @@ class ContaController extends Controller {
             $result = $dono->atualizar();
             
             if ($result) {
-                Mensagem::gravarMensagem("geral", "Dados atualizados com sucesso!", TipoMensagem::SUCESSO);
+                Mensagem::gravarMensagem("geral", "Dados atualizados com sucesso!", Mensagem::SUCESSO);
                 Sessao::limpar("form", "dono");
                 $this->redirect("conta");
             } else {
-                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao atualizar os dados. Tente novamente mais tarde!", TipoMensagem::ERRO);
+                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao atualizar os dados. Tente novamente mais tarde!", Mensagem::ERRO);
                 $this->redirect("conta");
             }
         }

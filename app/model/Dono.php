@@ -5,7 +5,6 @@ namespace App\Model;
 use App\Model\Model;
 use App\Util\ValidacaoUtil;
 use App\Lib\Mensagem;
-use App\Lib\TipoMensagem;
 
 class Dono extends Model
 {
@@ -22,37 +21,37 @@ class Dono extends Model
 
         if (!ValidacaoUtil::tamanho($this->nome, 3, 32)) {
             $temErro = true;
-            Mensagem::gravarMensagem("nome", "O nome deve ter entre 3 e 32 caracteres", TipoMensagem::ERRO);
+            Mensagem::gravarMensagem("nome", "O nome deve ter entre 3 e 32 caracteres", Mensagem::ERRO);
         }
 
         if (!ValidacaoUtil::somenteLetras($this->nome)) {
             $temErro = true;
-            Mensagem::gravarMensagem("nome", "O nome deve possuir apenas letras", TipoMensagem::ERRO);
+            Mensagem::gravarMensagem("nome", "O nome deve possuir apenas letras", Mensagem::ERRO);
         }
 
         if (!ValidacaoUtil::tamanho($this->sobrenome, 3, 32)) {
             $temErro = true;
-            Mensagem::gravarMensagem("sobrenome", "O sobrenome deve ter entre 3 e 32 caracteres", TipoMensagem::ERRO);
+            Mensagem::gravarMensagem("sobrenome", "O sobrenome deve ter entre 3 e 32 caracteres", Mensagem::ERRO);
         }
 
         if (!ValidacaoUtil::somenteLetras($this->sobrenome)) {
             $temErro = true;
-            Mensagem::gravarMensagem("sobrenome", "O sobrenome deve possuir apenas letras", TipoMensagem::ERRO);
+            Mensagem::gravarMensagem("sobrenome", "O sobrenome deve possuir apenas letras", Mensagem::ERRO);
         }
 
         if (!ValidacaoUtil::celular($this->celular)) {
             $temErro = true;
-            Mensagem::gravarMensagem("celular", "O celular deve ter o formato (xx) 9xxxx-xxxx", TipoMensagem::ERRO);
+            Mensagem::gravarMensagem("celular", "O celular deve ter o formato (xx) 9xxxx-xxxx", Mensagem::ERRO);
         }
 
         if (!ValidacaoUtil::tamanho($this->email, 8, 64)) {
             $temErro = true;
-            Mensagem::gravarMensagem("email", "O email deve ter entre 8 e 64 caracteres", TipoMensagem::ERRO);
+            Mensagem::gravarMensagem("email", "O email deve ter entre 8 e 64 caracteres", Mensagem::ERRO);
         }
 
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
             $temErro = true;
-            Mensagem::gravarMensagem("email", "O email informado não é válido", TipoMensagem::ERRO);
+            Mensagem::gravarMensagem("email", "O email informado não é válido", Mensagem::ERRO);
         }
 
         return !$temErro;

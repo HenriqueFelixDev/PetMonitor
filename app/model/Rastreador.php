@@ -4,7 +4,6 @@ namespace App\Model;
 
 use App\Model\Model;
 use App\Lib\Mensagem;
-use App\Lib\TipoMensagem;
 
 class Rastreador extends Model
 {
@@ -19,7 +18,7 @@ class Rastreador extends Model
 
         if(!preg_match("/[a-zA-Z]{2}(\d){6}/", $this->cod_rastreador)) {
             $temErro = true;
-            Mensagem::gravarMensagem("codigo-rastreador", "O código informado não possui o formato válido: AA000000", TipoMensagem::ERRO);
+            Mensagem::gravarMensagem("codigo-rastreador", "O código informado não possui o formato válido: AA000000", Mensagem::ERRO);
         }
 
         return !$temErro;

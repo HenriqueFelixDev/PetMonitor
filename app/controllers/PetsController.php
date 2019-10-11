@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Controllers\Controller;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
-use App\Lib\TipoMensagem;
 use App\Model\Pet;
 use App\Util\ImagemUtil;
 
@@ -77,11 +76,11 @@ class PetsController extends Controller
             $result = $pet->inserir();
             
             if ($result) {
-                Mensagem::gravarMensagem("geral", "Pet Cadastrado com sucesso!", TipoMensagem::SUCESSO);
+                Mensagem::gravarMensagem("geral", "Pet Cadastrado com sucesso!", Mensagem::SUCESSO);
                 Sessao::limpar("form", "pet");
                 $this->redirect("pets/novo");
             } else {
-                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao cadastrar o novo Pet!", TipoMensagem::ERRO);
+                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao cadastrar o novo Pet!", Mensagem::ERRO);
                 $this->redirect("pets/novo");
             }
             
