@@ -98,6 +98,10 @@ nav li {
     text-align: center;
 }
 
+nav li a {
+    display: block;
+}
+
 nav li ul {
     background-color: var(--secondary-color);
     display: none;
@@ -124,11 +128,6 @@ nav li ul li:hover {
     display: flex;
     align-items: center;
     height: 100%;
-}
-
-#login-form button[type=submit] {
-    position: relative;
-    top: -2px;
 }
 
 main {
@@ -192,21 +191,21 @@ input[type=checkbox]~label {
 
 button,
 .btn {
+    -moz-appearance: button;
     display: inline-block;
+    box-sizing: border-box;
     font-family: 'Noto Sans JP', sans-serif;
     border: none;
     border-radius: var(--border-radius);
     text-transform: capitalize;
     min-width: 100px;
     min-height: 35px;
+    padding: 0 20px;
     cursor: pointer;
     text-align: center;
-}
-
-.btn {
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-    line-height: 35px;
+    line-height: 33px;
+    height: 35px;
+    font-size: 1em;
 }
 
 .btn-primary {
@@ -315,12 +314,12 @@ body>footer #copyright {
 .alert-box {
     margin: 1rem;
     padding: 1rem 2rem;
-    border-radius: 10px;
+    border-radius: 4px;
     box-sizing: border-box;
+    font-weight: 600;
 }
 
 .alert-box-erro {
-    border: thin solid #7a1c15;
     background-color: rgb(255, 103, 103);
 }
 

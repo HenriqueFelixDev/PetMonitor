@@ -42,7 +42,7 @@
 <?php endif; ?>
 
                 <div class="form-group-inline">
-                    <input type="checkbox" name="mostrar-senha" id="mostrar-senha" />
+                    <input type="checkbox" name="mostrar-senha" id="mostrar-senha" onchange="javascript:mostrarOcultarSenha(this, 'input#senha')" />
                     <label for="mostrar-senha">Mostrar Senha</label>
                 </div>
             </div>
@@ -78,3 +78,4 @@
             </div>
         </form>
     </section>
+

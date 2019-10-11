@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn-primary">Salvar</button>
+                    <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Salvar</button>
                 </div>
             </form>
         </div>

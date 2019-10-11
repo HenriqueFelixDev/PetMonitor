@@ -32,7 +32,7 @@
 
                 <div class="form-group">
                     <label for="senha">Senha</label>
-                    <a href="http://<?= APP_HOST ?>/conta/alteracao-senha" class="btn btn-primary">Alterar Senha</a>
+                    <a href="http://<?= APP_HOST ?>/conta/alteracao-senha" class="btn btn-primary"><i class="fas fa-lock"></i> Alterar Senha</a>
                 </div>
 
                 <div class="form-group">
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn-primary">Salvar</button>
+                    <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Salvar</button>
                 </div>
             </form>
         </div>

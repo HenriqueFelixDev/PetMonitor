@@ -12,18 +12,11 @@
 
                 <div class="form-group-inline">
                     <label for="codigo-rastreador">Código</label>
-                    <input type="number" name="codigo-rastreador" id="codigo-rastreador" maxlength="16" autofocus />
+                    <input type="text" name="codigo-rastreador" id="codigo-rastreador" maxlength="16" autofocus />
                 </div>
 
                 <div class="form-group-inline">
-                    <button type="submit" class="btn-primary">Pesquisar</button>
-                </div>
-
-                <div class="form-group">
-                    <label for="situacao">Situação</label>
-                    <select name="situacao" id="situacao">
-                        <option selected disabled value="-1">Selecione uma situação</option>
-                    </select>
+                    <button type="submit" class="btn-primary"><i class="fas fa-search"></i> Pesquisar</button>
                 </div>
             </form>
         </div>
@@ -35,7 +28,6 @@
                         <th>ID</th>
                         <th>PET</th>
                         <th>DATA DE ATIVAÇÃO</th>
-                        <th>SITUAÇÃO</th>
                         <th>AÇÕES</th>
                     </tr>
                 </thead>
@@ -45,12 +37,10 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
                         <td>
-                            <button class="btn-primary">Editar</button>
-                            <button class="btn-cancel">Excluir</button>
-                            <button class="btn-info">Desvincular Pet</button>
-                            <button class="btn-info">Vincular Pet</button>
+                            <button class="btn-cancel"><i class="fas fa-trash-alt"></i> Excluir</button>
+                            <button class="btn-primary"><i class="fas fa-unlink"></i> Desvincular Pet</button>
+                            <button class="btn-primary"><i class="fas fa-link"></i> Vincular Pet</button>
                         </td>
                     </tr>
 
@@ -58,12 +48,10 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
                         <td>
-                            <button>Editar</button>
-                            <button>Excluir</button>
-                            <button>Desvincular Pet</button>
-                            <button>Vincular Pet</button>
+                            <button class="btn-cancel"><i class="fas fa-trash-alt"></i> Excluir</button>
+                            <button class="btn-primary"><i class="fas fa-unlink"></i> Desvincular Pet</button>
+                            <button class="btn-primary"><i class="fas fa-link"></i> Vincular Pet</button>
                         </td>
                     </tr>
 
@@ -71,12 +59,10 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
                         <td>
-                            <button>Editar</button>
-                            <button>Excluir</button>
-                            <button>Desvincular Pet</button>
-                            <button>Vincular Pet</button>
+                            <button class="btn-cancel"><i class="fas fa-trash-alt"></i> Excluir</button>
+                            <button class="btn-primary"><i class="fas fa-unlink"></i> Desvincular Pet</button>
+                            <button class="btn-primary"><i class="fas fa-link"></i> Vincular Pet</button>
                         </td>
                     </tr>
                 </tbody>
