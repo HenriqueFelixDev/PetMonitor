@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Lib\IValidacao;
 use App\Lib\Conexao;
+use PDO;
 
 abstract class Model implements IValidacao
 {
@@ -11,9 +12,7 @@ abstract class Model implements IValidacao
     {
         $con = Conexao::conectar();
 
-        $tabela = get_class($this);
-        $tabela = explode("\\", $tabela);
-        $tabela = strtolower($tabela[count($tabela)-1]);
+        $tabela = $this->getNomeTabela();
 
         $campos = get_object_vars($this);
 
@@ -59,7 +58,36 @@ abstract class Model implements IValidacao
 
     public function atualizar()
     {
-        return true;
+        $con = Conexao::conectar();
+
+        $tabela = $this->getNomeTabela();
+
+        $campos = get_object_vars($this);
+
+        foreach ($campos as $campo=>$valor) {
+            if (empty($valor) || $campo == "cod_${tabela}") {
+                unset($campos[$campo]);
+            }
+        }
+
+        $sql = "UPDATE ${tabela} SET ";
+        foreach ($campos as $campo=>$valor) {
+            $sql .= "${campo}=:${campo}, ";
+        }
+        $sql = rtrim($sql, ", ");
+        $sql .= " WHERE cod_${tabela}=:codigo";
+
+        $stm = $con->prepare($sql);
+        
+        foreach ($campos as $campo=>$valor) {
+            $stm->bindValue(":${campo}", $valor);
+        }
+
+        $stm->bindValue(":codigo", $this->getCodigo());
+
+        $stm->execute();
+
+        return $stm->rowCount() > 0;
     }
 
     public function buscar()
@@ -69,16 +97,46 @@ abstract class Model implements IValidacao
 
     public function encontrarPorId()
     {
-        
+        $con = Conexao::conectar();
+
+        $tabela = $this->getNomeTabela();
+
+        $stm = $con->prepare("SELECT * FROM ${tabela} WHERE cod_${tabela}=:codigo");
+        $stm->setFetchMode(PDO::FETCH_CLASS, get_class($this));
+        $stm->bindValue(":codigo", $this->getCodigo());
+        $stm->execute();
+
+        if ($stm->rowCount() > 0) {
+            $result = $stm->fetch();
+            return $result;
+        }
+
+        return null;
     }
 
     public function deletar()
     {
-        
+        $con = Conexao::conectar();
+
+        $tabela = $this->getNomeTabela();
+
+        $stm = $con->prepare("DELETE FROM ${tabela} WHERE cod_${tabela}=:codigo");
+        $stm->bindValue(":codigo", $this->getCodigo());
+        $stm->execute();
+
+        return $stm->rowCount() > 0;
     }
 
     public function buscarComPaginacao()
     {
         
+    }
+
+    public function getNomeTabela()
+    {
+        $tabela = get_class($this);
+        $tabela = explode("\\", $tabela);
+        $tabela = strtolower($tabela[count($tabela)-1]);
+        return $tabela;
     }
 }
