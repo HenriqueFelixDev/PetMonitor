@@ -1,4 +1,4 @@
-    <section class="box right mr-5 mt-2" id="cadastro-form">
+    <section class="box" id="cadastro-form">
         <header>
             <h2>Crie uma nova conta gratuitamente!</h2>
         </header>

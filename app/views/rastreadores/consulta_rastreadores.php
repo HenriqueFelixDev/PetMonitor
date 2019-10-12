@@ -38,9 +38,9 @@
                         <td></td>
                         <td></td>
                         <td>
-                            <button class="btn-cancel"><i class="fas fa-trash-alt"></i> Excluir</button>
-                            <button class="btn-primary"><i class="fas fa-unlink"></i> Desvincular Pet</button>
-                            <button class="btn-primary"><i class="fas fa-link"></i> Vincular Pet</button>
+                            <button class="btn-cancel"><i class="fas fa-trash-alt"></i> <span class="texto-botao">Excluir</span></button>
+                            <button class="btn-primary"><i class="fas fa-unlink"></i> <span class="texto-botao">Desvincular Pet</span></button>
+                            <button class="btn-primary"><i class="fas fa-link"></i> <span class="texto-botao">Vincular Pet</span></button>
                         </td>
                     </tr>
 
@@ -49,9 +49,9 @@
                         <td></td>
                         <td></td>
                         <td>
-                            <button class="btn-cancel"><i class="fas fa-trash-alt"></i> Excluir</button>
-                            <button class="btn-primary"><i class="fas fa-unlink"></i> Desvincular Pet</button>
-                            <button class="btn-primary"><i class="fas fa-link"></i> Vincular Pet</button>
+                            <button class="btn-cancel"><i class="fas fa-trash-alt"></i> <span class="texto-botao">Excluir</span></button>
+                            <button class="btn-primary"><i class="fas fa-unlink"></i> <span class="texto-botao">Desvincular Pet</span></button>
+                            <button class="btn-primary"><i class="fas fa-link"></i> <span class="texto-botao">Vincular Pet</span></button>
                         </td>
                     </tr>
 
@@ -60,9 +60,9 @@
                         <td></td>
                         <td></td>
                         <td>
-                            <button class="btn-cancel"><i class="fas fa-trash-alt"></i> Excluir</button>
-                            <button class="btn-primary"><i class="fas fa-unlink"></i> Desvincular Pet</button>
-                            <button class="btn-primary"><i class="fas fa-link"></i> Vincular Pet</button>
+                            <button class="btn-cancel"><i class="fas fa-trash-alt"></i> <span class="texto-botao">Excluir</span></button>
+                            <button class="btn-primary"><i class="fas fa-unlink"></i> <span class="texto-botao">Desvincular Pet</span></button>
+                            <button class="btn-primary"><i class="fas fa-link"></i> <span class="texto-botao">Vincular Pet</span></button>
                         </td>
                     </tr>
                 </tbody>

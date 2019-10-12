@@ -1,8 +1,8 @@
     <nav>
-        <a href="http://<?= APP_HOST ?>/" class="logo ml-2 left"><img src="http://<?php echo APP_HOST ?>/resources/assets/img/logo.png" /> PETMonitor</a>
+        <a href="http://<?= APP_HOST ?>/" class="logo"><img src="http://<?php echo APP_HOST ?>/resources/assets/img/logo.png" /> PETMonitor</a>
 <?php if($view !== "login"): ?>
 
-        <ul class="mr-2">
+        <ul>
             <li><a href="http://<?= APP_HOST ?>/pets"><i class="fas fa-paw"></i> PETs</a></li>
             <li><a href="http://<?= APP_HOST ?>/rastreadores"><i class="fas fa-crosshairs"></i> Rastreadores</a></li>
             <!-- Local onde ficará o nome do usuário com um menu dropdown para acesso
@@ -15,7 +15,7 @@
 
 <?php else: ?>
 
-        <section id="login-form" class="right mr-2">
+        <section id="login-form" class="mr-2">
             <form action="http://<?= APP_HOST ?>/pets" method="POST">
                 <div class="form-group-inline">
                     <input type="text" placeholder="Usuário" name="usuario" id="usuario" maxlength="32" required autofocus/>

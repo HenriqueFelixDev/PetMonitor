@@ -59,14 +59,11 @@ h2.title {
 }
 
 nav {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: fixed;
     width: 100%;
     background-color: white;
     border-bottom: thin solid #ccc;
     box-shadow: 1px 2px 3px #ccc;
-    height: var(--navbar-height);
 }
 
 nav a,
@@ -79,6 +76,8 @@ nav .logo {
     font-family: 'Ubuntu', sans-serif;
     font-size: 1.5rem;
     line-height: var(--navbar-height);
+    float: left;
+    margin-left: 2rem;
 }
 
 nav .logo img {
@@ -88,6 +87,7 @@ nav .logo img {
 
 nav ul {
     float: right;
+    margin-right: 2rem;
 }
 
 nav li {
@@ -128,6 +128,7 @@ nav li ul li:hover {
     display: flex;
     align-items: center;
     height: 100%;
+    float: right;
 }
 
 main {
@@ -136,7 +137,6 @@ main {
 
 main:before,
 main:after {
-    margin-top: var(--navbar-height);
     content: '';
     display: table;
 }
@@ -242,6 +242,9 @@ button,
 }
 
 #cadastro-form {
+    float: right;
+    margin-top: 2rem;
+    margin-right: 5rem;
     width: 350px;
 }
 
@@ -270,10 +273,12 @@ table th {
 }
 
 body>footer {
+    width: 100%;
     background-color: rgb(7, 21, 65);
     color: var(--secondary-text-color);
     padding: 2rem;
     margin-top: 2rem;
+    box-sizing: border-box;
 }
 
 body>footer .flex {
@@ -285,7 +290,7 @@ body>footer .flex {
 }
 
 body>footer #sobre {
-    width: 300px;
+    max-width: 300px;
 }
 
 body>footer p {
@@ -641,4 +646,55 @@ body>footer #copyright {
 
 .pl-5 {
     padding-left: 5rem;
+}
+
+@media screen and (max-width: 750px) {
+    .container {
+        width: 85%;
+    }
+    h2.title {
+        margin-bottom: 1rem;
+    }
+    .texto-botao {
+        display: none;
+    }
+    #cadastro-form {
+        float: none;
+        margin: 0 auto;
+    }
+    /* MENU */
+    nav .logo {
+        display: block;
+        float: none;
+        margin: auto;
+        text-align: center;
+    }
+    nav ul {
+        float: none;
+        display: none;
+        margin: auto;
+    }
+    nav li {
+        float: none;
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    /* FOOTER */
+    body>footer .flex {
+        display: flex;
+        width: 50%;
+        margin: 0 auto;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    body>footer .flex>div {
+        margin-top: 2rem;
+    }
+    /* FORM */
+    .form-group-inline,
+    .form-group-inline label,
+    .form-group-inline input {
+        display: block;
+    }
 }
