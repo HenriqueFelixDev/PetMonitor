@@ -4,24 +4,24 @@
             <div id="sobre">
                 <h3>Sobre o Site</h3>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec auctor urna. 
-                    Aenean placerat cursus urna, in accumsan dolor mollis at. Curabitur semper 
-                    porta aliquet. In aliquam a augue eget tempor. Curabitur mattis et purus 
-                    cursus pellentesque. Quisque pellentesque massa nunc, ac sollicitudin 
-                    lectus luctus quis. In sed quam ac tortor pellentesque hendrerit. Fusce 
-                    tempus commodo diam, ut posuere nulla auctor sit amet. Nunc vitae suscipit 
-                    ante, ac lobortis tellus. Nunc vel nulla vel ligula rhoncus fermentum. 
-                    Suspendisse maximus diam vitae tellus dignissim, in faucibus mauris vehicula.
+                    O objetivo deste site é a conclusão do estudo de caso proposto
+                    pela UNOPAR para a fixação dos conteúdos aprendidos no semestre.
+                    Nele foram utilizados os conhecimentos obtidos nas disciplinas de
+                    Programação para Web I para a construção das páginas, Banco de dados II
+                    para a construção do banco de dados utilizado pelo site, Análise Orientada
+                    a Objetos II para a construção dos diagramas da UML e Programação Orientada
+                    a Objetos para a aplicação dos conceitos da orientação a objetos na prática
+                    através do encapsulamento dos atributos das classes, herança entre outros. 
                 </p>
             </div>
 
             <div>
                 <h3>Redes Sociais</h3>
                 <ul>
-                    <li><a href="#" title="Facebook"><i class="fab fa-facebook-square fa-2x"></i></a></li>
-                    <li><a href="#" title="Twitter"><i class="fab fa-twitter-square fa-2x"></i></a></li>
-                    <li><a href="#" title="Instagram"><i class="fab fa-instagram fa-2x"></i></a></li>
-                    <li><a href="#" title="GitHub"><i class="fab fa-github-square fa-2x"></i></a></li>
+                    <li><a href="http://www.facebook.com/" target="_new" title="Facebook"><i class="fab fa-facebook-square fa-2x"></i></a></li>
+                    <li><a href="http://www.twitter.com/" target="_new" title="Twitter"><i class="fab fa-twitter-square fa-2x"></i></a></li>
+                    <li><a href="http://instagram.com/" target="_new" title="Instagram"><i class="fab fa-instagram fa-2x"></i></a></li>
+                    <li><a href="http://github.com/henriquefelixdev" target="_new" title="GitHub"><i class="fab fa-github-square fa-2x"></i></a></li>
                 </ul>
             </div>
 
@@ -36,8 +36,8 @@
             Desenvolvido por Henrique Félix
         </div>
         <div>
-            <div>
-                Icons made by<a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+            <div class="center">
+                Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik" class="link">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" class="link">www.flaticon.com</a>
             </div>
         </div>
     </footer>

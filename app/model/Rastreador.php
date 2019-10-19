@@ -8,17 +8,17 @@ use App\Lib\Mensagem;
 class Rastreador extends Model
 {
     protected $cod_rastreador;
-    protected $cod_dono;
     protected $cod_pet;
-    protected $data_ativacao;
+    protected $nome_pet;
+    protected $dt_ativacao;
      
     public function validar() : bool
     {
         $temErro = false;
 
-        if(!preg_match("/[a-zA-Z]{2}(\d){6}/", $this->cod_rastreador)) {
+        if(!preg_match("/[a-zA-Z]{3}(\d){6}/", $this->cod_rastreador)) {
             $temErro = true;
-            Mensagem::gravarMensagem("codigo-rastreador", "O código informado não possui o formato válido: AA000000", Mensagem::ERRO);
+            Mensagem::gravarMensagem("codigo-rastreador", "O código informado não possui o formato válido: AAA000000", Mensagem::ERRO);
         }
 
         return !$temErro;
@@ -27,7 +27,7 @@ class Rastreador extends Model
     public function inserir() 
     {
         $dataAtual = new \DateTime();
-        $this->data_ativacao = $dataAtual->format("Y-m-d");
+        $this->dt_ativacao = $dataAtual->format("Y-m-d");
         return parent::inserir();
     }
     
@@ -60,14 +60,24 @@ class Rastreador extends Model
     {
         $this->cod_pet = $cod_pet;
     }
+
+    public function getNomePet()
+    {
+        return $this->nome_pet;
+    }
+    
+    public function setNomePet($nome_pet)
+    {
+        $this->nome_pet = $nome_pet;
+    }
     
     public function getDataAtivacao()
     {
-        return $this->data_ativacao;
+        return $this->dt_ativacao;
     }
     
-    public function setDataAtivacao($data_ativacao)
+    public function setDataAtivacao($dt_ativacao)
     {
-        $this->data_ativacao = $data_ativacao;
+        $this->dt_ativacao = $dt_ativacao;
     }
 }

@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\App;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
+use App\Lib\Acesso;
+
 
 abstract class Controller
 {
@@ -18,9 +20,10 @@ abstract class Controller
 
     public abstract function index();
 
-    protected function redirect($view)
+    public function redirect($rota)
     {
-        header("Location: http://".APP_HOST."/".$view);
+        $caminhoRota = $this->route($rota);
+        header("Location: ${caminhoRota}");
         exit;
     }
 
@@ -31,6 +34,8 @@ abstract class Controller
         $viewVar = $this->getViewVar();
 
         $mensagem = Mensagem::class;
+        $usuario = Sessao::obter("usuario", "nome");
+        $acesso = Acesso::class;
         /*
          * Requisição para as páginas do site
          *  require_once PATH."/app/views/pagina.php";
@@ -42,6 +47,16 @@ abstract class Controller
         require_once PATH."/app/views/layouts/footer.php";
         Mensagem::limparMensagens();
         Sessao::limparTudo("form");
+    }
+
+    public function route($rota)
+    {
+        return "http://".APP_HOST."/${rota}";
+    }
+
+    public function asset($arquivo)
+    {
+        return $this->route("resources/assets/".$arquivo);
     }
 
     public function getViewVar()

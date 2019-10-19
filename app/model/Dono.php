@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Lib\Conexao;
 use App\Model\Model;
 use App\Util\ValidacaoUtil;
 use App\Lib\Mensagem;
@@ -59,7 +60,18 @@ class Dono extends Model
 
     public function alterarSenha()
     {
-        return true;
+        $con = Conexao::conectar();
+
+        if (isset($this->cod_dono) || isset($this->senha)) {
+            $stm = $con->prepare("UPDATE dono SET senha=:senha WHERE cod_dono=:codigo");
+            $stm->bindValue(":senha", $this->senha);
+            $stm->bindValue(":codigo", $this->cod_dono);
+            $stm->execute();
+
+            return $stm->rowCount() > 0;
+        }
+
+        return false;
     }
 
     public function getCodigo()

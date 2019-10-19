@@ -4,6 +4,7 @@ namespace App;
 
 use App\Util\DadosUtil;
 use App\Controllers\IndexController;
+use App\Lib\Acesso;
 use Exception;
 
 class App{
@@ -12,17 +13,19 @@ class App{
     private $controllerFile;
     private $action;
     private $params;
+    private static $envArray;
 
-    public function __construct(){
+    public function __construct($envArray){
        
+        self::$envArray = $envArray;
         define("APP_HOST", $_SERVER["HTTP_HOST"]."/projetos/PetMonitor/public");
         define("PATH", realpath("../"));
-        define("TITLE", "PETMonitor");
-        define("DB_DRIVER", "mysql");
-        define("DB_HOST", "localhost");
-        define("DB_NAME", "petmonitor_db");
-        define("DB_USER", "root");
-        define("DB_PASS", "");
+        define("TITLE", $envArray["TITLE"]);
+        define("DB_DRIVER", $envArray["DB_DRIVER"]);
+        define("DB_HOST", $envArray["DB_HOST"]);
+        define("DB_NAME", $envArray["DB_NAME"]);
+        define("DB_USER", $envArray["DB_USER"]);
+        define("DB_PASS", $envArray["DB_PASS"]);
         
         $this->url();
     }
@@ -40,7 +43,10 @@ class App{
 
        if(!isset($this->controller)){
             $this->controller = new IndexController($this);
-            $this->controller->index();
+            if(!Acesso::estaLogado()){
+                $this->controller->index();
+            }
+            $this->controller->redirect("pets");
        }
 
        if(!file_exists(PATH."/app/controllers/".$this->controllerFile)){
@@ -55,9 +61,20 @@ class App{
 
        $objectController = new $controllerClass($this);
 
+       if (Acesso::estaLogado()) {
+            if($this->controllerName == "IndexController" && $this->action != "sair") {
+                $objectController->redirect("pets");
+                return;
+            }
+       } else {
+            if($this->controllerName != "IndexController") {
+                $objectController->redirect("");
+                return;
+            }
+        }
        if(method_exists($objectController, $this->action)){
-           $objectController->{$this->action}($this->params);
-           return;
+            $objectController->{$this->action}($this->params);
+            return;
        }else if(!$this->action && method_exists($objectController, "index")){
            $objectController->index();
            return;
@@ -88,5 +105,10 @@ class App{
 
     public function getControllerName(){
         return $this->controllerName;
+    }
+
+    public static function getEnvArray()
+    {
+        return self::$envArray;
     }
 }

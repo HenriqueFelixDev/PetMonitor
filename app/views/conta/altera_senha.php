@@ -3,8 +3,8 @@
             <h2 class="title">Alterar Senha</h2>
         </div>
         <div>
-            <form action="http://<?= APP_HOST ?>/conta/alterar-senha" method="POST">
-
+            <form action="<?php echo $this->route("conta/alterar-senha") ?>" method="POST">
+                <?php echo $viewVar["csrf_altera_senha"] ?>
                 <div class="form-group">
                     <label for="senha-anterior">Senha Anterior</label>
                     <input type="password" name="senha-anterior" id="senha-anterior" maxlength="32" required autofocus />

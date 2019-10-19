@@ -5,7 +5,8 @@
         </div>
 
         <div>
-            <form action="http://<?= APP_HOST ?>/conta/salvar" method="POST">
+            <form action="<?php echo $this->route("conta/salvar") ?>" method="POST">
+                <?php echo $viewVar["csrf_conta"] ?>
                 <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" name="nome" id="nome" maxlength="32" required autofocus value="<?= isset($viewVar["form"]["nome"]) ? $viewVar["form"]["nome"] : '' ?>" />

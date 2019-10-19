@@ -4,12 +4,19 @@
         </div>
 
         <div>
-            <form action="http://<?= APP_HOST ?>/pets/salvar" method="POST" enctype="multipart/form-data">
-
+            <form action="<?php echo $this->route("pets/salvar") ?>" method="POST" enctype="multipart/form-data">
+                <?php echo $viewVar["edicao_pet"] ?>
+                <input type="hidden" name="cod_pet" value="<?php echo isset($viewVar["form"]["cod_pet"]) ? $viewVar["form"]["cod_pet"] : "" ?>" />
                 <div class="form-group">
                     
                     <div id="container-foto">
-                        <img src="http://<?= APP_HOST."/resources/assets/fotos/default.png" ?>" id="foto-pet" alt="Foto do Pet"/>
+                        <?php 
+                            $foto = "default.png";
+                            if (isset($viewVar["form"]["foto"])) {
+                                $foto = $viewVar["form"]["foto"];
+                            }
+                        ?>
+                        <img src="http://<?= APP_HOST ?>/resources/assets/fotos/<?php echo $foto ?>" id="foto-pet" alt="Foto do Pet"/>
                     </div>
                     <input type="file" name="foto" id="foto" style="display:none;" />
                     <label for="foto"><span class="btn"><i class="fas fa-camera"></i> Escolher Foto<span></label>
@@ -47,7 +54,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="raca">Raça<small>(Opcional)</small></label>
+                    <label for="raca">Raça <small>(Opcional)</small></label>
                     <input type="text" name="raca" id="raca" maxlength="32" value="<?= isset($viewVar["form"]["raca"]) ? $viewVar["form"]["raca"] : '' ?>" />
 
 <?php if ($mensagem::temMensagem("raca")) : ?>
@@ -57,15 +64,15 @@
 <?php endif; ?>
 
                 </div>
-
+                
                 <div class="form-group">
                     <label for="sexo">Sexo</label>
                     <select name="sexo" id="sexo" required>
                         <option>Selecione um sexo</option>
-                        <option value="m">Macho</option>
-                        <option value="f">Fêmea</option>
-                        <option value="mc">Macho Castrado</option>
-                        <option value="fc">Fêmea Castrada</option>
+                        <option <?php echo isset($viewVar["form"]["sexo"]) && $viewVar["form"]["sexo"] == "m" ? "selected" : "" ?> value="m">Macho</option>
+                        <option <?php echo isset($viewVar["form"]["sexo"]) && $viewVar["form"]["sexo"] == "f" ? "selected" : "" ?> value="f">Fêmea</option>
+                        <option <?php echo isset($viewVar["form"]["sexo"]) && $viewVar["form"]["sexo"] == "mc" ? "selected" : "" ?> value="mc">Macho Castrado</option>
+                        <option <?php echo isset($viewVar["form"]["sexo"]) && $viewVar["form"]["sexo"] == "fc" ? "selected" : "" ?> value="fc">Fêmea Castrada</option>
                     </select>
                 </div>
 
@@ -83,7 +90,7 @@
 
                 <div class="form-group">
                     <label for="data-nasc">Data de Nascimento</label>
-                    <input type="date" name="data-nasc" id="data-nasc" value="<?= isset($viewVar["form"]["data-nasc"]) ? $viewVar["form"]["data-nasc"] : '' ?>" />
+                    <input type="date" name="data-nasc" id="data-nasc" max="<?php $dataAtual = new DateTime(); echo $dataAtual->format("Y-m-d") ?>" value="<?= isset($viewVar["form"]["data-nasc"]) ? $viewVar["form"]["data-nasc"] : '' ?>" />
 
 <?php if ($mensagem::temMensagem("data-nasc")) : ?>
                     <div class="alert-<?= $mensagem::obterMensagem("data-nasc")["tipo"] ?>">

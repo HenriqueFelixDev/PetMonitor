@@ -2,8 +2,18 @@
 
 namespace App\Util;
 
+use \DateTime;
+use App\Lib\Sessao;
+
 class ValidacaoUtil
 {
+    public static function csrf($formularioNome)
+    {
+        $csrf = uniqid(rand(), true);
+        Sessao::gravar("csrf", $formularioNome, $csrf);
+        return "<input type=\"hidden\" name=\"_csrf\" value=\"${csrf}\" />";
+    }
+
     public static function tamanho($valor, $min = 0, $max = 0)
     {
         if (is_string($valor)) {
@@ -31,6 +41,11 @@ class ValidacaoUtil
         return !preg_match("/[^a-zA-Zà-ÚÀ-Ú ]+/", $valor);
     }
 
+    public static function somenteNumeros($valor)
+    {
+        return !preg_match("/[^0-9]/", $valor);
+    }
+
     public static function celular($valor)
     {
         return preg_match("/\(?(\d){2}\)?(\s)?9(\s)?(\d){4}[-]?(\d){4}/", $valor);
@@ -54,4 +69,18 @@ class ValidacaoUtil
 
         return true;
     }
+
+    public static function dataFutura($data)
+    {
+        $dataRecebida = new DateTime($data);
+        $dataAtual = new DateTime();
+        $result = $dataAtual->diff($dataRecebida);
+        return !$result->invert;
+    }
+
+    public static function dataPassada($data)
+    {
+        return !self::dataFutura($data);
+    }
+
 }

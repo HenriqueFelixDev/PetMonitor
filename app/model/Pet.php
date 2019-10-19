@@ -10,6 +10,7 @@ use App\Util\ValidacaoUtil;
 class Pet extends Model
 {
     protected $cod_pet;
+    protected $cod_dono;
     protected $nome;
     protected $especie;
     protected $raca;
@@ -51,6 +52,11 @@ class Pet extends Model
             Mensagem::gravarMensagem("cor", "A cor deve ter entre 4 e 32 caracteres", Mensagem::ERRO);
         }
 
+        if (!ValidacaoUtil::somenteLetras($this->cor)) {
+            $temErro = true;
+            Mensagem::gravarMensagem("cor", "A cor informada é inválida", Mensagem::ERRO);
+        }
+
         if (!empty($this->foto["name"])) {
             if (!ImagemUtil::validarFormato($this->foto["name"], ["jpg", "jpeg", "png"])) {
                 $temErro = true;
@@ -89,6 +95,9 @@ class Pet extends Model
             if (!ValidacaoUtil::data($this->dt_nascimento)) {
                 $temErro = true;
                 Mensagem::gravarMensagem("data-nasc", "Formato de data inválido! O formato da data deve ser aaaa-mm-dd", Mensagem::ERRO);
+            } elseif (!ValidacaoUtil::dataPassada($this->dt_nascimento)) {
+                $temErro = true;
+                Mensagem::gravarMensagem("data-nasc", "A data informada não pode ser maior que a data atual", Mensagem::ERRO);
             }
         }
 
@@ -103,6 +112,16 @@ class Pet extends Model
     public function setCodigo($cod_pet)
     {
         $this->cod_pet = $cod_pet;
+    }
+
+    public function getCodigoDono()
+    {
+        return $this->cod_dono;
+    }
+
+    public function setCodigoDono($cod_dono)
+    {
+        $this->cod_dono = $cod_dono;
     }
     
     public function getNome()

@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Lib\IValidacao;
 use App\Lib\Conexao;
+use App\Lib\Paginacao;
 use PDO;
 
 abstract class Model implements IValidacao
@@ -35,7 +36,7 @@ abstract class Model implements IValidacao
 
         $sql = "INSERT INTO ${tabela} (cod_${tabela}, ${chaves}) VALUES (";
         $sql .= ($this->getCodigo() != null) ? ":cod_${tabela}, " : "default, ";
-        $sql .= "${valores});";
+        $sql .= "${valores})";
         
         $stm = $con->prepare($sql);
 
@@ -90,8 +91,23 @@ abstract class Model implements IValidacao
         return $stm->rowCount() > 0;
     }
 
-    public function buscar()
+    public function buscar($sql, $bindings)
     {
+
+        $con = Conexao::conectar();
+
+        $stm = $con->prepare($sql);
+        foreach ($bindings as $chave=>$valor) {
+            $stm->bindValue($chave, $valor);
+        }
+        $stm->execute();
+
+        if ($stm->rowCount()) {
+            $result = $stm->fetchAll(PDO::FETCH_CLASS, get_class($this));
+            return $result;
+        }
+
+        return null;
         
     }
 
@@ -127,9 +143,62 @@ abstract class Model implements IValidacao
         return $stm->rowCount() > 0;
     }
 
-    public function buscarComPaginacao()
+    public function buscarComPaginacao($campos, $join, $whereArgs, $orderBy, $bindings, $itensPorPagina, $indice, $url)
     {
+        $con = Conexao::conectar();
+
+
+        $itemAtual = $indice * $itensPorPagina;
+
+        if (!empty($campos)) {
+            $sql = "SELECT ${campos} FROM ".$this->getNomeTabela();
+        } else {
+            $sql = "SELECT * FROM ".$this->getNomeTabela();
+        }
         
+        $sqlCount = "SELECT count(*) FROM ".$this->getNomeTabela();
+
+        if (!empty($join)) {
+            $sql .= " ${join} ";
+            $sqlCount .= " ${join} ";
+        }
+        if (!empty($whereArgs)) {
+            $sql .= " WHERE ${whereArgs}";
+            $sqlCount .= " WHERE ${whereArgs}";
+        }
+        if (!empty($orderBy)) {
+            $sql .= " ORDER BY $orderBy";
+        }
+        $sql .= " LIMIT ${itemAtual}, ${itensPorPagina}";
+
+        $stm = $con->prepare($sqlCount);
+        foreach ($bindings as $chave=>$valor) {
+            $stm->bindValue($chave, $valor);
+        }
+        $stm->execute();
+
+        if ($stm->rowCount() == 0) {
+            return null;
+        }
+        
+        $totalItens = $stm->fetch(PDO::FETCH_COLUMN);
+
+        $stm = $con->prepare($sql);
+        foreach ($bindings as $chave=>$valor) {
+            $stm->bindValue($chave, $valor);
+        }
+        
+        $stm->execute();
+
+        
+        if ($stm->rowCount() > 0) {
+            $dados = $stm->fetchAll(PDO::FETCH_CLASS, get_class($this));
+            $paginacao = Paginacao::paginar($totalItens, $itensPorPagina, $indice, $url);
+            $result = array("paginacao" => $paginacao, "dados" => $dados, "totalItens" => $totalItens);
+            return $result;
+        }
+
+        return null;
     }
 
     public function getNomeTabela()

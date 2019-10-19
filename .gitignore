@@ -1,2 +1,4 @@
 public/resources/assets/img/*
-public/resources/fontawesome/*
+public/resources/assets/lib/fontawesome/*
+public/resources/assets/fotos/*
+env.json

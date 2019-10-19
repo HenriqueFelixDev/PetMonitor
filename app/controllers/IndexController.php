@@ -7,21 +7,61 @@ use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Model\Dono;
 use App\Util\ValidacaoUtil;
+use App\Lib\Conexao;
+use App\Lib\Acesso;
+use PDO;
 
 class IndexController extends Controller{
 
     public function index(){
         $form = Sessao::obter("form", "dono");
         $this->setViewParam("form", $form);
+        $this->setViewParam("csrf_login", ValidacaoUtil::csrf("login"));
+        $this->setViewParam("csrf_cadastro", ValidacaoUtil::csrf("cadastro"));
         $this->render("login");
     }
 
     public function entrar() {
-        $this->redirect("pets");
+
+        if (isset($_POST["email-celular"]) && isset($_POST["senha-login"])) {
+            
+            if (!(isset($_POST["_csrf"]) && Sessao::obter("csrf", "login") == $_POST["_csrf"])) {
+                Mensagem::gravarMensagem("geral", "O formulário enviado é inválido ou tem origem em uma fonte não confiável", Mensagem::ERRO);
+                $this->redirect("");
+            }
+
+            $email_celular = filter_input(INPUT_POST, 'email-celular', FILTER_SANITIZE_SPECIAL_CHARS);
+            $senha = $_POST["senha-login"];
+
+            $con = Conexao::conectar();
+
+            $stm = $con->prepare("SELECT cod_dono, nome, sobrenome, senha FROM dono WHERE email=:email OR celular=:celular");
+            $stm->bindValue(":email", $email_celular);
+            $stm->bindValue(":celular", $email_celular);
+            $stm->execute();
+                
+            if ($stm->rowCount() > 0) {
+                $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+                foreach($result as $dono) {
+                    if (password_verify($senha, $dono["senha"])) {
+                        Acesso::entrar($dono["cod_dono"], $dono["nome"]);
+                        $this->redirect("pets");
+                    }
+                }
+            }
+            Mensagem::gravarMensagem("geral", "Nenhum usuário com essas informações foi encontrado!", Mensagem::ERRO);
+            $this->redirect("");
+        }
+        $this->redirect("");
     }
 
     public function cadastrar() {
-        if (isset($_POST)) {
+        if (isset($_POST["nome"]) && isset($_POST["sobrenome"]) && isset($_POST["senha"]) && isset($_POST["cel"]) && isset($_POST["email"])) {
+            
+            if (!(isset($_POST["_csrf"]) && Sessao::obter("csrf", "cadastro") == $_POST["_csrf"])) {
+                Mensagem::gravarMensagem("geral", "O formulário enviado é inválido ou tem origem em uma fonte não confiável", Mensagem::ERRO);
+                $this->redirect("");
+            }
 
             $dados = $_POST;
             unset($dados["senha"]);
@@ -61,16 +101,16 @@ class IndexController extends Controller{
             if ($result) {
                 Mensagem::gravarMensagem("geral", "Dono Cadastrado com sucesso!", Mensagem::SUCESSO);
                 Sessao::limpar("form", "dono");
-                $this->redirect("");
             } else {
                 Mensagem::gravarMensagem("geral", "Ocorreu um erro ao cadastrar o novo Dono!", Mensagem::ERRO);
-                $this->redirect("");
             }
         }
+        $this->redirect("");
     }
 
     public function sair()
     {
+        Acesso::sair();
         $this->redirect("");
     }
 }
