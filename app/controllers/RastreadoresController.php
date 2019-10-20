@@ -38,13 +38,28 @@ class RastreadoresController extends Controller{
         }
 
         if (!empty($dataInicial)) {
-            $whereArgs .= " AND rastreador.dt_ativacao >= :dataInicial";
-            $bindings[":dataInicial"] = $dataInicial;
+            if (ValidacaoUtil::data($dataInicial)) {
+                $whereArgs .= " AND rastreador.dt_ativacao >= :dataInicial";
+                $bindings[":dataInicial"] = $dataInicial;
+            } else {
+                $dataInicial = null;
+            }
         }
 
         if (!empty($dataFinal)) {
-            $whereArgs .= " AND rastreador.dt_ativacao <= :dataFinal";
-            $bindings[":dataFinal"] = $dataFinal;
+            if (ValidacaoUtil::data($dataFinal)) {
+                $whereArgs .= " AND rastreador.dt_ativacao <= :dataFinal";
+                $bindings[":dataFinal"] = $dataFinal;
+            } else {
+                $dataFinal = null;
+            }
+        }
+
+        if (!(empty($dataInicial) || empty($dataFinal))) {
+            if (ValidacaoUtil::dataFutura($dataInicial, $dataFinal)) {
+                $bindings[":dataInicial"] = $dataFinal;
+                $bindings[":dataFinal"] = $dataInicial;
+            }
         }
 
         $orderBy = "";
@@ -102,10 +117,6 @@ class RastreadoresController extends Controller{
         }
     }
 
-    public function selecaopet() {
-        $this->render("rastreadores/selecao_pet");
-    }
-
     public function vincular($params) {
         if (isset($_POST["codigo-rastreador"]) && isset($params[0])) {
             
@@ -123,18 +134,31 @@ class RastreadoresController extends Controller{
                 $this->redirect("rastreadores/vinculo/${params[0]}");
             }
 
+            $result = $rastreador->buscar("SELECT count(*) as 'qtd' FROM rastreador WHERE cod_rastreador = :codigo", [":codigo"=>$rastreador->getCodigo()]);
+
+            if ($result[0]["qtd"]) {
+                Mensagem::gravarMensagem("geral", "Esse rastreador já está vinculado a algum PET. Você deve deletá-lo para desvinculá-lo do PET", Mensagem::ERRO);
+                $this->redirect("rastreadores/vinculo/${params[0]}");
+            }
+
+            $result = $rastreador->buscar("SELECT count(*) as 'qtd' FROM rastreador r INNER JOIN pet p ON r.cod_pet = p.cod_pet INNER JOIN dono d ON d.cod_dono = p.cod_dono WHERE p.cod_dono = :codigo", [":codigo"=>Sessao::obter("usuario", "codigo")]);
+
+            if ($result[0]["qtd"]) {
+                Mensagem::gravarMensagem("geral", "Esse PET já está vinculado a algum Rastreador. Você deve deletar o rastreador para desvinculá-lo do PET", Mensagem::ERRO);
+                $this->redirect("rastreadores/vinculo/${params[0]}");
+            }
             $rastreador->setCodigoPet($params[0]);
             $result = $rastreador->inserir();
                 
             if ($result) {
-                Mensagem::gravarMensagem("geral", "Rastreador ativado com sucesso!", Mensagem::SUCESSO);
+                Mensagem::gravarMensagem("geral", "Rastreador vinculado com sucesso!", Mensagem::SUCESSO);
             } else {
                 Mensagem::gravarMensagem("geral", "Ocorreu um erro ao ativar o rastreador. Tente novamente mais tarde!", Mensagem::ERRO);
+                $this->redirect("rastreadores/vinculo/${params[0]}");
             }
-            $this->redirect("rastreadores/vinculo/${params[0]}");
             
         }
-        $this->redirect("pets");
+        $this->redirect("rastreadores");
     }
 
     public function excluir($params)

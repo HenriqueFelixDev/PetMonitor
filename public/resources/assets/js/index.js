@@ -1,7 +1,6 @@
 $(document).ready(function() {
     $("div#grupo-filtros").hide();
 
-
     if (window.location.search.length > 0) {
         scrollPara("div.resultado-consulta");
     }

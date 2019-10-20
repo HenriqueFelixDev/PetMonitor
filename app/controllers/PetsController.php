@@ -15,7 +15,6 @@ class PetsController extends Controller
 
     public function index() 
     {
-        
         $busca = DadosUtil::getValorArray($_GET, "busca");
         $indice = intval(DadosUtil::getValorArray($_GET, "indice"));
         $sexo = DadosUtil::getValorArray($_GET, "sexo");
@@ -27,7 +26,6 @@ class PetsController extends Controller
         $indice = ($indice >= 1) ? $indice - 1 : 0;
         $limite = ($limite >= 30) ? $limite : 30;
 
-        
         $codigo = Sessao::obter("usuario", "codigo");
 
         $whereArgs = "cod_dono = :codigo";
@@ -43,15 +41,30 @@ class PetsController extends Controller
         }
 
         if (!empty(trim($dataInicial))) {
-            $whereArgs .= " AND dt_nascimento >= :dataInicial";
-            $binding[":dataInicial"] = $dataInicial;
+            if (ValidacaoUtil::data($dataInicial)) {
+                $whereArgs .= " AND dt_nascimento >= :dataInicial";
+                $binding[":dataInicial"] = $dataInicial;
+            } else {
+                $dataInicial = null;
+            }
         }
 
         if (!empty(trim($dataFinal))) {
-            $whereArgs .= " AND dt_nascimento <= :dataFinal";
-            $binding[":dataFinal"] = $dataFinal;
+            if (ValidacaoUtil::data($dataFinal)) {
+                $whereArgs .= " AND dt_nascimento <= :dataFinal";
+                $binding[":dataFinal"] = $dataFinal;
+            } else {
+                $dataFinal = null;
+            }
         }
 
+        if (!(empty($dataInicial) || empty($dataFinal))) {
+            if (ValidacaoUtil::dataFutura($dataInicial, $dataFinal)) {
+                $binding[":dataInicial"] = $dataFinal;
+                $binding[":dataFinal"] = $dataInicial;
+            }
+        }
+        
         $orderBy = "";
         switch ($ordem) {
             case "cme":

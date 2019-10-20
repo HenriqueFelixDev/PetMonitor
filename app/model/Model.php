@@ -91,7 +91,7 @@ abstract class Model implements IValidacao
         return $stm->rowCount() > 0;
     }
 
-    public function buscar($sql, $bindings)
+    public function buscar($sql, $bindings, $tipoFetch = PDO::FETCH_ASSOC, $argFetch = null)
     {
 
         $con = Conexao::conectar();
@@ -103,7 +103,13 @@ abstract class Model implements IValidacao
         $stm->execute();
 
         if ($stm->rowCount()) {
-            $result = $stm->fetchAll(PDO::FETCH_CLASS, get_class($this));
+
+            if (isset($argFetch)) {
+                $result = $stm->fetchAll($tipoFetch, $argFetch);
+            } else {
+                $result = $stm->fetchAll($tipoFetch);
+            }
+            
             return $result;
         }
 

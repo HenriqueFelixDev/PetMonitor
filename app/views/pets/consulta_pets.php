@@ -20,7 +20,7 @@
                                 <label for="sexo">Sexo</label>
                             </div>
                             <select name="sexo" id="sexo" >
-                                <option disabled value="-1">Selecione um sexo:</option>
+                                <option value="">Selecione um sexo:</option>
                                 <option <?php echo !empty($_GET["sexo"]) && $_GET["sexo"] == "m" ? "selected" : ""  ?> value="m">Macho</option>
                                 <option <?php echo !empty($_GET["sexo"]) && $_GET["sexo"] == "f" ? "selected" : ""  ?> value="f">Fêmea</option>
                                 <option <?php echo !empty($_GET["sexo"]) && $_GET["sexo"] == "mc" ? "selected" : ""  ?> value="mc">Macho Castrado</option>
@@ -143,6 +143,10 @@
                                 
                                 ?></div>
                             </td>
+                        </tr>
+                        <tr>
+                            <th>Cor</th>
+                            <td style="text-align:left;white-space:nowrap;"><?php echo $pet->getCor() ?></td>
                         </tr>
                         <tr>
                             

@@ -19,6 +19,12 @@
                     <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Entrar</button>
                 </div>
 
+<?php if ($mensagem::temMensagem("login")) : ?>
+    <div id="alerta-geral" class="alert-<?= $mensagem::obterMensagem("login")["tipo"] ?> my-1">
+        <small><?= $mensagem::obterMensagem("login")["msg"] ?></small>
+    </div>
+<?php endif; ?>
+
                 <span>Não possui uma conta? <a href="#cadastro-form">Criar uma nova conta</a>!</span>
             </form>
         </section>
@@ -29,7 +35,11 @@
             <header>
                 <h2>Crie uma nova conta gratuitamente!</h2>
             </header>
-
+<?php if ($mensagem::temMensagem("cadastro")) : ?>
+    <div id="alerta-geral" class=" alert-<?= $mensagem::obterMensagem("cadastro")["tipo"] ?> mb-1">
+        <?= $mensagem::obterMensagem("cadastro")["msg"] ?>
+    </div>
+<?php endif; ?>
             <form action="<?php echo $this->route("index/cadastrar") ?>" method="POST">
                 <?php echo $viewVar["csrf_cadastro"] ?>
                 <div class="form-group">

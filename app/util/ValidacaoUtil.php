@@ -70,15 +70,15 @@ class ValidacaoUtil
         return true;
     }
 
-    public static function dataFutura($data)
+    public static function dataFutura($data, $dataModelo = "now")
     {
         $dataRecebida = new DateTime($data);
-        $dataAtual = new DateTime();
+        $dataAtual = new DateTime($dataModelo);
         $result = $dataAtual->diff($dataRecebida);
         return !$result->invert;
     }
 
-    public static function dataPassada($data)
+    public static function dataPassada($data, $dataModelo = "now")
     {
         return !self::dataFutura($data);
     }

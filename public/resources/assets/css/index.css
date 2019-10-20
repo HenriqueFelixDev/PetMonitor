@@ -844,6 +844,9 @@ a.link {
         display: inherit;
         /*border-radius: 0 0 var(--border-radius) var(--border-radius);*/
     }
+    nav li ul li:hover {
+        background-color: #222;
+    }
     nav>ul>li:nth-child(3)>a {
         display: none;
     }

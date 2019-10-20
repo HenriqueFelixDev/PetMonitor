@@ -26,7 +26,7 @@ class IndexController extends Controller{
         if (isset($_POST["email-celular"]) && isset($_POST["senha-login"])) {
             
             if (!(isset($_POST["_csrf"]) && Sessao::obter("csrf", "login") == $_POST["_csrf"])) {
-                Mensagem::gravarMensagem("geral", "O formulário enviado é inválido ou tem origem em uma fonte não confiável", Mensagem::ERRO);
+                Mensagem::gravarMensagem("login", "O formulário enviado é inválido ou tem origem em uma fonte não confiável", Mensagem::ERRO);
                 $this->redirect("");
             }
 
@@ -49,7 +49,7 @@ class IndexController extends Controller{
                     }
                 }
             }
-            Mensagem::gravarMensagem("geral", "Nenhum usuário com essas informações foi encontrado!", Mensagem::ERRO);
+            Mensagem::gravarMensagem("login", "Não existe um usuário cadastrado com essas informações de login!", Mensagem::ERRO);
             $this->redirect("");
         }
         $this->redirect("");
@@ -59,7 +59,7 @@ class IndexController extends Controller{
         if (isset($_POST["nome"]) && isset($_POST["sobrenome"]) && isset($_POST["senha"]) && isset($_POST["cel"]) && isset($_POST["email"])) {
             
             if (!(isset($_POST["_csrf"]) && Sessao::obter("csrf", "cadastro") == $_POST["_csrf"])) {
-                Mensagem::gravarMensagem("geral", "O formulário enviado é inválido ou tem origem em uma fonte não confiável", Mensagem::ERRO);
+                Mensagem::gravarMensagem("cadastro", "O formulário enviado é inválido ou tem origem em uma fonte não confiável", Mensagem::ERRO);
                 $this->redirect("");
             }
 
@@ -90,6 +90,20 @@ class IndexController extends Controller{
             }
 
             if (!$validade) {
+                $this->redirect("");
+            }
+
+            $result = $dono->buscar("SELECT count(*) as 'qtd' FROM dono WHERE celular = :cel", [":cel"=>$dono->getCelular()]);
+            
+            if ($result[0]["qtd"]) {
+                Mensagem::gravarMensagem("cadastro", "Já existe um usuário com o mesmo telefone cadastrado no sistema", Mensagem::ERRO);
+                $this->redirect("");
+            }
+
+            $result = $dono->buscar("SELECT count(*) as 'qtd' FROM dono WHERE email = :email", [":email"=>$dono->getEmail()]);
+
+            if ($result[0]["qtd"]) {
+                Mensagem::gravarMensagem("cadastro", "Já existe um usuário com o mesmo email cadastrado no sistema", Mensagem::ERRO);
                 $this->redirect("");
             }
 
