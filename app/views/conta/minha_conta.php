@@ -5,11 +5,12 @@
         </div>
 
         <div>
-            <form action="<?php echo $this->route("conta/salvar") ?>" method="POST">
-                <?php echo $viewVar["csrf_conta"] ?>
+            <?php $form = $dadosUtil::getValorArray($viewVar, "form") ?>
+            <form action="<?= $this->route("conta/salvar") ?>" method="POST">
+                <?= $viewVar["csrf_conta"] ?>
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" name="nome" id="nome" maxlength="32" required autofocus value="<?= isset($viewVar["form"]["nome"]) ? $viewVar["form"]["nome"] : '' ?>" />
+                    <input type="text" name="nome" id="nome" maxlength="32" required autofocus value="<?= $dadosUtil::getValorArray($form, "nome") ?>" />
                     
 <?php if ($mensagem::temMensagem("nome")) : ?>
                     <div class="alert-<?= $mensagem::obterMensagem("nome")["tipo"] ?>">
@@ -21,7 +22,7 @@
 
                 <div class="form-group">
                     <label for="sobrenome">Sobrenome</label>
-                    <input type="text" name="sobrenome" id="sobrenome" maxlength="32" required value="<?= isset($viewVar["form"]["sobrenome"]) ? $viewVar["form"]["sobrenome"] : '' ?>" />
+                    <input type="text" name="sobrenome" id="sobrenome" maxlength="32" required value="<?= $dadosUtil::getValorArray($form, "sobrenome") ?>" />
 
 <?php if ($mensagem::temMensagem("sobrenome")) : ?>
                     <div class="alert-<?= $mensagem::obterMensagem("sobrenome")["tipo"] ?>">
@@ -33,12 +34,12 @@
 
                 <div class="form-group">
                     <label for="senha">Senha</label>
-                    <a href="http://<?= APP_HOST ?>/conta/alteracao-senha" class="btn btn-primary"><i class="fas fa-lock"></i> Alterar Senha</a>
+                    <a href="<?= $this->route("conta/alteracao-senha") ?>" class="btn btn-primary"><i class="fas fa-lock"></i> Alterar Senha</a>
                 </div>
 
                 <div class="form-group">
                     <label for="cel">Telefone Celular</label>
-                    <input type="tel" name="cel" id="cel" maxlength="11" required value="<?= isset($viewVar["form"]["cel"]) ? $viewVar["form"]["cel"] : '' ?>" />
+                    <input type="tel" name="cel" id="cel" maxlength="11" required value="<?= $dadosUtil::getValorArray($form, "cel") ?>" />
 
 <?php if ($mensagem::temMensagem("celular")) : ?>
                     <div class="alert-<?= $mensagem::obterMensagem("celular")["tipo"] ?>">
@@ -50,7 +51,7 @@
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email" maxlength="64" required value="<?= isset($viewVar["form"]["email"]) ? $viewVar["form"]["email"] : '' ?>" />
+                    <input type="email" name="email" id="email" maxlength="64" required value="<?= $dadosUtil::getValorArray($form, "email") ?>" />
 
 <?php if ($mensagem::temMensagem("email")) : ?>
                     <div class="alert-<?= $mensagem::obterMensagem("email")["tipo"] ?>">

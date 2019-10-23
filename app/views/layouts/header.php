@@ -10,6 +10,7 @@
         <link rel="shortcut icon" href="<?php echo $this->asset("favicon.ico") ?>" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="<?php echo $this->asset("js/index.js") ?>"></script>
+        <script src="<?php echo $this->asset("js/funcoes.js") ?>"></script>
         <link href= "<?php echo $this->asset("lib/jcrop/css/jquery.Jcrop.min.css") ?>" rel="stylesheet" >
         <script src="<?php echo $this->asset("lib/jcrop/js/jquery.Jcrop.min.js") ?>"></script>
         <script src="<?php echo $this->asset("lib/smartcrop/js/smartcrop.js") ?>"></script>

@@ -91,9 +91,9 @@ class PetsController extends Controller
         $pet = new Pet();
         $result = $pet->buscarComPaginacao(null, null, $whereArgs, $orderBy, $binding, $limite, $indice, $url);
 
-        $pets = isset($result["dados"]) ? $result["dados"] : array();
-        $paginacao = isset($result["paginacao"]) ? $result["paginacao"] : "";
-        $totalItens = isset($result["totalItens"]) ? $result["totalItens"] : 0;
+        $pets       = DadosUtil::getValorArray($result, "dados", array());
+        $paginacao  = DadosUtil::getValorArray($result, "paginacao", "");
+        $totalItens = DadosUtil::getValorArray($result, "totalItens", 0);
 
         $this->setViewParam("pets", $pets);
         $this->setViewParam("paginacao", $paginacao);
@@ -157,7 +157,7 @@ class PetsController extends Controller
             $sexo = filter_input(INPUT_POST, 'sexo', FILTER_SANITIZE_SPECIAL_CHARS);
             $cor = filter_input(INPUT_POST, 'cor', FILTER_SANITIZE_SPECIAL_CHARS);
             $dt_nascimento = filter_input(INPUT_POST, 'data-nasc', FILTER_SANITIZE_SPECIAL_CHARS);
-            $foto = isset($_FILES["foto"]) ? $_FILES["foto"] : null;
+            $foto = DadosUtil::getValorArray($_FILES, "foto");
 
             $pet = new Pet();
             $pet->setCodigoDono(Sessao::obter("usuario", "codigo"));
@@ -171,7 +171,7 @@ class PetsController extends Controller
 
             $validacao = $pet->validar();
 
-            if (isset($codigo) && !ValidacaoUtil::somenteNumeros($codigo)) {
+            if (!(isset($codigo) && ValidacaoUtil::somenteNumeros($codigo))) {
                 $validacao = false;
                 Mensagem::gravarMensagem("geral", "O código do PET é inválido", Mensagem::ERRO);
             }

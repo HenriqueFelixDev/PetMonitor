@@ -3,14 +3,14 @@
             <h2 class="title">Alterar Senha</h2>
         </div>
         <div>
-            <form action="<?php echo $this->route("conta/alterar-senha") ?>" method="POST">
-                <?php echo $viewVar["csrf_altera_senha"] ?>
+            <form action="<?= $this->route("conta/alterar-senha") ?>" method="POST">
+                <?= $viewVar["csrf_altera_senha"] ?>
                 <div class="form-group">
                     <label for="senha-anterior">Senha Anterior</label>
                     <input type="password" name="senha-anterior" id="senha-anterior" maxlength="32" required autofocus />
 
                     <div class="form-group-inline">
-                        <input type="checkbox" name="mostrar-senha-anterior" id="mostrar-senha-anterior" onchange="javascript:mostrarOcultarSenha(this, 'input#senha-anterior')" />
+                        <input type="checkbox" name="mostrar-senha-anterior" id="mostrar-senha-anterior" />
                         <label for="mostrar-senha-anterior">Mostrar</label>
                     </div>
 
@@ -27,7 +27,7 @@
                     <input type="password" name="nova-senha" id="nova-senha" maxlength="32" required />
 
                     <div class="form-group-inline">
-                        <input type="checkbox" name="mostrar-nova-senha" id="mostrar-nova-senha" onchange="javascript:mostrarOcultarSenha(this, 'input#nova-senha')" />
+                        <input type="checkbox" name="mostrar-nova-senha" id="mostrar-nova-senha" />
                         <label for="mostrar-nova-senha">Mostrar</label>
                     </div>
 
@@ -44,7 +44,7 @@
                     <input type="password" name="rep-nova-senha" id="rep-nova-senha" maxlength="32" required />
 
                     <div class="form-group-inline">
-                        <input type="checkbox" name="mostrar-rep-nova-senha" id="mostrar-rep-nova-senha" onchange="javascript:mostrarOcultarSenha(this, 'input#rep-nova-senha')" />
+                        <input type="checkbox" name="mostrar-rep-nova-senha" id="mostrar-rep-nova-senha" />
                         <label for="mostrar-rep-nova-senha">Mostrar</label>
                     </div>
 
@@ -55,8 +55,6 @@
 <?php endif; ?>
 
                 </div>
-
-                
 
                 <div class="form-group">
                     <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Salvar</button>

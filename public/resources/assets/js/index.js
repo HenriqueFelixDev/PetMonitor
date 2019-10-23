@@ -5,6 +5,37 @@ $(document).ready(function() {
         scrollPara("div.resultado-consulta");
     }
 
+    window.matchMedia("(min-width: 750px)").addListener(restaurarMenu);
+
+    // Eventos das páginas
+    $("#mostrar-senha").change(function() {
+        mostrarOcultarSenha($("#mostrar-senha"), '#senha')
+    })
+
+    $("#filtro-toggle").click(function() {
+        mostrarOcultarElemento('div#grupo-filtros')
+    })
+
+    $("#mostrar-senha-anterior").change(function() {
+        mostrarOcultarSenha($(this), '#senha-anterior')
+    })
+
+    $("#mostrar-nova-senha").change(function() {
+        mostrarOcultarSenha($(this), '#nova-senha')
+    })
+
+    $("#mostrar-rep-nova-senha").change(function() {
+        mostrarOcultarSenha($(this), '#rep-nova-senha')
+    })
+
+    $(document).on('click', 'a[href^="#"]', function(event) {
+        event.preventDefault();
+
+        $('html, body').animate({
+            scrollTop: $($.attr(this, 'href')).offset().top - 70
+        }, 1000);
+    })
+
     $("#foto").change(function() {
         const file = $(this)[0].files[0];
         if (file.size > 2097152) {
@@ -36,82 +67,13 @@ $(document).ready(function() {
             }
         }
 
-    });
-
-    window.matchMedia("(min-width: 750px)").addListener(restaurarMenu);
+    })
 });
 
-function scrollPara(e) {
-    $("html, body").animate({
-        scrollTop: $(e)[0].offsetTop - 80
-    });
+var excluirRastreadorModal = function(idRastreador, nomePet, endereco) {
+    Modal.mostrar('Excluir', 'Deseja realmente excluir o rastreador ' + idRastreador + ' do PET ' + nomePet + '?', [{ nome: 'Sim', classe: 'btn-primary', onclick: function() { window.location = endereco } }, { nome: 'Não', classe: 'btn-cancel', onclick: function() {} }]);
 }
 
-
-function fechar(e) {
-    $(e).remove();
-}
-
-function restaurarMenu(x) {
-    if (x.matches) {
-        $("#menu").show();
-    } else {
-        $("#menu").hide();
-    }
-}
-
-$(document).on('click', 'a[href^="#"]', function(event) {
-    event.preventDefault();
-
-    $('html, body').animate({
-        scrollTop: $($.attr(this, 'href')).offset().top - 70
-    }, 1000);
-});
-
-
-function mostrarOcultarElemento(e) {
-    $(e).toggle("2")
-}
-
-function mostrarOcultarSenha(checkbox, campo) {
-    var checked = $(checkbox).is(":checked");
-    var type = (checked) ? "text" : "password";
-    $(campo).attr("type", type);
-}
-
-var Modal = {
-    mostrar: function(titulo, mensagem, botoes) {
-        var html = '<div id="janela-modal">' +
-            '<div class="modal">' +
-            '<header>' +
-            titulo +
-            '<div class="fechar">' +
-            '<a class="btn btn-close" onclick="Modal.fechar()"><i class="fas fa-times"></i></a>' +
-            '</div>' +
-            '</header>' +
-            '<section>' +
-            mensagem +
-            '</section>' +
-            '<footer>' +
-            '<div style="text-align:center;">';
-        for (var i = 0; i < botoes.length; i++) {
-            var botao = botoes[i];
-            html += '<button id="btn-modal-' + i + '" class="' + botao.classe + '">' + botao.nome + '</button> ';
-        }
-        html += '</div>' +
-            '</footer>' +
-            '</div>' +
-            '</div>';
-        $(html).insertBefore(".container");
-        for (var i = 0; i < botoes.length; i++) {
-            const j = i;
-            $("button#btn-modal-" + i).click(function() {
-                botoes[j].onclick();
-                Modal.fechar();
-            });
-        }
-    },
-    fechar: function() {
-        $("#janela-modal").remove();
-    }
+var excluirPetModal = function(nomePet, endereco) {
+    Modal.mostrar('Excluir', 'Todos os dados de trajetos realizados pelo PET e o rastreador ao qual ele está vinculado também serão deletados. <br/><br/>Deseja realmente excluir os dados do PET ' + nomePet + '?', [{ nome: 'Sim', classe: 'btn-primary', onclick: function() { window.location = endereco; } }, { nome: 'Não', classe: 'btn-cancel', onclick: function() { console.log('teste'); } }]);
 }

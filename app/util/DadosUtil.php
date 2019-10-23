@@ -20,5 +20,7 @@ class DadosUtil{
         if(isset($array[$indice])) {
             return self::getValorVar($array[$indice], $default);
         }
+
+        return self::getValorVar(null, $default);
     }
 }

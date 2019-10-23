@@ -20,9 +20,10 @@
     <main>
 
 <?php if ($mensagem::temMensagem("geral")) : ?>
-    <div id="alerta-geral" class="alert-box alert-box-<?= $mensagem::obterMensagem("geral")["tipo"] ?> alert-<?= $mensagem::obterMensagem("geral")["tipo"] ?>">
-        <i class="fas fa-<?= $mensagem::obterMensagem("geral")["tipo"] == "erro" ? "times" :"check-circle" ?>"></i>
-        <?= $mensagem::obterMensagem("geral")["msg"] ?>
+    <?php $mensagemGeral = $mensagem::obterMensagem("geral") ?>
+    <div id="alerta-geral" class="alert-box alert-box-<?= $mensagemGeral["tipo"] ?> alert-<?= $mensagemGeral["tipo"] ?>">
+        <i class="fas fa-<?= $mensagemGeral["tipo"] == "erro" ? "times" :"check-circle" ?>"></i>
+        <?= $mensagemGeral["msg"] ?>
         <a onclick="javascript:fechar('div#alerta-geral');" style="float:right;"><i class="fas fa-times fa-lg"></i></a>
     </div>
 <?php endif; ?>

@@ -1,9 +1,11 @@
+<?php $form = $dadosUtil::getValorArray($viewVar, "form"); ?>
+    
     <div class="container secao-pagina">
         <section id="login-form" class="box">
             <header>
                 <h2>Entrar</h2>
             </header>
-            <form action="<?php echo $this->route("index/entrar") ?>" method="POST">
+            <form action="<?= $this->route("index/entrar") ?>" method="POST">
                 <?php echo $viewVar["csrf_login"] ?>
                 <div class="form-group">
                     <label for="email-celular">E-mail ou Celular</label>
@@ -29,7 +31,7 @@
             </form>
         </section>
     </div>
-    
+
     <div class="container secao-pagina">
         <section class="box" id="cadastro-form">
             <header>
@@ -40,11 +42,11 @@
         <?= $mensagem::obterMensagem("cadastro")["msg"] ?>
     </div>
 <?php endif; ?>
-            <form action="<?php echo $this->route("index/cadastrar") ?>" method="POST">
-                <?php echo $viewVar["csrf_cadastro"] ?>
+            <form action="<?= $this->route("index/cadastrar") ?>" method="POST">
+                <?= $viewVar["csrf_cadastro"] ?>
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" name="nome" id="nome" maxlength="32" required value="<?= isset($viewVar["form"]["nome"]) ? $viewVar["form"]["nome"] : null ?>" />
+                    <input type="text" name="nome" id="nome" maxlength="32" required value="<?= $dadosUtil::getValorArray($form, "nome") ?>" />
 
 <?php if ($mensagem::temMensagem("nome")) : ?>
 
@@ -57,7 +59,7 @@
 
                 <div class="form-group">
                     <label for="sobrenome">Sobrenome</label>
-                    <input type="text" name="sobrenome" id="sobrenome" maxlength="32" required value="<?= isset($viewVar["form"]["sobrenome"]) ? $viewVar["form"]["sobrenome"] : null ?>" />
+                    <input type="text" name="sobrenome" id="sobrenome" maxlength="32" required value="<?= $dadosUtil::getValorArray($form, "sobrenome") ?>" />
 
 <?php if ($mensagem::temMensagem("sobrenome")) : ?>
 
@@ -80,14 +82,14 @@
 <?php endif; ?>
 
                     <div class="form-group-inline">
-                        <input type="checkbox" name="mostrar-senha" id="mostrar-senha" onchange="javascript:mostrarOcultarSenha(this, 'input#senha')" />
+                        <input type="checkbox" name="mostrar-senha" id="mostrar-senha" />
                         <label for="mostrar-senha">Mostrar Senha</label>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="cel">Telefone Celular</label>
-                    <input type="tel" name="cel" id="cel" maxlength="11" required value="<?= isset($viewVar["form"]["cel"]) ? $viewVar["form"]["cel"] : null ?>" />
+                    <input type="tel" name="cel" id="cel" maxlength="11" required value="<?= $dadosUtil::getValorArray($form, "cel") ?>" />
 
 <?php if ($mensagem::temMensagem("celular")) : ?>
 
@@ -100,7 +102,7 @@
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email" maxlength="64" required value="<?= isset($viewVar["form"]["email"]) ? $viewVar["form"]["email"] : null ?>" />
+                    <input type="email" name="email" id="email" maxlength="64" required value="<?= $dadosUtil::getValorArray($form, "email") ?>" />
 
 <?php if ($mensagem::temMensagem("email")) : ?>
 
@@ -117,4 +119,8 @@
             </form>
         </section>
     </div>
+
+<?php if (isset($form)): ?>
+    <script>scrollPara("#cadastro-form")</script>
+<?php endif; ?>
 

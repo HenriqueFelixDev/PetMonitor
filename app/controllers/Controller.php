@@ -6,7 +6,7 @@ use App\App;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Lib\Acesso;
-
+use App\Util\DadosUtil;
 
 abstract class Controller
 {
@@ -36,6 +36,7 @@ abstract class Controller
         $mensagem = Mensagem::class;
         $usuario = Sessao::obter("usuario", "nome");
         $acesso = Acesso::class;
+        $dadosUtil = DadosUtil::class;
         /*
          * Requisição para as páginas do site
          *  require_once PATH."/app/views/pagina.php";
