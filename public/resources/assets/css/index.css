@@ -46,14 +46,14 @@ input {
 .box {
     border: thin solid #aaa;
     border-radius: var(--border-radius);
-    box-shadow: 3px 5px 10px grey;
+    box-shadow: 2px 2px 1px grey;
     background-color: white;
     padding: 2rem;
 }
 
 .container {
-    width: 70%;
-    margin: 2rem auto;
+    padding: 2rem 15%;
+    box-sizing: border-box;
 }
 
 h2.title {
@@ -67,7 +67,7 @@ nav {
     width: 100%;
     background-color: white;
     border-bottom: thin solid #ccc;
-    box-shadow: 1px 2px 3px #ccc;
+    box-shadow: 1px 2px 1px #ccc;
     z-index: 998;
 }
 
@@ -137,6 +137,11 @@ nav li ul li {
 
 nav li ul li:hover {
     background-color: #be2419;
+}
+
+.login {
+    background-image: url('../img/background.jpg');
+    background-size: cover;
 }
 
 #login-form {
@@ -298,8 +303,8 @@ button,
 }
 
 #cadastro-form {
-    float: right;
-    width: 350px;
+    margin: 0 auto;
+    width: 500px;
 }
 
 #cadastro-form header,
@@ -810,18 +815,19 @@ a.link {
 }
 
 @media screen and (max-width: 750px) {
-    .container {
-        width: 85%;
-    }
     h2.title {
         margin-bottom: 1rem;
     }
     .texto-botao {
         display: none;
     }
+    .container {
+        width: 100%;
+        padding: 2rem 5%;
+    }
     #cadastro-form {
-        float: none;
-        margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
     }
     /* MENU */
     nav .logo {
@@ -884,6 +890,7 @@ a.link {
     .form-group-inline>input {
         display: block;
         margin-top: 1rem;
+        width: 100%;
     }
     #resultados-pets {
         justify-content: center;
@@ -892,7 +899,7 @@ a.link {
 
 @media screen and (max-width: 550px) {
     .container {
-        width: 95%;
+        width: 100%;
     }
     #cadastro-form,
     #login-form {

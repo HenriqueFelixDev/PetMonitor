@@ -28,49 +28,7 @@ class PetsController extends Controller
 
         $codigo = Sessao::obter("usuario", "codigo");
 
-        $whereArgs = "cod_dono = :codigo";
-        $binding = [":codigo"=>$codigo];
-        if (!empty(trim($busca))) {
-            $whereArgs .= " AND (nome LIKE :busca OR especie LIKE :busca OR raca LIKE :busca)";
-            $binding[":busca"] = "%".$busca."%";
-        }
-
-        if (!empty(trim($sexo))) {
-            $whereArgs .= " AND sexo = :sexo";
-            $binding[":sexo"] = $sexo;
-        }
-
-        if (!empty(trim($dataInicial))) {
-            if (ValidacaoUtil::data($dataInicial)) {
-                $whereArgs .= " AND dt_nascimento >= :dataInicial";
-                $binding[":dataInicial"] = $dataInicial;
-            } else {
-                $dataInicial = null;
-            }
-        }
-
-        if (!empty(trim($dataFinal))) {
-            if (ValidacaoUtil::data($dataFinal)) {
-                $whereArgs .= " AND dt_nascimento <= :dataFinal";
-                $binding[":dataFinal"] = $dataFinal;
-            } else {
-                $dataFinal = null;
-            }
-        }
-
-        if (!(empty($dataInicial) || empty($dataFinal))) {
-            if (ValidacaoUtil::dataFutura($dataInicial, $dataFinal)) {
-                $binding[":dataInicial"] = $dataFinal;
-                $binding[":dataFinal"] = $dataInicial;
-            }
-        }
-        
-        $orderBy = "";
         switch ($ordem) {
-            case "cme":
-                $orderBy = "cod_pet ASC";
-            break;
-
             case "cma":
                 $orderBy = "cod_pet DESC";
             break;
@@ -83,13 +41,40 @@ class PetsController extends Controller
                 $orderBy = "nome DESC";
             break;
 
+            // default = cme
             default:
-                $orderBy = null;
+                $orderBy = "cod_pet ASC";
         }
 
+        if (!ValidacaoUtil::data($dataInicial)) {
+            $dataInicial = null;
+        }
+
+        if (!ValidacaoUtil::data($dataFinal)) {
+            $dataFinal = null;
+        }
+
+        if (!(empty($dataInicial) || empty($dataFinal))) {
+            if (ValidacaoUtil::dataFutura($dataInicial, $dataFinal)) {
+                $dt = $dataInicial;
+                $dataInicial = $dataFinal;
+                $dataFinal = $dt;
+            }
+        }
+
+        $filtros["codigo"] = $codigo;
+        $filtros["busca"] = $busca;
+        $filtros["indice"] = $indice;
+        $filtros["sexo"] = $sexo;
+        $filtros["dataInicial"] = $dataInicial;
+        $filtros["dataFinal"] = $dataFinal;
+        $filtros["ordem"] = $orderBy;
+        $filtros["limite"] = $limite;
+
         $url = $this->route("pets?busca=${busca}&sexo=${sexo}&data-nasc-inicial=${dataInicial}&data-nasc-final=${dataFinal}&ordem=${ordem}&limite=${limite}");
+
         $pet = new Pet();
-        $result = $pet->buscarComPaginacao(null, null, $whereArgs, $orderBy, $binding, $limite, $indice, $url);
+        $result = $pet->buscarComPaginacao($filtros, $url);
 
         $pets       = DadosUtil::getValorArray($result, "dados", array());
         $paginacao  = DadosUtil::getValorArray($result, "paginacao", "");
@@ -116,7 +101,7 @@ class PetsController extends Controller
 
     public function edicao($params) 
     {
-        if (isset($params[0])) {
+        if (!empty($params[0])) {
             $pet = new Pet();
             $pet->setCodigo($params[0]);
             $pet = $pet->encontrarPorId();
@@ -214,7 +199,7 @@ class PetsController extends Controller
 
     public function excluir($params)
     {
-        if (isset($params[0])) {
+        if (!empty($params[0])) {
             $pet = new Pet();
             $pet->setCodigo($params[0]);
             $result = $pet->deletar();

@@ -6,6 +6,8 @@ use App\Lib\Mensagem;
 use App\Model\Model;
 use App\Util\ImagemUtil;
 use App\Util\ValidacaoUtil;
+use PDO;
+use App\Lib\Sessao;
 
 class Pet extends Model
 {
@@ -102,6 +104,49 @@ class Pet extends Model
         }
 
         return !$temErro;
+    }
+
+
+    public function buscarComPaginacao($filtros, $urlBase)
+    {
+    
+        $codigo = $filtros["codigo"];
+        $busca = $filtros["busca"];
+        $sexo = $filtros["sexo"];
+        $dataInicial = $filtros["dataInicial"];
+        $dataFinal = $filtros["dataFinal"];
+        $indice = $filtros["indice"];
+        $limite = $filtros["limite"];
+
+        $whereArgs = "cod_dono = :codigo";
+        $binding = [":codigo"=>$codigo];
+
+        if (!empty(trim($busca))) {
+            $whereArgs .= " AND (nome LIKE :busca OR especie LIKE :busca OR raca LIKE :busca)";
+            $binding[":busca"] = "%".$busca."%";
+        }
+
+        if (!empty(trim($sexo))) {
+            $whereArgs .= " AND sexo = :sexo";
+            $binding[":sexo"] = $sexo;
+        }
+
+        if (!empty(trim($dataInicial))) {
+            $whereArgs .= " AND dt_nascimento >= :dataInicial";
+            $binding[":dataInicial"] = $dataInicial;
+        }
+
+        if (!empty(trim($dataFinal))) {
+            $whereArgs .= " AND dt_nascimento <= :dataFinal";
+            $binding[":dataFinal"] = $dataFinal;
+        }
+        
+        $itemAtual = $indice * $limite;
+        $sql = "SELECT * FROM pet WHERE ${whereArgs} ORDER BY {$filtros["ordem"]} LIMIT {$itemAtual}, ${limite}";
+        $sqlCount = "SELECT count(*) FROM pet WHERE ${whereArgs}";
+        $totalItens = $this->buscar($sqlCount, $binding, PDO::FETCH_COLUMN)[0];
+
+        return parent::buscarComPaginacao($sql, $binding, $totalItens, $limite, $indice, $urlBase);
     }
 
     public function getCodigo()

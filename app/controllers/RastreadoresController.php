@@ -26,48 +26,8 @@ class RastreadoresController extends Controller{
 
         $codigo = Sessao::obter("usuario", "codigo");
 
-
-
-        $join = "INNER JOIN pet p on rastreador.cod_pet = p.cod_pet";
-        $whereArgs = "p.cod_dono = :codigo";
-
-        $bindings[":codigo"] = $codigo;
-        if (!empty($busca)) {
-            $whereArgs .= " AND (p.nome LIKE :busca OR rastreador.cod_rastreador LIKE :busca)";
-            $bindings[":busca"] = "%${busca}%";
-        }
-
-        if (!empty($dataInicial)) {
-            if (ValidacaoUtil::data($dataInicial)) {
-                $whereArgs .= " AND rastreador.dt_ativacao >= :dataInicial";
-                $bindings[":dataInicial"] = $dataInicial;
-            } else {
-                $dataInicial = null;
-            }
-        }
-
-        if (!empty($dataFinal)) {
-            if (ValidacaoUtil::data($dataFinal)) {
-                $whereArgs .= " AND rastreador.dt_ativacao <= :dataFinal";
-                $bindings[":dataFinal"] = $dataFinal;
-            } else {
-                $dataFinal = null;
-            }
-        }
-
-        if (!(empty($dataInicial) || empty($dataFinal))) {
-            if (ValidacaoUtil::dataFutura($dataInicial, $dataFinal)) {
-                $bindings[":dataInicial"] = $dataFinal;
-                $bindings[":dataFinal"] = $dataInicial;
-            }
-        }
-
-        $orderBy = "";
+        // default = cme
         switch ($ordem) {
-            case "cme":
-                $orderBy = "rastreador.cod_rastreador ASC";
-            break;
-
             case "cma":
                 $orderBy = "rastreador.cod_rastreador DESC";
             break;
@@ -81,18 +41,43 @@ class RastreadoresController extends Controller{
             break;
 
             default:
-                $orderBy = null;
+                $orderBy = "rastreador.cod_rastreador ASC";
         }
+
+        if (!ValidacaoUtil::data($dataInicial)) {
+            $dataInicial = null;
+        }
+
+        if (!ValidacaoUtil::data($dataFinal)) {
+            $dataFinal = null;
+        }
+
+        if (!(empty($dataInicial) || empty($dataFinal))) {
+            if (ValidacaoUtil::dataFutura($dataInicial, $dataFinal)) {
+                $dt = $dataInicial;
+                $dataInicial = $dataFinal;
+                $dataFinal = $dt;
+            }
+        }
+
+        $filtros["codigo"] = $codigo;
+        $filtros["busca"] = $busca;
+        $filtros["indice"] = $indice;
+        $filtros["dataInicial"] = $dataInicial;
+        $filtros["dataFinal"] = $dataFinal;
+        $filtros["ordem"] = $orderBy;
+        $filtros["limite"] = $limite;
 
         $url = $this->route("rastreadores?busca=${busca}&data-ativacao-inicial=${dataInicial}&data-ativacao-final=${dataFinal}&ordem=${ordem}&limite=${limite}");
 
-        $campos = "rastreador.cod_rastreador, p.nome as 'nome_pet', rastreador.dt_ativacao";
-        $rastreador = new Rastreador();
-        $result = $rastreador->buscarComPaginacao($campos, $join, $whereArgs, $orderBy, $bindings, $limite, $indice, $url);
         
-        $rastreadores = isset($result["dados"]) ? $result["dados"] : array();
-        $paginacao = isset($result["paginacao"]) ? $result["paginacao"] : "";
-        $totalItens = isset($result["totalItens"]) ? $result["totalItens"] : 0;
+
+        $rastreador = new Rastreador();
+        $result = $rastreador->buscarComPaginacao($filtros, $url);
+
+        $rastreadores = DadosUtil::getValorArray($result, "dados", array());
+        $paginacao    = DadosUtil::getValorArray($result, "paginacao", "");
+        $totalItens   = DadosUtil::getValorArray($result, "totalItens", 0);
 
         $this->setViewParam("rastreadores", $rastreadores);
         $this->setViewParam("paginacao", $paginacao);
@@ -118,7 +103,7 @@ class RastreadoresController extends Controller{
     }
 
     public function vincular($params) {
-        if (isset($_POST["codigo-rastreador"]) && isset($params[0])) {
+        if (isset($_POST["codigo-rastreador"]) && !empty($params[0])) {
             
             if (!(isset($_POST["_csrf"]) && Sessao::obter("csrf", "vinculo") == $_POST["_csrf"])) {
                 Mensagem::gravarMensagem("geral", "O formulário enviado é inválido ou tem origem em uma fonte não confiável", Mensagem::ERRO);
@@ -134,19 +119,19 @@ class RastreadoresController extends Controller{
                 $this->redirect("rastreadores/vinculo/${params[0]}");
             }
 
-            $result = $rastreador->buscar("SELECT count(*) as 'qtd' FROM rastreador WHERE cod_rastreador = :codigo", [":codigo"=>$rastreador->getCodigo()]);
-
-            if ($result[0]["qtd"]) {
-                Mensagem::gravarMensagem("geral", "Esse rastreador já está vinculado a algum PET. Você deve deletá-lo para desvinculá-lo do PET", Mensagem::ERRO);
+            $result = $rastreador->encontrarPorId();
+            if ($result) {
+                Mensagem::gravarMensagem("geral", "Esse rastreador já está vinculado a algum PET. Você deve deletar o rastreador para desvinculá-lo do PET", Mensagem::ERRO);
                 $this->redirect("rastreadores/vinculo/${params[0]}");
             }
 
-            $result = $rastreador->buscar("SELECT count(*) as 'qtd' FROM rastreador r INNER JOIN pet p ON r.cod_pet = p.cod_pet INNER JOIN dono d ON d.cod_dono = p.cod_dono WHERE p.cod_dono = :codigo", [":codigo"=>Sessao::obter("usuario", "codigo")]);
-
-            if ($result[0]["qtd"]) {
+            $result = $rastreador->buscar("SELECT count(*) as 'qtd' FROM rastreador r INNER JOIN pet p ON r.cod_pet = p.cod_pet WHERE p.cod_pet = :cod_pet", [":cod_pet"=>$params[0]]);
+  
+            if ($result) {
                 Mensagem::gravarMensagem("geral", "Esse PET já está vinculado a algum Rastreador. Você deve deletar o rastreador para desvinculá-lo do PET", Mensagem::ERRO);
                 $this->redirect("rastreadores/vinculo/${params[0]}");
             }
+
             $rastreador->setCodigoPet($params[0]);
             $result = $rastreador->inserir();
                 

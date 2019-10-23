@@ -149,6 +149,31 @@ abstract class Model implements IValidacao
         return $stm->rowCount() > 0;
     }
 
+
+    public function buscarComPaginacao($sql, $bindings, $totalItens, $itensPorPagina, $indice, $url)
+    {
+        $con = Conexao::conectar();
+
+        $stm = $con->prepare($sql);
+        foreach ($bindings as $chave=>$valor) {
+            $stm->bindValue($chave, $valor);
+        }
+        
+        $stm->execute();
+
+        if ($stm->rowCount() > 0) {
+            $dados = $stm->fetchAll(PDO::FETCH_CLASS, get_class($this));
+            $paginacao = Paginacao::paginar($totalItens, $itensPorPagina, $indice, $url);
+            $result = array("paginacao" => $paginacao, "dados" => $dados, "totalItens" => $totalItens);
+            return $result;
+        }
+
+        return null;
+    }
+
+
+
+/*
     public function buscarComPaginacao($campos, $join, $whereArgs, $orderBy, $bindings, $itensPorPagina, $indice, $url)
     {
         $con = Conexao::conectar();
@@ -206,7 +231,7 @@ abstract class Model implements IValidacao
 
         return null;
     }
-
+*/
     public function getNomeTabela()
     {
         $tabela = get_class($this);

@@ -1,6 +1,6 @@
 <?php $form = $dadosUtil::getValorArray($viewVar, "form"); ?>
     
-    <div class="container secao-pagina">
+    <div class="container secao-pagina login">
         <section id="login-form" class="box">
             <header>
                 <h2>Entrar</h2>
@@ -32,7 +32,7 @@
         </section>
     </div>
 
-    <div class="container secao-pagina">
+    <div class="container secao-pagina mt-1">
         <section class="box" id="cadastro-form">
             <header>
                 <h2>Crie uma nova conta gratuitamente!</h2>
@@ -44,8 +44,8 @@
 <?php endif; ?>
             <form action="<?= $this->route("index/cadastrar") ?>" method="POST">
                 <?= $viewVar["csrf_cadastro"] ?>
-                <div class="form-group">
-                    <label for="nome">Nome</label>
+                <div class="form-group-inline">
+                    <div class="form-group"><label for="nome">Nome</label></div>
                     <input type="text" name="nome" id="nome" maxlength="32" required value="<?= $dadosUtil::getValorArray($form, "nome") ?>" />
 
 <?php if ($mensagem::temMensagem("nome")) : ?>
@@ -57,8 +57,8 @@
 
                 </div>
 
-                <div class="form-group">
-                    <label for="sobrenome">Sobrenome</label>
+                <div class="form-group-inline">
+                    <div class="form-group"><label for="sobrenome">Sobrenome</label></div>
                     <input type="text" name="sobrenome" id="sobrenome" maxlength="32" required value="<?= $dadosUtil::getValorArray($form, "sobrenome") ?>" />
 
 <?php if ($mensagem::temMensagem("sobrenome")) : ?>

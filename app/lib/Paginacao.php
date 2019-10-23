@@ -8,6 +8,7 @@ class Paginacao
     {
         $indice += 1;
         $paginas = ceil($totalItens / $itensPorPagina);
+        
 
         if ($indice - 1 > 0) {
             $indiceAnterior = $indice - 1;

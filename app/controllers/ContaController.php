@@ -87,7 +87,7 @@ class ContaController extends Controller {
     }
 
     public function salvar() {
-        if (isset($_POST)) {
+        if (isset($_POST["nome"]) && isset($_POST["sobrenome"]) && isset($_POST["cel"]) && isset($_POST["email"])) {
             if (!(isset($_POST["_csrf"]) && Sessao::obter("csrf", "conta") == $_POST["_csrf"])) {
                 Mensagem::gravarMensagem("geral", "O formulário enviado é inválido ou tem origem em uma fonte não confiável", Mensagem::ERRO);
                 $this->redirect("conta");

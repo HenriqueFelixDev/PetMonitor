@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Model\Model;
 use App\Lib\Mensagem;
+use PDO;
 
 class Rastreador extends Model
 {
@@ -29,6 +30,46 @@ class Rastreador extends Model
         $dataAtual = new \DateTime();
         $this->dt_ativacao = $dataAtual->format("Y-m-d");
         return parent::inserir();
+    }
+
+    public function buscarComPaginacao($filtros, $url)
+    {
+
+        $codigo = $filtros["codigo"];
+        $busca = $filtros["busca"];
+        $dataInicial = $filtros["dataInicial"];
+        $dataFinal = $filtros["dataFinal"];
+        $indice = $filtros["indice"];
+        $limite = $filtros["limite"];
+        $ordem = $filtros["ordem"];
+
+        $join = "INNER JOIN pet p on rastreador.cod_pet = p.cod_pet";
+        $whereArgs = "p.cod_dono = :codigo";
+
+        $bindings[":codigo"] = $codigo;
+        if (!empty($busca)) {
+            $whereArgs .= " AND (p.nome LIKE :busca OR rastreador.cod_rastreador LIKE :busca)";
+            $bindings[":busca"] = "%${busca}%";
+        }
+
+        if (!empty($dataInicial)) {
+            $whereArgs .= " AND rastreador.dt_ativacao >= :dataInicial";
+            $bindings[":dataInicial"] = $dataInicial;
+            
+        }
+
+        if (!empty($dataFinal)) {
+            $whereArgs .= " AND rastreador.dt_ativacao <= :dataFinal";
+            $bindings[":dataFinal"] = $dataFinal;
+        }
+
+        $campos = "rastreador.cod_rastreador, p.nome as 'nome_pet', rastreador.dt_ativacao";
+        $itemAtual = $indice * $limite;
+        $sql = "SELECT ${campos} FROM rastreador ${join} WHERE ${whereArgs} ORDER BY ${ordem} LIMIT ${itemAtual}, ${limite}";
+        $sqlCount = "SELECT count(*) FROM rastreador ${join} WHERE ${whereArgs}";
+        
+        $totalItens = $this->buscar($sqlCount, $bindings, PDO::FETCH_COLUMN)[0];
+        return parent::buscarComPaginacao($sql, $bindings, $totalItens, $limite, $indice, $url);
     }
     
     public function getCodigo()
