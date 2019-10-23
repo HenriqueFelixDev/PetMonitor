@@ -1,8 +1,3 @@
-    <section class="container">
-        <div>
-            <h2 class="title">Vincular Rastreador ao PET <?= $viewVar["pet"]->getNome() ?></h2>
-        </div>
-
         <div>
             <form action="http://<?= APP_HOST ?>/rastreadores/vincular/<?= $viewVar["pet"]->getCodigo() ?>" method="POST">
                 <div>

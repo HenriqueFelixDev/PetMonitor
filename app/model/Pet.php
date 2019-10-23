@@ -20,6 +20,37 @@ class Pet extends Model
     protected $cor;
     protected $dt_nascimento;
     protected $foto;
+
+
+
+    public function getDono() 
+    {
+        $sql = "SELECT d.* FROM dono d INNER JOIN pet p ON p.cod_dono = d.cod_dono WHERE p.cod_pet=:codigo";
+        return parent::buscar($sql, [":codigo"=>$this->getCodigo()], PDO::FETCH_CLASS, \App\Model\Dono::class)[0];
+    }
+
+    public function getRastreador()
+    {
+        $sql = "SELECT r.* FROM rastreador r INNER JOIN pet p ON r.cod_pet = p.cod_pet WHERE p.cod_pet=:codigo";
+        return parent::buscar($sql, [":codigo"=>$this->getCodigo()], PDO::FETCH_CLASS, \App\Model\Rastreador::class)[0];
+    }
+
+    public function getTrajetos($dataInicial = null, $dataFinal = null)
+    {
+        $sql = "SELECT * FROM trajeto t INNER JOIN pet p ON t.cod_pet = p.cod_pet WHERE p.cod_pet = :codigo";
+        $bindings[":codigo"] = $this->getCodigo();
+
+        if (!empty(trim($dataInicial))) {
+            $sql .= " AND data_hora >= :dataInicial";
+            $bindings[":dataInicial"] = $dataInicial;
+        }
+
+        if (!empty(trim($dataFinal))) {
+            $sql .= " AND data_hora <= :dataFinal";
+            $bindings[":dataFinal"] = $dataFinal;
+        }
+        return parent::buscar($sql, $bindings, PDO::FETCH_CLASS, \App\Model\Trajeto::class);
+    }
     
     public function validar() : bool
     {

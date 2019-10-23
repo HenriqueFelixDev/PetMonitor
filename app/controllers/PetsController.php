@@ -83,7 +83,7 @@ class PetsController extends Controller
         $this->setViewParam("pets", $pets);
         $this->setViewParam("paginacao", $paginacao);
         $this->setViewParam("totalItens", $totalItens);
-        $this->render("pets/consulta_pets");
+        $this->render("pets/consulta_pets", "PETs");
     }
 
     public function novo() 
@@ -91,12 +91,12 @@ class PetsController extends Controller
         $form = Sessao::obter("form", "pet");
         $this->setViewParam("edicao_pet", ValidacaoUtil::csrf("edicao_pet"));
         $this->setViewParam("form", $form);
-        $this->render("pets/edicao_pet");
+        $this->render("pets/edicao_pet", "Novo PET");
     }
 
     public function trajeto() 
     {
-        $this->render("pets/monitoramento");
+        $this->render("pets/monitoramento", "Trajeto do PET");
     }
 
     public function edicao($params) 
@@ -105,6 +105,12 @@ class PetsController extends Controller
             $pet = new Pet();
             $pet->setCodigo($params[0]);
             $pet = $pet->encontrarPorId();
+
+            if (empty($pet) || $pet->getDono()->getCodigo() != Sessao::obter("usuario", "codigo")) {
+                Mensagem::gravarMensagem("geral", "O PET informado não foi encontrado", Mensagem::ERRO);
+                $this->redirect("pets");
+            }
+
             $form = [
                 "cod_pet" => $pet->getCodigo(),
                 "foto" => $pet->getFoto(),
@@ -117,8 +123,7 @@ class PetsController extends Controller
             ];
             $this->setViewParam("edicao_pet", ValidacaoUtil::csrf("edicao_pet"));
             $this->setViewParam("form", $form);
-            $this->render("pets/edicao_pet");
-            var_dump($form);
+            $this->render("pets/edicao_pet", "Editar PET");
         }
         $this->redirect("pets/novo");
     }
@@ -202,6 +207,13 @@ class PetsController extends Controller
         if (!empty($params[0])) {
             $pet = new Pet();
             $pet->setCodigo($params[0]);
+            $pet = $pet->encontrarPorId();
+
+            if (empty($pet) || $pet->getDono()->getCodigo() != Sessao::obter("usuario", "codigo")) {
+                Mensagem::gravarMensagem("geral", "O PET informado não foi encontrado", Mensagem::ERRO);
+                $this->redirect("pets");
+            }
+
             $result = $pet->deletar();
             
             if ($result) {

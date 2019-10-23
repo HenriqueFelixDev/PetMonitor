@@ -13,6 +13,13 @@ class Rastreador extends Model
     protected $nome_pet;
     protected $dt_ativacao;
      
+
+    public function getPet() 
+    {
+        $sql = "SELECT p.* FROM pet p INNER JOIN rastreador r ON p.cod_pet = r.cod_pet WHERE r.cod_rastreador=:codigo";
+        return parent::buscar($sql, [":codigo" => $this->getCodigo()], PDO::FETCH_CLASS, \App\Model\Pet::class)[0];
+    }
+
     public function validar() : bool
     {
         $temErro = false;
@@ -80,16 +87,6 @@ class Rastreador extends Model
     public function setCodigo($cod_rastreador)
     {
         $this->cod_rastreador = $cod_rastreador;
-    }
-    
-    public function getCodigoDono()
-    {
-        return $this->cod_dono;
-    }
-    
-    public function setCodigoDono($cod_dono)
-    {
-        $this->cod_dono = $cod_dono;
     }
     
     public function getCodigoPet()

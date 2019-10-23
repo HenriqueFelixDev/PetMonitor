@@ -1,7 +1,3 @@
-    <section class="container">
-        <div>
-            <h2 class="title">Alterar Senha</h2>
-        </div>
         <div>
             <form action="<?= $this->route("conta/alterar-senha") ?>" method="POST">
                 <?= $viewVar["csrf_altera_senha"] ?>

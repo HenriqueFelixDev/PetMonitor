@@ -21,10 +21,16 @@ abstract class Model implements IValidacao
         $valores = null;
 
         foreach ($campos as $campo=>$valor) {
+            if (empty($valor)) {
+                unset($campos[$campo]);
+                continue;
+            }
+            /*
             if (empty($valor) || $campo == "cod_${tabela}") {
                 unset($campos[$campo]);
                 continue;
             }
+            */
 
             $chaves .= "${campo}, ";
             $valores .= ":${campo}, ";
@@ -34,8 +40,15 @@ abstract class Model implements IValidacao
         $chaves = rtrim($chaves, ", ");
         $valores = rtrim($valores, ", ");
 
-        $sql = "INSERT INTO ${tabela} (cod_${tabela}, ${chaves}) VALUES (";
-        $sql .= ($this->getCodigo() != null) ? ":cod_${tabela}, " : "default, ";
+        $sql = "INSERT INTO ${tabela} (${chaves}) VALUES (";
+
+        if(method_exists($this, "getCodigo")){
+            if ($this->getCodigo() != null) {
+                $sql .= ":cod_${tabela}, ";
+            } else {
+                $sql .= "default, ";
+            }
+        }
         $sql .= "${valores})";
         
         $stm = $con->prepare($sql);
@@ -43,8 +56,10 @@ abstract class Model implements IValidacao
         $valores = str_replace(":", "", $valores);
         $valores = explode(", ", $valores);
 
-        if (($this->getCodigo() != null)) {
-            $stm->bindValue(":cod_${tabela}", $this->getCodigo());
+        if(method_exists($this, "getCodigo")){
+            if ($this->getCodigo() != null) {
+                $stm->bindValue(":cod_${tabela}", $this->getCodigo());
+            }
         }
 
         for ($i = 1; $i <= count($valores); $i++) {
@@ -53,7 +68,6 @@ abstract class Model implements IValidacao
         }
 
         $stm->execute();
-
         return $stm->rowCount() > 0;
     }
 

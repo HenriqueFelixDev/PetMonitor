@@ -7,6 +7,7 @@ use App\Lib\Mensagem;
 use App\Lib\Sessao;
 use App\Model\Rastreador;
 use App\Model\Pet;
+use App\Model\Dono;
 use App\Util\DadosUtil;
 use App\Util\ValidacaoUtil;
 
@@ -82,7 +83,7 @@ class RastreadoresController extends Controller{
         $this->setViewParam("rastreadores", $rastreadores);
         $this->setViewParam("paginacao", $paginacao);
         $this->setViewParam("totalItens", $totalItens);
-        $this->render("rastreadores/consulta_rastreadores");
+        $this->render("rastreadores/consulta_rastreadores", "Rastreadores");
 
     }
 
@@ -93,9 +94,15 @@ class RastreadoresController extends Controller{
             $pet = new Pet();
             $pet->setCodigo($codigoPet);
             $pet = $pet->encontrarPorId();
+
+            if (empty($pet) || $pet->getDono()->getCodigo() != Sessao::obter("usuario", "codigo")) {
+                Mensagem::gravarMensagem("geral", "Não foi possível encontrar o PET informado", Mensagem::ERRO);
+                $this->redirect("pets");
+            }
+
             $this->setViewParam("csrf_vinculo", ValidacaoUtil::csrf("vinculo"));
             $this->setViewParam("pet", $pet);
-            $this->render("rastreadores/vinculo_rastreador");
+            $this->render("rastreadores/vinculo_rastreador", "Vincular Rastreador ao PET {$pet->getNome()}");
         } else {
             Mensagem::gravarMensagem("geral", "O código do pet informado é inválido", Mensagem::ERRO);
             $this->redirect("pets");
@@ -112,6 +119,7 @@ class RastreadoresController extends Controller{
 
             $rastreador = new Rastreador();
             $rastreador->setCodigo($_POST["codigo-rastreador"]);
+            $rastreador->setCodigoPet($params[0]);
 
             $validade = $rastreador->validar();
 
@@ -125,14 +133,15 @@ class RastreadoresController extends Controller{
                 $this->redirect("rastreadores/vinculo/${params[0]}");
             }
 
-            $result = $rastreador->buscar("SELECT count(*) as 'qtd' FROM rastreador r INNER JOIN pet p ON r.cod_pet = p.cod_pet WHERE p.cod_pet = :cod_pet", [":cod_pet"=>$params[0]]);
+            $pet = new Pet();
+            $pet->setCodigo($params[0]);
+            $result = $pet->getRastreador();
   
             if ($result) {
                 Mensagem::gravarMensagem("geral", "Esse PET já está vinculado a algum Rastreador. Você deve deletar o rastreador para desvinculá-lo do PET", Mensagem::ERRO);
                 $this->redirect("rastreadores/vinculo/${params[0]}");
             }
 
-            $rastreador->setCodigoPet($params[0]);
             $result = $rastreador->inserir();
                 
             if ($result) {
@@ -151,6 +160,20 @@ class RastreadoresController extends Controller{
         if (isset($params[0])) {
             $rastreador = new Rastreador();
             $rastreador->setCodigo($params[0]);
+            $rastreador = $rastreador->encontrarPorId();
+
+            if (empty($rastreador)) {
+                Mensagem::gravarMensagem("geral", "O rastreador que você deseja deletar não está cadastrado no sistema", Mensagem::ERRO);
+                $this->redirect("rastreadores");
+            }
+
+            $pet = $rastreador->getPet();
+
+            if (empty($pet) || $pet->getDono()->getCodigo() != Sessao::obter("usuario", "codigo")) {
+                Mensagem::gravarMensagem("geral", "Falha ao deletar! Você está tentando deletar um rastreador que não está cadastrado em sua conta", Mensagem::ERRO);
+                $this->redirect("rastreadores");
+            }
+
             $result = $rastreador->deletar();
             if ($result) {
                 Mensagem::gravarMensagem("geral", "Rastreador deletado com sucesso!", Mensagem::SUCESSO);

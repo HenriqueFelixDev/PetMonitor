@@ -27,7 +27,7 @@ abstract class Controller
         exit;
     }
 
-    protected function render($view)
+    protected function render($view, $titulo = "")
     {
         
         $this->setViewParam("msg", Mensagem::obterMensagens());
@@ -37,11 +37,7 @@ abstract class Controller
         $usuario = Sessao::obter("usuario", "nome");
         $acesso = Acesso::class;
         $dadosUtil = DadosUtil::class;
-        /*
-         * Requisição para as páginas do site
-         *  require_once PATH."/app/views/pagina.php";
-         *
-        */
+
         require_once PATH."/app/views/layouts/header.php";
         require_once PATH."/app/views/layouts/menu.php";
         require_once PATH."/app/views/".$view.".php";

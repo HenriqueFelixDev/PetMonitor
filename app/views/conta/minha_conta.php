@@ -1,9 +1,3 @@
-    <section class="container">
-        
-        <div>
-            <h2 class="title">Minha Conta</h2>
-        </div>
-
         <div>
             <?php $form = $dadosUtil::getValorArray($viewVar, "form") ?>
             <form action="<?= $this->route("conta/salvar") ?>" method="POST">

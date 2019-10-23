@@ -24,12 +24,12 @@ class ContaController extends Controller {
         }
         $this->setViewParam("csrf_conta", ValidacaoUtil::csrf("conta"));
         $this->setViewParam("form", $form);
-        $this->render("conta/minha_conta");
+        $this->render("conta/minha_conta", "Minha Conta");
     }
 
     public function alteracaoSenha() {
         $this->setViewParam("csrf_altera_senha", ValidacaoUtil::csrf("altera_senha"));
-        $this->render("conta/altera_senha");
+        $this->render("conta/altera_senha", "Alterar Senha");
     }
 
     public function alterarSenha() {

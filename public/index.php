@@ -5,6 +5,7 @@ use App\Util\ValidacaoUtil;
 use App\Model\Dono;
 use App\Model\Pet;
 use App\Lib\Paginacao;
+use App\Model\Rastreador;
 
 require_once "../vendor/autoload.php";
 
@@ -40,10 +41,25 @@ define("DB_DRIVER", "mysql");
 define("DB_HOST", "localhost");
 define("DB_NAME", "petmonitor_db");
 define("DB_USER", "root");
-define("DB_PASS", "");/*
+define("DB_PASS", "");
+
+/*
+$pet = new Pet();
+$pet->setCodigo(40);
+var_dump($pet->getRastreador());
+
+
+/*
+$rastreador = new Rastreador();
+$rastreador->setCodigo("ABC123456");
+var_dump($rastreador->getPet());
+
+
 $pet = new Pet();
 $dono = new Dono();
-$dono->setCodigo(3);
+$pet->setCodigo(37);
+var_dump($pet->getDono());
+/*
 $dono->setNome("Marcos");
 $dono->setSobrenome("Antonio");
 $dono->setSenha("novasenha1234");

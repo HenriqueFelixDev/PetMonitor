@@ -1,8 +1,3 @@
-    <section class="container">
-        <div>
-            <h2 class="title">Rastreadores</h2>
-        </div>
-
         <div class="mb-2">
             <form action="<?= $this->route("rastreadores") ?>" method="GET">
                 <div class="form-group">

@@ -1,8 +1,3 @@
-    <section class="container">
-        <div>
-            <h2 class="title">Novo PET</h2>
-        </div>
-
         <div>
             <?php $form = $dadosUtil::getValorArray($viewVar, "form") ?>
             <form action="<?= $this->route("pets/salvar") ?>" method="POST" enctype="multipart/form-data">

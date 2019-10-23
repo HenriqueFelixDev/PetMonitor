@@ -1,7 +1,3 @@
-    <section class="container">
-        <div>
-            <h2 class="title">PETs</h2>
-        </div>
         <div class="mb-2">
             <a href="<?= $this->route("pets/novo") ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Novo Pet</a>
         </div>
@@ -169,7 +165,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <a href="<?= $this->route("monitoramento/index/{$pet->getCodigo()}") ?>" class="btn btn-primary"><i class="fas fa-map-marked-alt"></i> Visualizar Trajeto</a>
+                                <a href="<?= $this->route("monitoramento/trajeto/{$pet->getCodigo()}") ?>" class="btn btn-primary"><i class="fas fa-map-marked-alt"></i> Visualizar Trajeto</a>
                             </td>
                         </tr>
                     </tbody>
