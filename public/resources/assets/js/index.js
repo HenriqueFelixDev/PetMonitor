@@ -11,11 +11,28 @@ $(document).ready(function() {
             Modal.mostrar("Falha ao carregar imagem",
                 "A imagem deve ter um tamanho máximo de 2 MB(Megabytes)", [{ nome: "OK", classe: "", onclick: function() {} }]);
         } else {
+
             const fileReader = new FileReader();
             fileReader.readAsDataURL(file);
 
             fileReader.onloadend = function() {
+                $("#foto-pet").css("height", "");
+                $("#foto-pet").css("width", "200px");
                 $("#foto-pet").attr("src", fileReader.result);
+                var altura = $("#foto-pet").css("height").replace(/([^\d+\.*]+)/, "");
+                var largura = $("#foto-pet").css("width").replace(/([^\d]+)/, "");
+
+                $("#foto-pet").css("position", "relative");
+                if (altura < 200) {
+                    var offset = 200 / altura;
+                    altura *= offset;
+                    largura *= offset;
+                    $("#foto-pet").css("height", altura + "px");
+                    $("#foto-pet").css("width", largura + "px");
+                    $("#foto-pet").css("right", (largura - 200) * 0.5 + "px");
+                } else {
+                    $("#foto-pet").css("bottom", (altura - 200) * 0.5 + "px");
+                }
             }
         }
 
