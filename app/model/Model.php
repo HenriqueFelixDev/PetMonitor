@@ -25,12 +25,6 @@ abstract class Model implements IValidacao
                 unset($campos[$campo]);
                 continue;
             }
-            /*
-            if (empty($valor) || $campo == "cod_${tabela}") {
-                unset($campos[$campo]);
-                continue;
-            }
-            */
 
             $chaves .= "${campo}, ";
             $valores .= ":${campo}, ";
@@ -68,7 +62,7 @@ abstract class Model implements IValidacao
         }
 
         $stm->execute();
-        return $stm->rowCount() > 0;
+        return boolval($stm->rowCount() > 0);
     }
 
     public function atualizar()
@@ -102,7 +96,7 @@ abstract class Model implements IValidacao
 
         $stm->execute();
 
-        return $stm->rowCount() > 0;
+        return boolval($stm->rowCount() > 0);
     }
 
     public function buscar($sql, $bindings, $tipoFetch = PDO::FETCH_ASSOC, $argFetch = null)
@@ -160,7 +154,7 @@ abstract class Model implements IValidacao
         $stm->bindValue(":codigo", $this->getCodigo());
         $stm->execute();
 
-        return $stm->rowCount() > 0;
+        return boolval($stm->rowCount() > 0);
     }
 
 
@@ -185,67 +179,6 @@ abstract class Model implements IValidacao
         return null;
     }
 
-
-
-/*
-    public function buscarComPaginacao($campos, $join, $whereArgs, $orderBy, $bindings, $itensPorPagina, $indice, $url)
-    {
-        $con = Conexao::conectar();
-
-
-        $itemAtual = $indice * $itensPorPagina;
-
-        if (!empty($campos)) {
-            $sql = "SELECT ${campos} FROM ".$this->getNomeTabela();
-        } else {
-            $sql = "SELECT * FROM ".$this->getNomeTabela();
-        }
-        
-        $sqlCount = "SELECT count(*) FROM ".$this->getNomeTabela();
-
-        if (!empty($join)) {
-            $sql .= " ${join} ";
-            $sqlCount .= " ${join} ";
-        }
-        if (!empty($whereArgs)) {
-            $sql .= " WHERE ${whereArgs}";
-            $sqlCount .= " WHERE ${whereArgs}";
-        }
-        if (!empty($orderBy)) {
-            $sql .= " ORDER BY $orderBy";
-        }
-        $sql .= " LIMIT ${itemAtual}, ${itensPorPagina}";
-
-        $stm = $con->prepare($sqlCount);
-        foreach ($bindings as $chave=>$valor) {
-            $stm->bindValue($chave, $valor);
-        }
-        $stm->execute();
-
-        if ($stm->rowCount() == 0) {
-            return null;
-        }
-        
-        $totalItens = $stm->fetch(PDO::FETCH_COLUMN);
-
-        $stm = $con->prepare($sql);
-        foreach ($bindings as $chave=>$valor) {
-            $stm->bindValue($chave, $valor);
-        }
-        
-        $stm->execute();
-
-        
-        if ($stm->rowCount() > 0) {
-            $dados = $stm->fetchAll(PDO::FETCH_CLASS, get_class($this));
-            $paginacao = Paginacao::paginar($totalItens, $itensPorPagina, $indice, $url);
-            $result = array("paginacao" => $paginacao, "dados" => $dados, "totalItens" => $totalItens);
-            return $result;
-        }
-
-        return null;
-    }
-*/
     public function getNomeTabela()
     {
         $tabela = get_class($this);

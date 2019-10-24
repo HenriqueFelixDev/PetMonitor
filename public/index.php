@@ -44,6 +44,9 @@ define("DB_USER", "root");
 define("DB_PASS", "");
 
 /*
+$dono = new Dono();
+var_dump($dono->getUsuario("31983489321", "abcd1234"));
+/*
 $pet = new Pet();
 $pet->setCodigo(40);
 var_dump($pet->getRastreador());

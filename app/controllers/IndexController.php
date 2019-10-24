@@ -33,24 +33,16 @@ class IndexController extends Controller{
             $email_celular = filter_input(INPUT_POST, 'email-celular', FILTER_SANITIZE_SPECIAL_CHARS);
             $senha = $_POST["senha-login"];
 
-            $con = Conexao::conectar();
+            $dono = new Dono();
 
-            $stm = $con->prepare("SELECT cod_dono, nome, sobrenome, senha FROM dono WHERE email=:email OR celular=:celular");
-            $stm->bindValue(":email", $email_celular);
-            $stm->bindValue(":celular", $email_celular);
-            $stm->execute();
+            $dono = $dono->getUsuario($email_celular, $senha);
                 
-            if ($stm->rowCount() > 0) {
-                $result = $stm->fetchAll(PDO::FETCH_ASSOC);
-                foreach($result as $dono) {
-                    if (password_verify($senha, $dono["senha"])) {
-                        Acesso::entrar($dono["cod_dono"], $dono["nome"]);
-                        $this->redirect("pets");
-                    }
-                }
+            if ($dono) {
+                Acesso::entrar($dono->getCodigo(), $dono->getNome());
+                $this->redirect("pets");  
             }
+
             Mensagem::gravarMensagem("login", "Não existe um usuário cadastrado com essas informações de login!", Mensagem::ERRO);
-            $this->redirect("");
         }
         $this->redirect("");
     }
@@ -81,15 +73,9 @@ class IndexController extends Controller{
             $dono->setEmail($email);
 
             $validade = $dono->validar();
+            $validadeSenha = $dono->validarSenha();
 
-            $senhaValida = ValidacaoUtil::tamanho($dono->getSenha(), 8, 32);
-            
-            if (!$senhaValida) {
-                $validade = false;
-                Mensagem::gravarMensagem("senha", "A senha deve ter entre 8 e 32 caracteres", Mensagem::ERRO);
-            }
-
-            if (!$validade) {
+            if (!($validade && $validadeSenha)) {
                 $this->redirect("");
             }
 
@@ -106,9 +92,6 @@ class IndexController extends Controller{
                 Mensagem::gravarMensagem("cadastro", "Já existe um usuário com o mesmo email cadastrado no sistema", Mensagem::ERRO);
                 $this->redirect("");
             }
-
-            // Criptografa a senha do usuário
-            $dono->setSenha(password_hash($dono->getSenha(), PASSWORD_DEFAULT));
 
             $result = $dono->inserir();
             
