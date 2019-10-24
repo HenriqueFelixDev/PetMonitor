@@ -322,17 +322,21 @@ table {
     width: 100%;
 }
 
-table th {
+table th,
+.th {
     background-color: var(--secondary-color);
     color: var(--secondary-text-color);
 }
 
-table tr:nth-child(even) {
+table tr:nth-child(even),
+.tr:nth-child(even) {
     background-color: rgb(218, 215, 245);
 }
 
 table td,
-table th {
+table th,
+.td,
+.th {
     padding: 0.5rem;
     text-align: center;
 }
@@ -526,6 +530,67 @@ a.link {
 #resultados-pets {
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.pet-card {
+    width: 23%;
+    background-color: white;
+    box-shadow: 3px 2px 1px #aaa;
+    border: thin solid #bbb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 5px;
+}
+
+.pet-card>header {
+    background-color: var(--secondary-color);
+    text-align: center;
+    color: white;
+    padding: 0.5rem;
+}
+
+.pet-card>header a,
+.pet-card>header button {
+    color: #ccc;
+}
+
+.pet-card .imagem {
+    text-align: center;
+}
+
+.pet-card .dados {
+    display: table;
+}
+
+.pet-card .tr {
+    display: table-row;
+}
+
+.pet-card .td,
+.pet-card .th {
+    display: table-cell;
+    border-bottom: thin solid #ccc;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+}
+
+.pet-card .td {
+    white-space: nowrap;
+}
+
+.pet-card .td {
+    text-align: start;
+}
+
+.pet-card>footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: rgb(218, 215, 245);
+}
+
+.pet-card>footer a {
+    width: 100%;
 }
 
 
@@ -814,7 +879,19 @@ a.link {
     padding-left: 5rem;
 }
 
-@media screen and (max-width: 750px) {
+@media (max-width: 1300px) {
+    .pet-card {
+        width: 30%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .pet-card {
+        width: 45%;
+    }
+}
+
+@media (max-width: 750px) {
     h2.title {
         margin-bottom: 1rem;
     }
@@ -895,9 +972,12 @@ a.link {
     #resultados-pets {
         justify-content: center;
     }
+    .pet-card {
+        width: 240px;
+    }
 }
 
-@media screen and (max-width: 550px) {
+@media (max-width: 550px) {
     .container {
         width: 100%;
     }

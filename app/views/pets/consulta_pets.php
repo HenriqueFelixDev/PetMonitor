@@ -84,95 +84,95 @@
         <div class="mt-2 resultado-consulta">
             <?= "{$viewVar["totalItens"]} PETs encontrados" ?>
             <section id="resultados-pets" class="mt-1">
-                <!-- Seção onde ficarão os registros dos PETs consultados -->
 
 <?php if (!empty($viewVar["pets"])): foreach($viewVar["pets"] as $pet): ?>
+                <section class="pet-card">
+                    <header>
+                        <h2><?= $pet->getNome(); ?></h2>
+                        <div>
+                            <a  href="<?= $this->route("rastreadores/vinculo/{$pet->getCodigo()}") ?>" title="Vincular Rastreador"><i class="fas fa-link fa-lg"></i></a>
+                            &nbsp;
+                            <a  href="<?= $this->route("pets/edicao/{$pet->getCodigo()}") ?>" title="Editar PET"><i class="fas fa-edit fa-lg"></i></a>
+                            &nbsp;
+                            <button class="btn-sem-borda" title="Excluir PET" onclick="excluirPetModal('<?= $pet->getNome().'\', \''. $this->route('pets/excluir/'.$pet->getCodigo()) ?>')" >
+                                <i class="fas fa-trash fa-lg"></i>
+                            </button>
+                        </div>
+                    </header>
 
-                <table class="tabela-pet" style="width:250px;border:thin solid grey;box-shadow:2px 2px 2px grey;display:inline-block;margin: 5px;border-radius:5px;">
-                    <thead>
-                        <tr>
-                            <th colspan="3">
-                                <h2><?= $pet->getNome(); ?></h2>
-                                <div>
-                                    <a class="text-white" href="<?= $this->route("rastreadores/vinculo/{$pet->getCodigo()}") ?>" title="Vincular Rastreador"><i class="fas fa-link fa-lg"></i></a>
-                                    &nbsp;
-                                    <a class="text-white" href="<?= $this->route("pets/edicao/{$pet->getCodigo()}") ?>" title="Editar PET"><i class="fas fa-edit fa-lg"></i></a>
-                                    &nbsp;
-                                    <button class="btn-sem-borda text-white" title="Excluir PET" onclick="excluirPetModal('<?= $pet->getNome().'\', \''. $this->route('pets/excluir/'.$pet->getCodigo()) ?>')">
-                                        <i class="fas fa-trash fa-lg"></i>
-                                    </button>
+                    <section>
+                        <div class="imagem">
+                            <?php $foto = $dadosUtil::getValorVar($pet->getFoto(), "default.png") ?>
+                            <img style="border-radius:50%;" src="<?= $this->asset("fotos/${foto}") ?>" width="150" height="150" />
+                        </div>
+
+                        <div class="dados">
+                            <div class="tr">
+                                <div class="th">Espécie</div>
+                                <div class="td"><?= $pet->getEspecie(); ?></div>
+                            </div>
+
+                            <div class="tr">
+                                <div class="th">Raça</div>
+                                <div class="td"><?= $dadosUtil::getValorVar($pet->getRaca(), "Não Definida") ?></div>
+                            </div>
+
+                            <div class="tr">
+                                <div class="th">Sexo</div>
+                                <div class="td">
+                                    <?php 
+                                        switch ($pet->getSexo()) {
+                                            case "m":
+                                                echo "Macho";
+                                                break;
+                                                
+                                            case "f":
+                                                echo "Fêmea";
+                                                break;
+                                            
+                                            case "mc":
+                                                echo "Macho Castrado";
+                                                break;
+                                                
+                                            case "fc":
+                                                echo "Fêmea Castrada";
+                                                break;
+                                            
+                                            default:
+                                                echo "Desconhecido";
+                                        } 
+                                    
+                                    ?>
                                 </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $foto = $dadosUtil::getValorVar($pet->getFoto(), "default.png") ?>
-                        <tr>
-                            <td colspan="3"><img style="border-radius:50%;" src="<?= $this->asset("fotos/${foto}") ?>" width="150" height="150" /></td>
-                        </tr>
-                        <tr>
-                            <th>Espécie</th>
-                            <td style="text-align:left;"><?= $pet->getEspecie(); ?></td>
-                            
-                        </tr>
-                        <tr>
-                            
-                            <th>Raça</th>
-                            <td style="text-align:left;white-space:nowrap;"><?= $dadosUtil::getValorVar($pet->getRaca(), "Não Definida") ?></td>
-                            
-                        </tr>
-                        <tr>
-                            <th>Sexo</th>
-                            <td style="text-align:left;white-space:nowrap;">
-                                <div style="width:115px;text-overflow:clip;"><?php 
-                                    switch ($pet->getSexo()) {
-                                        case "m":
-                                            echo "Macho";
-                                            break;
-                                            
-                                        case "f":
-                                            echo "Fêmea";
-                                            break;
-                                        
-                                        case "mc":
-                                            echo "Macho Castrado";
-                                            break;
-                                            
-                                        case "fc":
-                                            echo "Fêmea Castrada";
-                                            break;
-                                        
-                                        default:
-                                            echo "Desconhecido";
-                                    } 
-                                
-                                ?></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Cor</th>
-                            <td style="text-align:left;white-space:nowrap;"><?= $pet->getCor() ?></td>
-                        </tr>
-                        <tr>
-                            
-                            <th>Data de Nascimento</th>
-                            <td style="text-align:left;">
-                                <?php 
-                                    $data = new DateTime($pet->getDataNascimento());
-                                    echo $data->format("d/m/Y");  
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <a href="<?= $this->route("monitoramento/trajeto/{$pet->getCodigo()}") ?>" class="btn btn-primary"><i class="fas fa-map-marked-alt"></i> Visualizar Trajeto</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            </div>
 
+                            <div class="tr">
+                                <div class="th">Cor</div>
+                                <div class="td"><?= $pet->getCor() ?></div>
+                            </div>
+
+                            <div class="tr">
+                                <div class="th">Data de Nascimento</div>
+                                <div class="td">
+                                    <?php 
+                                        $data = new DateTime($pet->getDataNascimento());
+                                        echo $data->format("d/m/Y");  
+                                    ?>
+                                </div>
+                            </div>   
+                        </div>                 
+
+                    </section>
+
+                    <footer>
+                        <div>
+                        <a href="<?= $this->route("monitoramento/trajeto/{$pet->getCodigo()}") ?>" class="btn btn-primary"><i class="fas fa-map-marked-alt"></i> Visualizar Trajeto</a>
+                        </div>
+                    </footer>
+                </section>
 <?php endforeach; endif; ?>
             </section>
+            
             <section class="center mt-2">
                 <div class="btn-group"><?= $viewVar["paginacao"] ?></div>
             </section>
