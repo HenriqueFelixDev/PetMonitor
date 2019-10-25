@@ -69,45 +69,6 @@ class Dono extends Model
         return true;
     }
 
-    public function getUsuario($email_celular, $senha)
-    {
-        $sql = "SELECT * FROM dono WHERE email=:email OR celular=:celular";
-        $bindings = [":email"=>$email_celular, ":celular"=>$email_celular];
-        $result = $this->buscar($sql, $bindings, PDO::FETCH_CLASS, Dono::class);
-            
-        if ($result) {
-            foreach($result as $dono) {
-                if (password_verify($senha, $dono->getSenha())) {
-                    return $dono;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public function inserir()
-    {
-        $this->senha = password_hash($this->senha, PASSWORD_DEFAULT);
-        return parent::inserir();
-    }
-
-    public function alterarSenha()
-    {
-        $con = Conexao::conectar();
-
-        if (isset($this->cod_dono) || isset($this->senha)) {
-            $stm = $con->prepare("UPDATE dono SET senha=:senha WHERE cod_dono=:codigo");
-            $stm->bindValue(":senha", $this->senha);
-            $stm->bindValue(":codigo", $this->cod_dono);
-            $stm->execute();
-
-            return $stm->rowCount() > 0;
-        }
-
-        return false;
-    }
-
     public function getCodigo()
     {
         return $this->cod_dono;

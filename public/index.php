@@ -6,6 +6,8 @@ use App\Model\Dono;
 use App\Model\Pet;
 use App\Lib\Paginacao;
 use App\Model\Rastreador;
+use App\Repository\PetRepository;
+use App\Dao\MySqlDao;
 
 require_once "../vendor/autoload.php";
 
@@ -42,6 +44,22 @@ define("DB_HOST", "localhost");
 define("DB_NAME", "petmonitor_db");
 define("DB_USER", "root");
 define("DB_PASS", "");
+
+
+/*
+$petRep = new PetRepository(new MySqlDao());
+
+$pet = new Pet();
+$pet->setCodigo(68);
+//$pet->setCodigoDono(1);
+$pet->setNome("Titiuzinho");
+/*$pet->setCor("Preto e Branco");
+$pet->setDataNascimento("2017-05-23");
+$pet->setEspecie("Cachorro");
+$pet->setRaca("Pastor Alemão");
+$pet->setFoto(null);*/
+
+//var_dump($petRep->consultar(["codigo" => 1, "indice" => 0, "limite" => 30, "busca" => "", "sexo" => "", "dataInicial" => "", "dataFinal" => "", "ordem" => "cod_pet ASC "], "http://www.google.com/"));
 
 /*
 $dono = new Dono();

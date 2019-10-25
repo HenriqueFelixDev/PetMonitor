@@ -21,37 +21,6 @@ class Pet extends Model
     protected $dt_nascimento;
     protected $foto;
 
-
-
-    public function getDono() 
-    {
-        $sql = "SELECT d.* FROM dono d INNER JOIN pet p ON p.cod_dono = d.cod_dono WHERE p.cod_pet=:codigo";
-        return parent::buscar($sql, [":codigo"=>$this->getCodigo()], PDO::FETCH_CLASS, \App\Model\Dono::class)[0];
-    }
-
-    public function getRastreador()
-    {
-        $sql = "SELECT r.* FROM rastreador r INNER JOIN pet p ON r.cod_pet = p.cod_pet WHERE p.cod_pet=:codigo";
-        return parent::buscar($sql, [":codigo"=>$this->getCodigo()], PDO::FETCH_CLASS, \App\Model\Rastreador::class)[0];
-    }
-
-    public function getTrajetos($dataInicial = null, $dataFinal = null)
-    {
-        $sql = "SELECT * FROM trajeto t INNER JOIN pet p ON t.cod_pet = p.cod_pet WHERE p.cod_pet = :codigo";
-        $bindings[":codigo"] = $this->getCodigo();
-
-        if (!empty(trim($dataInicial))) {
-            $sql .= " AND data_hora >= :dataInicial";
-            $bindings[":dataInicial"] = $dataInicial;
-        }
-
-        if (!empty(trim($dataFinal))) {
-            $sql .= " AND data_hora <= :dataFinal";
-            $bindings[":dataFinal"] = $dataFinal;
-        }
-        return parent::buscar($sql, $bindings, PDO::FETCH_CLASS, \App\Model\Trajeto::class);
-    }
-    
     public function validar() : bool
     {
         $temErro = false;
@@ -135,49 +104,6 @@ class Pet extends Model
         }
 
         return !$temErro;
-    }
-
-
-    public function buscarComPaginacao($filtros, $urlBase)
-    {
-    
-        $codigo = $filtros["codigo"];
-        $busca = $filtros["busca"];
-        $sexo = $filtros["sexo"];
-        $dataInicial = $filtros["dataInicial"];
-        $dataFinal = $filtros["dataFinal"];
-        $indice = $filtros["indice"];
-        $limite = $filtros["limite"];
-
-        $whereArgs = "cod_dono = :codigo";
-        $binding = [":codigo"=>$codigo];
-
-        if (!empty(trim($busca))) {
-            $whereArgs .= " AND (nome LIKE :busca OR especie LIKE :busca OR raca LIKE :busca)";
-            $binding[":busca"] = "%".$busca."%";
-        }
-
-        if (!empty(trim($sexo))) {
-            $whereArgs .= " AND sexo = :sexo";
-            $binding[":sexo"] = $sexo;
-        }
-
-        if (!empty(trim($dataInicial))) {
-            $whereArgs .= " AND dt_nascimento >= :dataInicial";
-            $binding[":dataInicial"] = $dataInicial;
-        }
-
-        if (!empty(trim($dataFinal))) {
-            $whereArgs .= " AND dt_nascimento <= :dataFinal";
-            $binding[":dataFinal"] = $dataFinal;
-        }
-        
-        $itemAtual = $indice * $limite;
-        $sql = "SELECT * FROM pet WHERE ${whereArgs} ORDER BY {$filtros["ordem"]} LIMIT {$itemAtual}, ${limite}";
-        $sqlCount = "SELECT count(*) FROM pet WHERE ${whereArgs}";
-        $totalItens = $this->buscar($sqlCount, $binding, PDO::FETCH_COLUMN)[0];
-
-        return parent::buscarComPaginacao($sql, $binding, $totalItens, $limite, $indice, $urlBase);
     }
 
     public function getCodigo()

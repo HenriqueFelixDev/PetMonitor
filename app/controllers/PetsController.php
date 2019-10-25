@@ -3,15 +3,23 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Dao\MySqlDao;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Model\Pet;
+use App\Repository\PetRepository;
 use App\Util\ImagemUtil;
 use App\Util\DadosUtil;
 use App\Util\ValidacaoUtil;
 
 class PetsController extends Controller 
 {
+    private $petRepository;
+
+    public function __construct()
+    {
+        $this->petRepository = new PetRepository(new MySqlDao());
+    }
 
     public function index() 
     {
@@ -73,8 +81,7 @@ class PetsController extends Controller
 
         $url = $this->route("pets?busca=${busca}&sexo=${sexo}&data-nasc-inicial=${dataInicial}&data-nasc-final=${dataFinal}&ordem=${ordem}&limite=${limite}");
 
-        $pet = new Pet();
-        $result = $pet->buscarComPaginacao($filtros, $url);
+        $result = $this->petRepository->consultar($filtros, $url);
 
         $pets       = DadosUtil::getValorArray($result, "dados", array());
         $paginacao  = DadosUtil::getValorArray($result, "paginacao", "");
@@ -102,11 +109,9 @@ class PetsController extends Controller
     public function edicao($params) 
     {
         if (!empty($params[0])) {
-            $pet = new Pet();
-            $pet->setCodigo($params[0]);
-            $pet = $pet->encontrarPorId();
+            $pet = $this->petRepository->buscarPorId($params[0]);
 
-            if (empty($pet) || $pet->getDono()->getCodigo() != Sessao::obter("usuario", "codigo")) {
+            if (empty($pet) || $pet->getCodigoDono() != Sessao::obter("usuario", "codigo")) {
                 Mensagem::gravarMensagem("geral", "O PET informado não foi encontrado", Mensagem::ERRO);
                 $this->redirect("pets");
             }
@@ -179,14 +184,14 @@ class PetsController extends Controller
             } else {
                 $pet->setFoto($res);
             }
-                
+
             $view = "pets/novo";
-            if (isset($codigo)) {
+            if (!empty($codigo)) {
                 $pet->setCodigo($codigo);
-                $result= $pet->atualizar();
+                $result= $this->petRepository->atualizar($pet);
                 $view = "pets/edicao/".$codigo;
             } else {
-                $result = $pet->inserir();
+                $result = $this->petRepository->cadastrar($pet);
             }
                 
             if ($result) {
@@ -205,16 +210,14 @@ class PetsController extends Controller
     public function excluir($params)
     {
         if (!empty($params[0])) {
-            $pet = new Pet();
-            $pet->setCodigo($params[0]);
-            $pet = $pet->encontrarPorId();
+            $pet = $this->petRepository->buscarPorId($params[0]);
 
-            if (empty($pet) || $pet->getDono()->getCodigo() != Sessao::obter("usuario", "codigo")) {
+            if (empty($pet) || $pet->getCodigoDono() != Sessao::obter("usuario", "codigo")) {
                 Mensagem::gravarMensagem("geral", "O PET informado não foi encontrado", Mensagem::ERRO);
                 $this->redirect("pets");
             }
 
-            $result = $pet->deletar();
+            $result = $this->petRepository->excluir($pet->getCodigo());
             
             if ($result) {
                 Mensagem::gravarMensagem("geral", "Pet deletado com sucesso!", Mensagem::SUCESSO);

@@ -3,18 +3,27 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Dao\MySqlDao;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Util\ValidacaoUtil;
 use App\Model\Dono;
+use App\Repository\DonoRepository;
 
 class ContaController extends Controller {
 
+    private $dao;
+    private $donoRepository;
+
+    public function __construct()
+    {
+        $this->dao = new MySqlDao();
+        $this->donoRepository = new DonoRepository($this->dao);
+    }
+
     public function index() {
-        $dono = new Dono();
         $codigo = Sessao::obter("usuario", "codigo");
-        $dono->setCodigo($codigo);
-        $dono = $dono->encontrarPorId();
+        $dono = $this->donoRepository->buscarPorId($codigo);
         $form = Sessao::obter("form", "dono");
         if(!isset($form)) {
             $form["nome"] = $dono->getNome();
@@ -46,11 +55,10 @@ class ContaController extends Controller {
 
             $temErro = false;
 
-            $dono = new Dono();
             $codigo = Sessao::obter("usuario", "codigo");
-            $dono->setCodigo($codigo);
-            $dono = $dono->encontrarPorId();
+            $dono = $this->donoRepository->buscarPorId($codigo);
 
+            
             if (!password_verify($senhaAnterior, $dono->getSenha())) {
                 $temErro = true;
                 Mensagem::gravarMensagem("senha-anterior", "A senha informada não é a mesma cadastrada no sistema!", Mensagem::ERRO);
@@ -73,7 +81,7 @@ class ContaController extends Controller {
         
             $dono->setSenha(password_hash($novaSenha, PASSWORD_DEFAULT));
             
-            $result = $dono->alterarSenha();
+            $result = $this->donoRepository->alterarSenha($codigo, $dono->getSenha());
 
             if ($result) {
                 Mensagem::gravarMensagem("geral", "Senha alterada com sucesso!", Mensagem::SUCESSO);
@@ -82,7 +90,6 @@ class ContaController extends Controller {
             }
 
             $this->redirect("conta/alteracao-senha");
-            
         }
     }
 
@@ -109,14 +116,15 @@ class ContaController extends Controller {
             $dono->setCelular($celular);
             $dono->setEmail($email);
 
+            
             $validade = $dono->validar();
-
+            
             if (!$validade) {
                 $this->redirect("conta");
             }
 
-            $result = $dono->atualizar();
-                
+            $result = $this->donoRepository->atualizar($dono);
+
             if ($result) {
                 Mensagem::gravarMensagem("geral", "Dados atualizados com sucesso!", Mensagem::SUCESSO);
                 Sessao::limpar("form", "dono");

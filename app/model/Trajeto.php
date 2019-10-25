@@ -53,20 +53,20 @@ class Trajeto extends Model
     }
 
     private function gerarCoordenada($inteiroMinimo, $inteiroMaximo, $decimalMinimo, $decimalMaximo, $numCasasDecimais)
-        {
-            $parteInteira = mt_rand($inteiroMinimo, $inteiroMaximo);
-            $parteDecimal = mt_rand($decimalMinimo, $decimalMaximo);
+    {
+        $parteInteira = mt_rand($inteiroMinimo, $inteiroMaximo);
+        $parteDecimal = mt_rand($decimalMinimo, $decimalMaximo);
 
-            $casasFaltando = $numCasasDecimais - strlen($parteDecimal);
+        $casasFaltando = $numCasasDecimais - strlen($parteDecimal);
 
-            $decimal = ".";
-            for ($i = 0; $i < $casasFaltando; $i++) {
-                $decimal .= "0";
-            }
-
-            return floatval($parteInteira.$decimal.$parteDecimal);
-
+        $decimal = ".";
+        for ($i = 0; $i < $casasFaltando; $i++) {
+            $decimal .= "0";
         }
+
+        return floatval($parteInteira.$decimal.$parteDecimal);
+
+    }
 
     
         public function getCodigoPet()

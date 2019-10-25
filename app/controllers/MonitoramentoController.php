@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\Controller;
 use App\App;
+use App\Dao\MySqlDao;
 use App\Lib\Mensagem;
 use App\Lib\Sessao;
 use App\Util\DadosUtil;
@@ -11,10 +12,21 @@ use DateTime;
 use App\Model\Trajeto;
 use App\Model\Pet;
 use App\Model\Dono;
+use App\Repository\PetRepository;
+use App\Repository\TrajetoRepository;
 
 class MonitoramentoController extends Controller
 {
+    private $dao;
+    private $petRepository;
+    private $trajetoRepository;
 
+    public function __construct()
+    {
+        $this->dao = new MySqlDao();
+        $this->petRepository = new PetRepository($this->dao);
+        $this->trajetoRepository = new TrajetoRepository($this->dao);
+    }
     public function index()
     {
         $this->redirect("pets");
@@ -29,19 +41,15 @@ class MonitoramentoController extends Controller
             $dataFinal = DadosUtil::getValorArray($_GET, "data-final");
             $horaInicial = DadosUtil::getValorArray($_GET, "hora-inicial");
             $horaFinal = DadosUtil::getValorArray($_GET, "hora-final");
-         
-            $trajeto = new Trajeto();
 
-            $pet = new Pet();
-            $pet->setCodigo($codigoPet);
-            $pet = $pet->encontrarPorId();
+            $pet = $this->petRepository->buscarPorId($codigoPet);
 
-            if (empty($pet) || $pet->getDono()->getCodigo() != Sessao::obter("usuario", "codigo")) {
+            if (empty($pet) || $pet->getCodigoDono() != Sessao::obter("usuario", "codigo")) {
                 Mensagem::gravarMensagem("geral", "O PET informado não foi encontrado", Mensagem::ERRO);
                 $this->redirect("pets");
             }
 
-            $trajetos = DadosUtil::getValorVar($pet->getTrajetos($dataInicial." ".$horaInicial, $dataFinal." ".$horaFinal), array());
+            $trajetos = DadosUtil::getValorVar($this->petRepository->getTrajetos($codigoPet, $dataInicial." ".$horaInicial, $dataFinal." ".$horaFinal), array());
             
             $coordenadas = "";
 
@@ -75,19 +83,19 @@ class MonitoramentoController extends Controller
         $trajeto = new Trajeto();
         $coords = $trajeto->gerarCoordenadasGeografica(5);
         $agora = new DateTime();
-        $i = 1;
-        $result = true;
-        foreach ($coords as $coord) {
-            $novaDataHora = $agora->add(new \DateInterval("PT10M"));
-            $tr = new Trajeto();
-            $tr->setCodigoPet($params[0]);
-            $tr->setDataHora($novaDataHora->format("Y-m-d h:i:s"));
-            $tr->setLatitude($coord["latitude"]);
-            $tr->setLongitude($coord["longitude"]);
-            $i++;
 
-            $result = $tr->inserir();
+        $result = true;
+        for ($i = 0; $i < count($coords); $i++) {
+            $novaDataHora = $agora->add(new \DateInterval("PT10M"));
+            $trajeto = new Trajeto();
+            $trajeto->setCodigoPet($params[0]);
+            $trajeto->setDataHora($novaDataHora->format("Y-m-d h:i:s"));
+            $trajeto->setLatitude($coords[$i]["latitude"]);
+            $trajeto->setLongitude($coords[$i]["longitude"]);
+
+            $result = $this->trajetoRepository->cadastrar($trajeto);
         }
+
         if (is_bool($result)) {
             Mensagem::gravarMensagem("geral", "Coordenadas geradas com sucesso!", Mensagem::SUCESSO);
         } else {

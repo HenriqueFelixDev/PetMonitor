@@ -186,4 +186,12 @@ abstract class Model implements IValidacao
         $tabela = strtolower($tabela[count($tabela)-1]);
         return $tabela;
     }
+
+    public static function getTabela($classe)
+    {
+        $tabela = $classe;
+        $tabela = explode("\\", $tabela);
+        $tabela = strtolower($tabela[count($tabela)-1]);
+        return $tabela;
+    }
 }

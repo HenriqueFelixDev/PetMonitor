@@ -3,15 +3,26 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Dao\MySqlDao;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Model\Dono;
 use App\Util\ValidacaoUtil;
 use App\Lib\Conexao;
 use App\Lib\Acesso;
+use App\Repository\DonoRepository;
 use PDO;
 
 class IndexController extends Controller{
+
+    private $dao;
+    private $donoRepository;
+
+    public function __construct()
+    {
+        $this->dao = new MySqlDao();
+        $this->donoRepository = new DonoRepository($this->dao);
+    }
 
     public function index(){
         $form = Sessao::obter("form", "dono");
@@ -35,7 +46,7 @@ class IndexController extends Controller{
 
             $dono = new Dono();
 
-            $dono = $dono->getUsuario($email_celular, $senha);
+            $dono = $this->donoRepository->getUsuario($email_celular, $senha);
                 
             if ($dono) {
                 Acesso::entrar($dono->getCodigo(), $dono->getNome());
@@ -79,21 +90,23 @@ class IndexController extends Controller{
                 $this->redirect("");
             }
 
-            $result = $dono->buscar("SELECT count(*) as 'qtd' FROM dono WHERE celular = :cel", [":cel"=>$dono->getCelular()]);
+            $result = $this->donoRepository->getUsuarioPorCelular($dono->getCelular());
             
             if ($result[0]["qtd"]) {
                 Mensagem::gravarMensagem("cadastro", "Já existe um usuário com o mesmo telefone cadastrado no sistema", Mensagem::ERRO);
                 $this->redirect("");
             }
 
-            $result = $dono->buscar("SELECT count(*) as 'qtd' FROM dono WHERE email = :email", [":email"=>$dono->getEmail()]);
+            $result = $this->donoRepository->getUsuarioPorEmail($dono->getEmail());
 
             if ($result[0]["qtd"]) {
                 Mensagem::gravarMensagem("cadastro", "Já existe um usuário com o mesmo email cadastrado no sistema", Mensagem::ERRO);
                 $this->redirect("");
             }
 
-            $result = $dono->inserir();
+            $dono->setSenha(password_hash($senha, PASSWORD_DEFAULT));
+
+            $result = $this->donoRepository->cadastrar($dono);
             
             if ($result) {
                 Mensagem::gravarMensagem("geral", "Dono Cadastrado com sucesso!", Mensagem::SUCESSO);
