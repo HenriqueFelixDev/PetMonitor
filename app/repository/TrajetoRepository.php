@@ -3,9 +3,10 @@
 namespace App\Repository;
 
 use App\Dao\IDao;
+use App\Repository\IRepository;
 use App\Model\Trajeto;
 
-class TrajetoRepository
+class TrajetoRepository implements IRepository
 {
     private $dao;
 
@@ -14,10 +15,30 @@ class TrajetoRepository
         $this->dao = $dao;
     }
     
-    public function cadastrar(Trajeto $trajeto)
+    public function cadastrar($trajeto)
     {
         $campos = [ "data_hora", "cod_pet", "latitude", "longitude"];
         $valores = [$trajeto->getDataHora(), $trajeto->getCodigoPet(), $trajeto->getLatitude(), $trajeto->getLongitude()];
         return $this->dao->inserir($trajeto, $campos, $valores);
+    }
+
+    public function atualizar($trajeto)
+    {
+
+    }
+
+    public function consultar(array $filtros, string $urlPaginacao)
+    {
+
+    }
+
+    public function excluir($id)
+    {
+
+    }
+
+    public function buscarPorId($id)
+    {
+
     }
 }

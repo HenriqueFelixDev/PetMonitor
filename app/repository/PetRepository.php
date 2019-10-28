@@ -4,10 +4,11 @@ namespace App\Repository;
 
 use App\Model\Pet;
 use App\Dao\IDao;
+use App\Repository\IRepository;
 use App\Lib\Paginacao;
 use PDO;
 
-class PetRepository
+class PetRepository implements IRepository
 {
     private $dao;
 
@@ -16,14 +17,14 @@ class PetRepository
         $this->dao = $dao;
     }
     
-    public function cadastrar(Pet $pet)
+    public function cadastrar($pet)
     {
         $campos = ["cod_dono", "nome", "especie", "raca", "cor", "dt_nascimento", "foto"];
         $valores = [$pet->getCodigoDono(), $pet->getNome(), $pet->getEspecie(), $pet->getRaca(), $pet->getCor(), $pet->getDataNascimento(), $pet->getFoto()];
         return $this->dao->inserir($pet, $campos, $valores);
     }
 
-    public function atualizar(Pet $pet)
+    public function atualizar($pet)
     {
         $campos = ["nome", "especie", "raca", "sexo", "cor", "dt_nascimento", "foto"];
         $valores = [$pet->getNome(), $pet->getEspecie(), $pet->getRaca(), $pet->getSexo(), $pet->getCor(), $pet->getDataNascimento(), $pet->getFoto()];
