@@ -6,6 +6,7 @@ use App\Model\Rastreador;
 use App\Dao\IDao;
 use App\Repository\IRepository;
 use App\Lib\Paginacao;
+use App\Model\Model;
 use PDO;
 
 class RastreadorRepository implements IRepository
@@ -17,14 +18,14 @@ class RastreadorRepository implements IRepository
         $this->dao = $dao;
     }
     
-    public function cadastrar($rastreador)
+    public function cadastrar(Model $rastreador)
     {
         $campos = ["cod_rastreador", "cod_pet", "dt_ativacao"];
         $valores = [$rastreador->getCodigo(), $rastreador->getCodigoPet(), $rastreador->getDataAtivacao()];
         return $this->dao->inserir($rastreador, $campos, $valores);
     }
 
-    public function atualizar($rastreador)
+    public function atualizar(Model $rastreador)
     {
         $campos = ["cod_rastreador", "cod_pet", "dt_ativacao"];
         $valores = [$rastreador->getCodigo(), $rastreador->getCodigoPet(), $rastreador->getDataAtivacao()];

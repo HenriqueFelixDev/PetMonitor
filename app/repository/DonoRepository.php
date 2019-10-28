@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Dao\IDao;
 use App\Repository\IRepository;
 use App\Model\Dono;
+use App\Model\Model;
 use PDO;
 
 class DonoRepository implements IRepository
@@ -16,14 +17,14 @@ class DonoRepository implements IRepository
         $this->dao = $dao;
     }
 
-    public function cadastrar($dono)
+    public function cadastrar(Model $dono)
     {
         $campos = ["nome", "sobrenome", "senha", "celular", "email"];
         $valores = [$dono->getNome(), $dono->getSobrenome(), $dono->getSenha(), $dono->getCelular(), $dono->getEmail()];
         return $this->dao->inserir($dono, $campos, $valores);
     }
 
-    public function atualizar($dono)
+    public function atualizar(Model $dono)
     {
         $campos = ["nome", "sobrenome", "senha", "celular", "email"];
         $valores = [$dono->getNome(), $dono->getSobrenome(), $dono->getSenha(), $dono->getCelular(), $dono->getEmail()];
