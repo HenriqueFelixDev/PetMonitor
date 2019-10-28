@@ -1,12 +1,12 @@
 <?php $form = $dadosUtil::getValorArray($viewVar, "form"); ?>
     
-    <div class="container secao-pagina login">
-        <section id="login-form" class="box">
+    <div class="secao-pagina login">
+        <section id="login-form" class="">
             <header>
                 <h2>Entrar</h2>
             </header>
             <form action="<?= $this->route("index/entrar") ?>" method="POST">
-                <?php echo $viewVar["csrf_login"] ?>
+                <?php echo $this->csrf("login") ?>
                 <div class="form-group">
                     <label for="email-celular">E-mail ou Celular</label>
                     <input type="text" placeholder="E-mail ou Celular" name="email-celular" id="email-celular" maxlength="64" required autofocus/>
@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+                    <button type="submit" class="btn-cancel"><i class="fas fa-sign-in-alt"></i> Entrar</button>
                 </div>
 
 <?php if ($mensagem::temMensagem("login")) : ?>
@@ -27,9 +27,10 @@
     </div>
 <?php endif; ?>
 
-                <span>Não possui uma conta? <a href="#cadastro-form">Criar uma nova conta</a>!</span>
+                <span>Não possui uma conta? <a href="#cadastro-form">Criar uma nova conta</a></span>
             </form>
         </section>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 279.24" preserveAspectRatio="none"><path d="M1000 0S331.54-4.18 0 279.24h1000z" opacity=".25"/><path d="M1000 279.24s-339.56-44.3-522.95-109.6S132.86 23.76 0 25.15v254.09z"/></svg>
     </div>
 
     <div class="container secao-pagina mt-1">
@@ -43,7 +44,7 @@
     </div>
 <?php endif; ?>
             <form action="<?= $this->route("index/cadastrar") ?>" method="POST">
-                <?= $viewVar["csrf_cadastro"] ?>
+                <?= $this->csrf("cadastro") ?>
                 <div class="form-group-inline">
                     <div class="form-group"><label for="nome">Nome</label></div>
                     <input type="text" name="nome" id="nome" maxlength="32" required value="<?= $dadosUtil::getValorArray($form, "nome") ?>" />

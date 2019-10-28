@@ -2,34 +2,28 @@
 
 namespace App\Controllers;
 
+use App\App;
 use App\Controllers\Controller;
-use App\Dao\MySqlDao;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Model\Dono;
-use App\Util\ValidacaoUtil;
-use App\Lib\Conexao;
 use App\Lib\Acesso;
 use App\Repository\DonoRepository;
-use PDO;
 
 class IndexController extends Controller{
 
-    private $dao;
     private $donoRepository;
 
-    public function __construct()
+    public function __construct(App $app)
     {
-        $this->dao = new MySqlDao();
+        parent::__construct($app);
         $this->donoRepository = new DonoRepository($this->dao);
     }
 
     public function index(){
         $form = Sessao::obter("form", "dono");
         $this->setViewParam("form", $form);
-        $this->setViewParam("csrf_login", ValidacaoUtil::csrf("login"));
-        $this->setViewParam("csrf_cadastro", ValidacaoUtil::csrf("cadastro"));
-        $this->render("login");
+        $this->render("login", "Login");
     }
 
     public function entrar() {

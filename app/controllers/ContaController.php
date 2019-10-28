@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
+use App\App;
 use App\Controllers\Controller;
-use App\Dao\MySqlDao;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Util\ValidacaoUtil;
@@ -11,13 +11,11 @@ use App\Model\Dono;
 use App\Repository\DonoRepository;
 
 class ContaController extends Controller {
-
-    private $dao;
     private $donoRepository;
 
-    public function __construct()
+    public function __construct(App $app)
     {
-        $this->dao = new MySqlDao();
+        parent::__construct($app);
         $this->donoRepository = new DonoRepository($this->dao);
     }
 
@@ -31,13 +29,11 @@ class ContaController extends Controller {
             $form["cel"] = $dono->getCelular();
             $form["email"] = $dono->getEmail();
         }
-        $this->setViewParam("csrf_conta", ValidacaoUtil::csrf("conta"));
         $this->setViewParam("form", $form);
         $this->render("conta/minha_conta", "Minha Conta");
     }
 
     public function alteracaoSenha() {
-        $this->setViewParam("csrf_altera_senha", ValidacaoUtil::csrf("altera_senha"));
         $this->render("conta/altera_senha", "Alterar Senha");
     }
 

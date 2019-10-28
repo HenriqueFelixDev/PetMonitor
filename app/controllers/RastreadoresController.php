@@ -2,14 +2,11 @@
 
 namespace  App\Controllers;
 
+use App\App;
 use App\Controllers\Controller;
-use App\Dao\MySqlDao;
-use App\Dao\IDao;
 use App\Lib\Mensagem;
 use App\Lib\Sessao;
 use App\Model\Rastreador;
-use App\Model\Pet;
-use App\Model\Dono;
 use App\Repository\PetRepository;
 use App\Repository\RastreadorRepository;
 use App\Util\DadosUtil;
@@ -18,11 +15,10 @@ use App\Util\ValidacaoUtil;
 class RastreadoresController extends Controller{
 
     private $rastreadorRepository;
-    private $dao;
 
-    public function __construct()
+    public function __construct(App $app)
     {
-        $this->dao = new MySqlDao();
+        parent::__construct($app);
         $this->rastreadorRepository = new RastreadorRepository($this->dao);
     }
     public function index() {
@@ -106,8 +102,6 @@ class RastreadoresController extends Controller{
                 Mensagem::gravarMensagem("geral", "Não foi possível encontrar o PET informado", Mensagem::ERRO);
                 $this->redirect("pets");
             }
-
-            $this->setViewParam("csrf_vinculo", ValidacaoUtil::csrf("vinculo"));
             $this->setViewParam("pet", $pet);
             $this->render("rastreadores/vinculo_rastreador", "Vincular Rastreador ao PET {$pet->getNome()}");
         } else {

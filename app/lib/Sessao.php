@@ -2,8 +2,6 @@
 
 namespace App\Lib;
 
-use App\Util\DadosUtil;
-
 class Sessao
 {
     public static function gravar($identificador, $param, $valor)

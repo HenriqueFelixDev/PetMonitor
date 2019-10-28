@@ -4,14 +4,13 @@ namespace App\Model;
 
 use App\Model\Model;
 use App\Lib\Mensagem;
-use PDO;
 
 class Rastreador extends Model
 {
-    protected $cod_rastreador;
-    protected $cod_pet;
-    protected $nome_pet;
-    protected $dt_ativacao;
+    private $cod_rastreador;
+    private $cod_pet;
+    private $nome_pet;
+    private $dt_ativacao;
 
     public function validar() : bool
     {
@@ -19,7 +18,7 @@ class Rastreador extends Model
 
         if(!preg_match("/[a-zA-Z]{3}(\d){6}/", $this->cod_rastreador)) {
             $temErro = true;
-            Mensagem::gravarMensagem("codigo-rastreador", "O código informado não possui o formato válido: AAA000000", Mensagem::ERRO);
+            Mensagem::gravarMensagem("codigo-rastreador", "O código informado não possui o formato válido de 3 letras e 6 números. ex: AAA000000", Mensagem::ERRO);
         }
 
         return !$temErro;

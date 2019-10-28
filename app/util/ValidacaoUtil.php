@@ -7,12 +7,6 @@ use App\Lib\Sessao;
 
 class ValidacaoUtil
 {
-    public static function csrf($formularioNome)
-    {
-        $csrf = uniqid(rand(), true);
-        Sessao::gravar("csrf", $formularioNome, $csrf);
-        return "<input type=\"hidden\" name=\"_csrf\" value=\"${csrf}\" />";
-    }
 
     public static function tamanho($valor, $min = 0, $max = 0)
     {
@@ -24,11 +18,8 @@ class ValidacaoUtil
         {
             return count($valor) >= $min && count($valor) <= $max;
         }
-    }
 
-    public static function imagem($img, array $formatos, $tamanhoMax = 2048)
-    {
-        
+        return 0;
     }
 
     public static function temNumeros($valor)

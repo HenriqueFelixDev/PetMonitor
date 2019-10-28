@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\App;
+use App\Dao\MySqlDao;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Lib\Acesso;
@@ -12,10 +13,12 @@ abstract class Controller
 {
     protected $app;
     private $viewVar;
+    protected $dao;
 
     public function __construct(App $app)
     {
         $this->setViewParam("controllerName", $app->getControllerName());
+        $this->dao = new MySqlDao();
     }
 
     public abstract function index();
@@ -54,6 +57,13 @@ abstract class Controller
     public function asset($arquivo)
     {
         return $this->route("resources/assets/".$arquivo);
+    }
+
+    public function csrf($nomeFormulario)
+    {
+        $csrf = uniqid(rand(), true);
+        Sessao::gravar("csrf", $nomeFormulario, $csrf);
+        return "<input type=\"hidden\" name=\"_csrf\" value=\"${csrf}\" />";
     }
 
     public function getViewVar()

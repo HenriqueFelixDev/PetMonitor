@@ -6,20 +6,18 @@ use App\Lib\Mensagem;
 use App\Model\Model;
 use App\Util\ImagemUtil;
 use App\Util\ValidacaoUtil;
-use PDO;
-use App\Lib\Sessao;
 
 class Pet extends Model
 {
-    protected $cod_pet;
-    protected $cod_dono;
-    protected $nome;
-    protected $especie;
-    protected $raca;
-    protected $sexo;
-    protected $cor;
-    protected $dt_nascimento;
-    protected $foto;
+    private $cod_pet;
+    private $cod_dono;
+    private $nome;
+    private $especie;
+    private $raca;
+    private $sexo;
+    private $cor;
+    private $dt_nascimento;
+    private $foto;
 
     public function validar() : bool
     {

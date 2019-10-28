@@ -115,6 +115,16 @@ nav li {
 
 nav li a {
     display: block;
+    white-space: nowrap;
+}
+
+nav li a .texto {
+    display: inline-block;
+    white-space: nowrap;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
 }
 
 nav li ul {
@@ -140,15 +150,35 @@ nav li ul li:hover {
 }
 
 .login {
-    background-image: url('../img/background.jpg');
+    background: linear-gradient(to bottom, rgba(46, 117, 204, 0.5), rgba(9, 33, 63, 0.5)), url('../img/background.jpg');
+    background-position: 0% center;
     background-size: cover;
 }
 
+.login svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /*fill: #21579e88;*/
+    fill: #ffffff;
+}
+
 #login-form {
-    height: 100%;
-    width: 250px;
-    margin-top: 2rem;
-    float: right;
+    height: 90vh;
+    width: 400px;
+    box-sizing: border-box;
+    padding: 15vh 3rem;
+    position: absolute;
+    top: var(--navbar-height);
+    right: 0;
+    z-index: 997;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+#login-form form {
+    position: relative;
+    z-index: 997;
 }
 
 #login-form button {
@@ -156,7 +186,9 @@ nav li ul li:hover {
 }
 
 #login-form a {
-    color: #0e12ff;
+    font-weight: bold;
+    color: #00146d;
+    text-decoration: underline;
 }
 
 .secao-pagina,
@@ -168,13 +200,13 @@ body>main {
     margin-top: var(--navbar-height);
 }
 
-main:before,
-main:after {
+.clearfix:before,
+.clearfix:after {
     content: '';
     display: table;
 }
 
-main:after {
+.clearfix:after {
     clear: both;
 }
 
@@ -309,7 +341,7 @@ button,
 
 #cadastro-form header,
 #login-form header {
-    text-align: center;
+    margin-left: 0.5rem;
     margin-bottom: 1rem;
 }
 
@@ -901,6 +933,9 @@ a.link {
     .container {
         width: 100%;
         padding: 2rem 5%;
+    }
+    #login-form {
+        background-color: rgba(255, 255, 255, 0.7);
     }
     #cadastro-form {
         width: 100%;

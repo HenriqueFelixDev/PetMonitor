@@ -2,8 +2,6 @@
 
 namespace App\Repository;
 
-use App\Lib\Conexao;
-use App\Model\Model;
 use App\Model\Pet;
 use App\Dao\IDao;
 use App\Lib\Paginacao;
@@ -27,8 +25,8 @@ class PetRepository
 
     public function atualizar(Pet $pet)
     {
-        $campos = ["nome", "especie", "raca", "cor", "dt_nascimento", "foto"];
-        $valores = [$pet->getNome(), $pet->getEspecie(), $pet->getRaca(), $pet->getCor(), $pet->getDataNascimento(), $pet->getFoto()];
+        $campos = ["nome", "especie", "raca", "sexo", "cor", "dt_nascimento", "foto"];
+        $valores = [$pet->getNome(), $pet->getEspecie(), $pet->getRaca(), $pet->getSexo(), $pet->getCor(), $pet->getDataNascimento(), $pet->getFoto()];
         return $this->dao->atualizar(Pet::class, $pet->getCodigo(), $campos, $valores);
     }
 
@@ -99,19 +97,19 @@ class PetRepository
         return $this->dao->buscar($sql, [":cod_pet"=>$idPet], PDO::FETCH_CLASS, \App\Model\Rastreador::class, IDAO::UNICO);
     }
 
-    public function getTrajetos($idPet, $dataInicial = null, $dataFinal = null)
+    public function getTrajetos($idPet, $dataHoraInicial = null, $dataHoraFinal = null)
     {
         $sql = "SELECT * FROM trajeto t INNER JOIN pet p ON t.cod_pet = p.cod_pet WHERE p.cod_pet = :codigo";
         $bindings[":codigo"] = $idPet;
 
-        if (!empty(trim($dataInicial))) {
+        if (!empty(trim($dataHoraInicial))) {
             $sql .= " AND data_hora >= :dataInicial";
-            $bindings[":dataInicial"] = $dataInicial;
+            $bindings[":dataInicial"] = $dataHoraInicial;
         }
 
-        if (!empty(trim($dataFinal))) {
+        if (!empty(trim($dataHoraFinal))) {
             $sql .= " AND data_hora <= :dataFinal";
-            $bindings[":dataFinal"] = $dataFinal;
+            $bindings[":dataFinal"] = $dataHoraFinal;
         }
         return $this->dao->buscar($sql, $bindings, PDO::FETCH_CLASS, \App\Model\Trajeto::class, IDao::MULTIPLOS);
     }

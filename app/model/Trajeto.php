@@ -4,19 +4,19 @@ namespace App\Model;
 
 class Trajeto extends Model
 {
-    protected $cod_pet;
-    protected $data_hora;
-    protected $latitude;
-    protected $longitude;
+    private $cod_pet;
+    private $data_hora;
+    private $latitude;
+    private $longitude;
 
     public function validar() : bool
     {
         return true;
     }
 
-    public function gerarCoordenadasGeografica($numCoordenadas)
+    public function gerarCoordenadasGeograficas($numCoordenadas)
     {
-        $latitude = $this->gerarCoordenada(0, 28, 0, 9999999, 7) * (-1);
+        $latitude = $this->gerarPontoDoTrajeto(0, 28, 0, 9999999, 7) * (-1);
 
         if ($latitude < 1 && $latitude > -10 ) {
             $minIntLatitude = 38;
@@ -32,13 +32,13 @@ class Trajeto extends Model
             $maxIntLatitude = 53;
         }
 
-        $longitude = $this->gerarCoordenada($minIntLatitude, $maxIntLatitude, 0, 9999999, 7) * (-1);
+        $longitude = $this->gerarPontoDoTrajeto($minIntLatitude, $maxIntLatitude, 0, 9999999, 7) * (-1);
 
         $coordenadas[] = ["latitude"=>$latitude, "longitude"=>$longitude];
 
         for($i = 1; $i < $numCoordenadas; $i++) {
-            $offsetLatitude = $this->gerarCoordenada(0, 0, 0, 9999, 7);
-            $offsetLongitude = $this->gerarCoordenada(0, 0, 0, 9999, 7);
+            $offsetLatitude = $this->gerarPontoDoTrajeto(0, 0, 0, 9999, 7);
+            $offsetLongitude = $this->gerarPontoDoTrajeto(0, 0, 0, 9999, 7);
 
             $novaLatitude = $latitude+$offsetLatitude;
             $novaLongitude = $longitude+$offsetLongitude;
@@ -52,7 +52,7 @@ class Trajeto extends Model
         return $coordenadas;
     }
 
-    private function gerarCoordenada($inteiroMinimo, $inteiroMaximo, $decimalMinimo, $decimalMaximo, $numCasasDecimais)
+    private function gerarPontoDoTrajeto($inteiroMinimo, $inteiroMaximo, $decimalMinimo, $decimalMaximo, $numCasasDecimais)
     {
         $parteInteira = mt_rand($inteiroMinimo, $inteiroMaximo);
         $parteDecimal = mt_rand($decimalMinimo, $decimalMaximo);
@@ -68,8 +68,7 @@ class Trajeto extends Model
 
     }
 
-    
-        public function getCodigoPet()
+    public function getCodigoPet()
     {
         return $this->cod_pet;
     }

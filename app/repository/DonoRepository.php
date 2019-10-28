@@ -22,16 +22,16 @@ class DonoRepository
         return $this->dao->inserir($dono, $campos, $valores);
     }
 
-    public function buscarPorId($id)
-    {
-        return $this->dao->encontrarPorId($id, Dono::class);
-    }
-
     public function atualizar(Dono $dono)
     {
         $campos = ["nome", "sobrenome", "senha", "celular", "email"];
         $valores = [$dono->getNome(), $dono->getSobrenome(), $dono->getSenha(), $dono->getCelular(), $dono->getEmail()];
         return $this->dao->atualizar(Dono::class, $dono->getCodigo(), $campos, $valores);
+    }
+
+    public function buscarPorId($id)
+    {
+        return $this->dao->encontrarPorId($id, Dono::class);
     }
 
     public function getUsuarioPorEmail($email)

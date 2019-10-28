@@ -2,20 +2,18 @@
 
 namespace App\Model;
 
-use App\Lib\Conexao;
 use App\Model\Model;
 use App\Util\ValidacaoUtil;
 use App\Lib\Mensagem;
-use PDO;
 
 class Dono extends Model
 {
-    protected $cod_dono;
-    protected $nome;
-    protected $sobrenome;
-    protected $senha;
-    protected $celular;
-    protected $email;
+    private $cod_dono;
+    private $nome;
+    private $sobrenome;
+    private $senha;
+    private $celular;
+    private $email;
 
     public function validar() : bool
     {

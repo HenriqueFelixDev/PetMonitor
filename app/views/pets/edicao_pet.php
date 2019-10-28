@@ -1,7 +1,7 @@
         <div>
             <?php $form = $dadosUtil::getValorArray($viewVar, "form") ?>
             <form action="<?= $this->route("pets/salvar") ?>" method="POST" enctype="multipart/form-data">
-                <?= $viewVar["edicao_pet"] ?>
+                <?= $this->csrf("edicao_pet") ?>
                 <input type="hidden" name="cod_pet" value="<?= $dadosUtil::getValorArray($form, "cod_pet") ?>" />
                 <div class="form-group">
                     

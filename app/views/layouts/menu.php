@@ -7,7 +7,7 @@
         <ul id="menu">
             <li><a href="<?php echo $this->route("pets") ?>"><i class="fas fa-paw"></i> PETs</a></li>
             <li><a href="<?php echo $this->route("rastreadores") ?>"><i class="fas fa-crosshairs"></i> Rastreadores</a></li>
-            <li><a href="javascript:void(0);"><i class="fas fa-user-circle"></i> <?php echo $usuario ?> <i class="fas fa-caret-down" style="position:relative;left:2px;"></i></a> <ul>
+            <li><a href="javascript:void(0);"><i class="fas fa-user-circle"></i> <span class="texto"><?php echo $usuario ?></span> <i class="fas fa-caret-down" style="position:relative;left:2px;"></i></a> <ul>
                 <li><a href="<?php echo $this->route("conta") ?>"><i class="fas fa-user fa-sm" style="position:relative;top:-2px;"></i> Conta</a></li>
                 <li><a href="<?php echo $this->route("index/sair") ?>"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
             </ul></li>
@@ -17,7 +17,7 @@
 
     </nav>
     
-    <main>
+    <main class="clearfix">
 
 <?php if ($mensagem::temMensagem("geral")) : ?>
     <?php $mensagemGeral = $mensagem::obterMensagem("geral") ?>
@@ -28,7 +28,12 @@
     </div>
 <?php endif; ?>
 
+<?php if($acesso::estaLogado()): ?>
 <section class="container">
+<?php endif; ?>
+
+<?php if (!empty($titulo) && $acesso::estaLogado()) : ?>
         <div>
             <h2 class="title"><?= $titulo ?></h2>
         </div>
+<?php endif; ?>

@@ -1,6 +1,6 @@
         <div>
             <form action="<?= $this->route("conta/alterar-senha") ?>" method="POST">
-                <?= $viewVar["csrf_altera_senha"] ?>
+                <?= $this->csrf("altera_senha") ?>
                 <div class="form-group">
                     <label for="senha-anterior">Senha Anterior</label>
                     <input type="password" name="senha-anterior" id="senha-anterior" maxlength="32" required autofocus />

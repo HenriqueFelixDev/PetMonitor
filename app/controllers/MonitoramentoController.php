@@ -4,26 +4,22 @@ namespace App\Controllers;
 
 use App\Controllers\Controller;
 use App\App;
-use App\Dao\MySqlDao;
 use App\Lib\Mensagem;
 use App\Lib\Sessao;
 use App\Util\DadosUtil;
 use DateTime;
 use App\Model\Trajeto;
-use App\Model\Pet;
-use App\Model\Dono;
 use App\Repository\PetRepository;
 use App\Repository\TrajetoRepository;
 
 class MonitoramentoController extends Controller
 {
-    private $dao;
     private $petRepository;
     private $trajetoRepository;
 
-    public function __construct()
+    public function __construct(App $app)
     {
-        $this->dao = new MySqlDao();
+        parent::__construct($app);
         $this->petRepository = new PetRepository($this->dao);
         $this->trajetoRepository = new TrajetoRepository($this->dao);
     }
@@ -81,7 +77,7 @@ class MonitoramentoController extends Controller
     public function gerarCoordenadas($params)
     {
         $trajeto = new Trajeto();
-        $coords = $trajeto->gerarCoordenadasGeografica(5);
+        $coords = $trajeto->gerarCoordenadasGeograficas(5);
         $agora = new DateTime();
 
         $result = true;

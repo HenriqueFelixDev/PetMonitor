@@ -1,7 +1,7 @@
         <div>
             <form action="http://<?= APP_HOST ?>/rastreadores/vincular/<?= $viewVar["pet"]->getCodigo() ?>" method="POST">
                 <div>
-                    <?= $viewVar["csrf_vinculo"] ?>
+                    <?= $this->csrf("vinculo") ?>
                     <input type="hidden" name="cod_pet" value="<?= $viewVar["pet"]->getCodigo() ?>"/>
                     <div class="form-group">
                         <label for="codigo-rastreador">Código do Rastreador</label>

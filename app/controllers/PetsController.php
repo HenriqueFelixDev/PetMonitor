@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
+use App\App;
 use App\Controllers\Controller;
-use App\Dao\MySqlDao;
 use App\Lib\Sessao;
 use App\Lib\Mensagem;
 use App\Model\Pet;
@@ -16,9 +16,10 @@ class PetsController extends Controller
 {
     private $petRepository;
 
-    public function __construct()
+    public function __construct(App $app)
     {
-        $this->petRepository = new PetRepository(new MySqlDao());
+        parent::__construct($app);
+        $this->petRepository = new PetRepository($this->dao);
     }
 
     public function index() 
@@ -96,14 +97,8 @@ class PetsController extends Controller
     public function novo() 
     {
         $form = Sessao::obter("form", "pet");
-        $this->setViewParam("edicao_pet", ValidacaoUtil::csrf("edicao_pet"));
         $this->setViewParam("form", $form);
         $this->render("pets/edicao_pet", "Novo PET");
-    }
-
-    public function trajeto() 
-    {
-        $this->render("pets/monitoramento", "Trajeto do PET");
     }
 
     public function edicao($params) 
@@ -126,7 +121,6 @@ class PetsController extends Controller
                 "cor" => $pet->getCor(),
                 "data-nasc" => $pet->getDataNascimento()
             ];
-            $this->setViewParam("edicao_pet", ValidacaoUtil::csrf("edicao_pet"));
             $this->setViewParam("form", $form);
             $this->render("pets/edicao_pet", "Editar PET");
         }
@@ -193,7 +187,7 @@ class PetsController extends Controller
             } else {
                 $result = $this->petRepository->cadastrar($pet);
             }
-                
+
             if ($result) {
                 Mensagem::gravarMensagem("geral", "PET salvo com sucesso!", Mensagem::SUCESSO);
                 Sessao::limpar("form", "pet");

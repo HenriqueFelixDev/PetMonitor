@@ -1,7 +1,7 @@
         <div>
             <?php $form = $dadosUtil::getValorArray($viewVar, "form") ?>
             <form action="<?= $this->route("conta/salvar") ?>" method="POST">
-                <?= $viewVar["csrf_conta"] ?>
+                <?= $this->csrf("conta") ?>
                 <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" name="nome" id="nome" maxlength="32" required autofocus value="<?= $dadosUtil::getValorArray($form, "nome") ?>" />

@@ -4,11 +4,11 @@ namespace App\Util;
 
 class ImagemUtil
 {
-    public static function moverImagem($imagem, $novoDir, $novoNome)
+    public static function moverImagem($imagem, $novoDiretorio, $novoNome)
     {
         $caminhoImagem = $imagem["tmp_name"];
         $extensao = self::obterExtensao($imagem["name"]);
-        $novoCaminho = $novoDir.$novoNome.".".$extensao;
+        $novoCaminho = $novoDiretorio.$novoNome.".".$extensao;
 
         if (@move_uploaded_file($imagem["tmp_name"], $novoCaminho)) {
             return $novoNome.".".$extensao;
