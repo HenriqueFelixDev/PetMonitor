@@ -28,11 +28,11 @@
     </div>
 <?php endif; ?>
 
-<?php if($acesso::estaLogado()): ?>
+<?php if($acesso::estaLogado() || isset($viewVar["msgErro"])): ?>
 <section class="container">
 <?php endif; ?>
 
-<?php if (!empty($titulo) && $acesso::estaLogado()) : ?>
+<?php if ((!empty($titulo) && $acesso::estaLogado()) || isset($viewVar["msgErro"])) : ?>
         <div>
             <h2 class="title"><?= $titulo ?></h2>
         </div>

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Controllers\ErroController;
 use App\Util\DadosUtil;
 use App\Controllers\IndexController;
 use App\Lib\Acesso;
@@ -50,13 +51,17 @@ class App{
        }
 
        if(!file_exists(PATH."/app/controllers/".$this->controllerFile)){
-           throw new Exception("Página não encontrada!", 404);
+           $this->controller = new ErroController($this, new Exception("Página não encontrada!", 404));
+           $this->controller->index();
+           exit;
        }
 
        $controllerClass = "App\\Controllers\\".$this->controllerName;
 
        if(!class_exists($controllerClass)){
-           throw new Exception("Ocorreu um erro interno!", 500);
+        $this->controller = new ErroController($this, new Exception("Ocorreu um erro interno no servidor!", 500));
+        $this->controller->index();
+        exit;
        }
 
        $objectController = new $controllerClass($this);
@@ -79,7 +84,9 @@ class App{
            $objectController->index();
            return;
        }else{
-           throw new Exception("A ação que você tentou executar não está disponível", 500);
+            $this->controller = new ErroController($this, new Exception("A ação que você tentou executar não está disponível", 500));
+            $this->controller->index();
+            exit;
        }
     }
 
