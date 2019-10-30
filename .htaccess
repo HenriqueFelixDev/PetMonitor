@@ -1,0 +1,7 @@
+RewriteEngine on
+
+RewriteCond %{HTTP_HOST} ^localhost:81/projetos/PetMonitor/$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^http://localhost:81/projetos/PetMonitor/$
+RewriteCond %{REQUEST_URI} !public/
+
+RewriteRule (.*)/public/$1 [L]

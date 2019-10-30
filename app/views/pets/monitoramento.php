@@ -1,8 +1,10 @@
 <?php $pet = $viewVar["pet"] ?>
         <div>
+<?php if (empty($viewVar["trajetos"])) : ?>
             <div class="my-1">
                 <a href="<?= $this->route("monitoramento/gerarCoordenadas/{$pet->getCodigo()}") ?>" class="btn btn-primary">Gerar Coordenadas</a>
             </div>
+<?php endif ?>
             <form action="" method="GET">
                 <div class="form-group-inline">
                     <div class="mb-1"><label for="data-inicial">Data Inicial</label></div>
