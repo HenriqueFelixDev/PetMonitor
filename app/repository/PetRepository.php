@@ -68,10 +68,9 @@ class PetRepository implements IRepository
         
         $itemAtual = $indice * $limite;
         $sql = "SELECT * FROM pet WHERE ${whereArgs} ORDER BY {$filtros["ordem"]} LIMIT {$itemAtual}, ${limite}";
-        $sqlCount = "SELECT count(*) FROM pet WHERE ${whereArgs}";
-        $totalItens = $this->dao->buscar($sqlCount, $binding, PDO::FETCH_COLUMN, null, IDao::UNICO);
 
         $pets = $this->dao->buscar($sql, $binding, PDO::FETCH_CLASS, PET::class, IDao::MULTIPLOS);
+        $totalItens = count($pets);
         $paginacao = Paginacao::paginar($totalItens, $limite, $indice, $urlPaginacao);
 
         return array("paginacao" => $paginacao, "dados" => $pets, "totalItens" => $totalItens);

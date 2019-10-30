@@ -185,7 +185,7 @@ nav li ul li:hover {
     width: 100%;
 }
 
-#login-form a {
+.link-azul {
     font-weight: bold;
     color: #00146d;
     text-decoration: underline;

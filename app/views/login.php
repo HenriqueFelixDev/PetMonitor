@@ -27,7 +27,7 @@
     </div>
 <?php endif; ?>
 
-                <span>Não possui uma conta? <a href="#cadastro-form">Criar uma nova conta</a></span>
+                <span>Não possui uma conta? <a href="#cadastro-form" class="link-azul">Criar uma nova conta</a></span>
             </form>
         </section>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 279.24" preserveAspectRatio="none"><path d="M1000 0S331.54-4.18 0 279.24h1000z" opacity=".25"/><path d="M1000 279.24s-339.56-44.3-522.95-109.6S132.86 23.76 0 25.15v254.09z"/></svg>
@@ -121,7 +121,7 @@
         </section>
     </div>
 
-<?php if (isset($form)): ?>
+<?php if (isset($form) || $mensagem::temMensagem("cadastro")): ?>
     <script>scrollPara("#cadastro-form")</script>
 <?php endif; ?>
 

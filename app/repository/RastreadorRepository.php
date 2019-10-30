@@ -66,13 +66,11 @@ class RastreadorRepository implements IRepository
         $campos = "rastreador.cod_rastreador, p.nome as 'nome_pet', rastreador.dt_ativacao";
         $itemAtual = $indice * $limite;
         $sql = "SELECT ${campos} FROM rastreador ${join} WHERE ${whereArgs} ORDER BY ${ordem} LIMIT ${itemAtual}, ${limite}";
-        $sqlCount = "SELECT count(*) FROM rastreador ${join} WHERE ${whereArgs}";
         
-        $totalItens = $this->dao->buscar($sqlCount, $bindings, PDO::FETCH_COLUMN, null, IDao::UNICO);
-        $pets = $this->dao->buscar($sql, $bindings, PDO::FETCH_CLASS, Rastreador::class, IDao::MULTIPLOS);
+        $rastreadores = $this->dao->buscar($sql, $bindings, PDO::FETCH_CLASS, Rastreador::class, IDao::MULTIPLOS);
+        $totalItens = count($rastreadores);
         $paginacao = Paginacao::paginar($totalItens, $limite, $indice, $urlPaginacao);
-
-        return array("paginacao" => $paginacao, "dados" => $pets, "totalItens" => $totalItens);
+        return array("paginacao" => $paginacao, "dados" => $rastreadores, "totalItens" => $totalItens);
     }
     
     public function excluir($id)

@@ -94,7 +94,7 @@
                             &nbsp;
                             <a  href="<?= $this->route("pets/edicao/{$pet->getCodigo()}") ?>" title="Editar PET"><i class="fas fa-edit fa-lg"></i></a>
                             &nbsp;
-                            <button class="btn-sem-borda" title="Excluir PET" onclick="excluirPetModal('<?= $pet->getNome().'\', \''. $this->route('pets/excluir/'.$pet->getCodigo()) ?>')" >
+                            <button class="btn-sem-borda" title="Excluir PET" onclick="excluirPetModal('<?= htmlspecialchars($pet->getNome()).'\', \''. $this->route('pets/excluir/'.$pet->getCodigo()) ?>')" >
                                 <i class="fas fa-trash fa-lg"></i>
                             </button>
                         </div>

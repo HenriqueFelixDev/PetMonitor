@@ -103,10 +103,10 @@ class IndexController extends Controller{
             $result = $this->donoRepository->cadastrar($dono);
             
             if ($result) {
-                Mensagem::gravarMensagem("geral", "Dono Cadastrado com sucesso!", Mensagem::SUCESSO);
+                Mensagem::gravarMensagem("cadastro", "Dono Cadastrado com sucesso! <a href=\"#login-form\" class=\"link-azul\">Fazer Login</a>", Mensagem::SUCESSO);
                 Sessao::limpar("form", "dono");
             } else {
-                Mensagem::gravarMensagem("geral", "Ocorreu um erro ao cadastrar o novo Dono!", Mensagem::ERRO);
+                Mensagem::gravarMensagem("cadastro", "Ocorreu um erro ao cadastrar o novo Dono!", Mensagem::ERRO);
             }
         }
         $this->redirect("");
